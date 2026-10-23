@@ -24,6 +24,12 @@ Also: trending movie and series scenes (TMDB) behind your apps, full-bleed with 
 | ![Trending scene behind the menu](docs/images/scene.jpg)<br>Movie scenes behind your apps | ![Settings and Launcher menu](docs/images/settings.jpg)<br>Launcher settings, on the TV |
 | ![Dynamic gold ribbon](docs/images/home.jpg)<br>Dynamic gold ribbon, PS3 style | ![Navigation demo](docs/images/demo.gif)<br>Navigation (GIF) |
 
+### Colours
+
+Gold, blue and dark are animated videos (Dynamic) or images (Static). The solid colours are static gradients.
+
+![All colours](docs/images/colors.jpg)
+
 ## Install
 
 ### Easiest: let your AI do it
@@ -31,7 +37,7 @@ Also: trending movie and series scenes (TMDB) behind your apps, full-bleed with 
 Needs a coding agent with shell access (Claude Code, Codex, Gemini CLI, Cursor...) on a computer on the same Wi-Fi as the TV, with `adb` installed. Either clone the repo, open your agent inside it, and tell it to follow [`PROMPT.md`](PROMPT.md), or just paste:
 
 ```
-Read https://github.com/YOUR_USER/xmb-tv-launcher and follow PROMPT.md and skill/SKILL.md.
+Read https://github.com/sanangoyal/xmb-tv-launcher and follow PROMPT.md and skill/SKILL.md.
 My Android TV is at <TV IP>. Back it up first, show me the bloatware you plan to
 disable and ask before each group, install the XMB launcher, grant its permissions,
 make it my home screen, and confirm with a screenshot. Ask before anything destructive.

@@ -267,7 +267,7 @@ if(HOST){try{INST=JSON.parse(Android.apps())}catch(e){INST=[]}
 
  {const CS=CATS.find(c=>c.name==='Settings'),C_=()=>CATS.indexOf(CS),L=sys('Launcher','Background, colour, night','ln_main');
   const sub=(it,t)=>{it.s=t;if(it.el){const e=it.el.querySelector('.s');if(e)e.textContent=t}};
-  const apply=()=>{PF.save();vKey=null;vDk=null;try{Android.bgvStatic(STATIC)}catch(e){}};
+  const apply=()=>{PF.save();vKey=null;vDk=null;try{Android.bgvStatic(STATIC)}catch(e){}setTimeout(()=>{try{vidTick()}catch(e){}},60)};
   const bgI=sys('Background','','ln_bg'),colI=sys('Color','','ln_col'),cusI=sys('Choose custom image','Static only','ln_img'),solI=sys('Solid colour','Static only','ln_sol'),musI=sys('Ambient music','','ln_mus'),agI=sys('Agent control','','ln_ag'),abI=sys('About','Sanan Goyal · sanangoyal.com','ln_info'),MV=[['0','Off'],['15','Soft'],['30','Medium'],['50','Loud']];
   const CN={auto:'Auto',rand:'Random',gold:'Gold',blue:'Blue',black:'Dark (black)',custom:'Custom image'},SOL=[['black','Black'],['red','Ruby'],['orange','Amber'],['green','Emerald'],['teal','Teal'],['indigo','Indigo'],['purple','Violet']];SOL.forEach(a=>CN['sc_'+a[0]]=a[1]+' (solid)');
   const agInfo=()=>{try{return JSON.parse(Android.agentInfo())}catch(e){return{}}};const refresh=()=>{sub(bgI,STATIC?'Static':'Dynamic');sub(colI,CN[PF.col]);sub(musI,(MV.find(a=>a[0]===PF.mus)||MV[1])[1]);{const i=agInfo();sub(agI,i.on?'On · '+i.ip:'Off')}};const musApply=pv=>{PF.save();try{Android.ambCfg(+PF.mus,!!pv)}catch(e){}};musApply();
