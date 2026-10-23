@@ -1,0 +1,6 @@
+android/tmdb.key
+android/dbg.jks
+android/out/
+android/assets/index.html
+*.apk
+.DS_Store
