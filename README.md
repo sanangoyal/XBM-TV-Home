@@ -5,6 +5,8 @@ Debloat the TV, install the launcher, let your AI agent manage it.
 
 Made by [Sanan Goyal](https://sanangoyal.com) · MIT licence · see [ASSETS.md](ASSETS.md) for third-party material
 
+![Before and after: stock Google TV home vs the XMB launcher](docs/images/before-after.png)
+
 ## Features
 
 | | | |
@@ -15,14 +17,21 @@ Made by [Sanan Goyal](https://sanangoyal.com) · MIT licence · see [ASSETS.md](
 
 Also: trending movie and series scenes (TMDB) behind your apps, full-bleed with a left fade. Stays awake: the UI is the screensaver.
 
+## Screenshots
+
+| | |
+|---|---|
+| ![Trending scene behind the menu](docs/images/scene.jpg)<br>Movie scenes behind your apps | ![Settings and Launcher menu](docs/images/settings.jpg)<br>Launcher settings, on the TV |
+| ![Dynamic gold ribbon](docs/images/home.jpg)<br>Dynamic gold ribbon, PS3 style | ![Navigation demo](docs/images/demo.gif)<br>Navigation (GIF) |
+
 ## Install
 
 ### Easiest: let your AI do it
 
-Open Claude (or any coding agent that can run shell commands) with `adb` available on your computer, and paste:
+Needs a coding agent with shell access (Claude Code, Codex, Gemini CLI, Cursor...) on a computer on the same Wi-Fi as the TV, with `adb` installed. Either clone the repo, open your agent inside it, and tell it to follow [`PROMPT.md`](PROMPT.md), or just paste:
 
 ```
-Read https://github.com/YOUR_USER/xmb-tv-launcher and follow skill/SKILL.md.
+Read https://github.com/YOUR_USER/xmb-tv-launcher and follow PROMPT.md and skill/SKILL.md.
 My Android TV is at <TV IP>. Back it up first, show me the bloatware you plan to
 disable and ask before each group, install the XMB launcher, grant its permissions,
 make it my home screen, and confirm with a screenshot. Ask before anything destructive.
@@ -119,6 +128,10 @@ bash android/build.sh                          # -> android/out/xmb-launcher.apk
 ## For AI agents
 
 Start at [`skill/SKILL.md`](skill/SKILL.md). It covers connecting to the TV, backup, safe debloating, installing this launcher, and using it as an example for building your own custom TV UI.
+
+## Credits
+
+Debloat approach and agent prompt style inspired by [cleanyourtv](https://github.com/Gathin23/cleanyourtv) by Gathin23 and [tv-home](https://github.com/mihirgupta0900/tv-home) by mihirgupta0900. Movie data: TMDB.
 
 ## Disclaimer
 

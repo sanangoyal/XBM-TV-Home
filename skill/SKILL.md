@@ -17,6 +17,8 @@ Three parts: (1) connect, (2) back up and optimise, (3) install the XMB launcher
 6. If anything looks wrong (black screen, remote dead), run the restore scripts. Keep the user informed in short messages.
 7. No VPN requirement; the TV and computer must be on the same LAN.
 
+Also read `PROMPT.md` at the repo root: it is the step-by-step prompt for the whole job, including the questions to ask. Extra guardrails: never start factory/test-menu packages (some boards set a flag the shell cannot reverse); before disabling `com.google.android.tungsten.setupwraith` (Google TV setup), check which package owns the saved Wi-Fi, since disabling it can cut Wi-Fi and ADB; on CVTE-type boards keep the stock launcher enabled and set Home with `cmd package set-home-activity`, reboot once, confirm Home and ADB return; at the end offer to close ADB (turn debugging off, revoke authorisations, reboot).
+
 ## 1. Connect
 
 1. User enables Developer options: Settings > Device Preferences > About > press *Build* 7 times; then Developer options > USB debugging / Network debugging on. Get the TV IP from Network settings.
