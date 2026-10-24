@@ -19,7 +19,7 @@ Living file. Every technical decision becomes a rule here.
 ## Data sources
 - Network: ConnectivityManager/NetworkCapabilities (eth/wifi/none).
 - Notifications: `NotifService` (NotificationListenerService). Grant after install: `cmd notification allow_listener com.sanan.xmb/com.sanan.xmb.NotifService`.
-- Account: Android 11 hides accounts from third-party apps → `ACCT_FALLBACK` in MainActivity (`user@example.com`). Update if the TV account changes.
+- Account: Android 11 hides accounts from third-party apps. The avatar shows the initial of the address in `/sdcard/xmb-account.txt` (one line), or "G" if the file is absent.
 - Avatar photo: Google keeps it private; OAuth route never returned on this TV. Loads `files/avatar.jpg` if present.
 - Cold start: compares device boot time (`currentTimeMillis - elapsedRealtime`) with stored value in prefs `av`/`boot`.
 

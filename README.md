@@ -7,7 +7,7 @@
 <img alt="Android TV 9+" src="https://img.shields.io/badge/ANDROID%20TV-9%2B-000000?style=for-the-badge&labelColor=555555">
 <img alt="Runs on 2 GB RAM" src="https://img.shields.io/badge/RUNS%20ON-2%20GB%20RAM-555555?style=for-the-badge&labelColor=555555">
 </p>
-<p align="center"><a href="#install">Install</a> · <a href="#screenshots">Screenshots</a> · <a href="#how-it-works">How it works</a> · <a href="#ai-control-mcp">AI control</a> · <a href="#compatibility">Compatibility</a> · <a href="#safety-and-undo">Safety</a> · <a href="#build-from-source">Build</a></p>
+<p align="center"><a href="#install">Install</a> · <a href="#screenshots">Screenshots</a> · <a href="#how-it-works">How it works</a> · <a href="#ai-control-mcp">AI control</a> · <a href="#compatibility">Compatibility</a> · <a href="#safety-and-undo">Safety</a> · <a href="#faq-and-troubleshooting">FAQ</a> · <a href="#build-from-source">Build</a></p>
 <hr>
 
 <p align="center"><img alt="Before and after: stock Google TV home vs XMB TV Home" src="docs/images/before-after.png"></p>
@@ -23,6 +23,19 @@
 | 🧩 **Clean, consistent icons**<br><sub>Real brand logos for your apps, one glyph style for the rest.</sub> | 🧹 **No bloat, no ads**<br><sub>Disables promo apps and ad services. Never uninstalls. Full restore script.</sub> | 🎬 **Movie scenes**<br><sub>Trending titles from TMDB fill the screen behind your apps.</sub> |
 
 The UI stays on: it is its own screensaver.
+
+## Speed without losing the look
+
+A PS3 menu is mostly glow, blur and motion, which is exactly what a 2 GB TV chokes on. Here is how XMB TV Home keeps the full look and still stays quick:
+
+- **Video never touches the web layer.** The ribbon plays on a native video surface under a transparent web view, so the UI is not re-composited every frame.
+- **Static mode is almost free.** One image is drawn once and then nothing redraws while you idle. Pick Static for the lightest setting on weak hardware.
+- **The ribbon is two layers, not a video.** In Static mode a grid image and an additive-blend ribbon image rebuild the animated look from stills.
+- **Full 1080p UI.** The interface is laid out at 960×540 and scaled 2× to the panel. It is never dropped to 720p to save speed.
+- **Blur only where it is cheap.** A lite rendering path removes the expensive effects (backdrop blur, big filters) on TVs that cannot afford them.
+- **Instant video start.** Backgrounds are stored uncompressed in the APK so the player opens them directly, with no unpacking.
+- **Nothing heavy at startup.** App icons load one at a time after the home screen is already showing. Ambient music waits until the TV has been idle for 5 minutes.
+- **No extra services.** Besides the optional agent server, which is off by default, nothing runs in the background.
 
 ## Screenshots
 
@@ -129,6 +142,32 @@ All in `scripts/`. Each takes the TV address (`<TV-IP>` or `<TV-IP>:port`).
 | `privacy.sh` | Read-only audit of voice, content-recognition (ACR), telemetry and ad packages, and which apps can use the microphone |
 | `adb-closed.sh` | Turns network ADB off and confirms the port no longer answers. Run it when you are done |
 | `restore-launcher.sh` | Brings the stock home screen back |
+
+## FAQ and troubleshooting
+
+**Do I need to factory reset?** No. Nothing is uninstalled, and `restore-bloat.sh` and `restore-launcher.sh` undo every change.
+
+**Will it work on my TV?** See [Compatibility](#compatibility). Android TV and Google TV: yes. Fire TV, Tizen, webOS: no.
+
+**Home still opens the old launcher.** Press Home on the remote, pick *XMB*, choose *Always*. If the stock one keeps winning: `adb shell pm disable-user --user 0 com.google.android.tvlauncher`.
+
+**Black screen or remote does nothing.** `adb shell am force-stop com.sanan.xmb`, then press Home. Still stuck: `scripts/restore-launcher.sh <TV-IP>`.
+
+**`adb` says unauthorized.** Accept the prompt on the TV (tick *Always allow*). If none appears, revoke USB debugging authorisations and reconnect.
+
+**Install fails with INSTALL_FAILED_UPDATE_INCOMPATIBLE.** `adb uninstall com.sanan.xmb`, then install again.
+
+**File browser is empty.** `adb shell appops set com.sanan.xmb MANAGE_EXTERNAL_STORAGE allow`.
+
+**Connection drops when the TV sleeps.** Wake it first: `adb shell input keyevent KEYCODE_WAKEUP`, then reconnect.
+
+**An update brought the ads back.** Run `scripts/check.sh <TV-IP> --fix`.
+
+**Avatar shows "G".** Android 11 hides your Google account from apps. Put your address on one line in `/sdcard/xmb-account.txt` to show your initial.
+
+## Contributing
+
+Tried it on another TV? [Open an issue](https://github.com/sanangoyal/xmb-tv-launcher/issues) with the model, Android version and what you disabled. Bug fixes and bloat lists for other brands are welcome as pull requests.
 
 ## Settings (on the TV: Settings > Launcher)
 

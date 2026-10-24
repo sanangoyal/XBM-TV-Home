@@ -185,13 +185,14 @@ public class MainActivity extends Activity {
   @Override public void onBackPressed() { /* handled in onKeyDown */ }
 
 
-  static final String ACCT_FALLBACK = "user@example.com";
+  // Android 11 hides Google accounts from third-party apps. Optional: put your address in /sdcard/xmb-account.txt to show your initial.
+  String acctFallback() { try { java.io.File f = new java.io.File("/sdcard/xmb-account.txt"); if (f.exists() && f.length() < 200) { java.io.BufferedReader r = new java.io.BufferedReader(new java.io.FileReader(f)); String l = r.readLine(); r.close(); if (l != null && l.trim().length() > 0) return l.trim(); } } catch (Throwable t) {} return "Google"; }
   android.accounts.Account gacct() {
     try {
       android.accounts.Account[] a = android.accounts.AccountManager.get(this).getAccountsByType("com.google");
       if (a != null && a.length > 0) return a[0];
     } catch (Throwable t) {}
-    return new android.accounts.Account(ACCT_FALLBACK, "com.google");
+    return new android.accounts.Account(acctFallback(), "com.google");
   }
   static volatile String avatarUri = "";
   void fetchAvatar() {
