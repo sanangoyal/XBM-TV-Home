@@ -6,9 +6,9 @@ It does **not** grant rights to third-party material included for personal, non-
 
 | Material | Where | Owner / source |
 |---|---|---|
-| PS3 XMB look: "SCE-PS3 Rodin" font, menu icons, UI sounds, ribbon styling | `web/xmb.tpl.html`, `web/src/z16`, `web/src/bs` | Sony Interactive Entertainment |
+| PS3 XMB look: "SCE-PS3 Rodin" font, menu icons, UI sounds, ribbon styling | `web/xmb.tpl.html`, `web/src/z16`, `web/src/bs`; readable copies in `assets/sounds`, `assets/glyphs` | Sony Interactive Entertainment |
 | Ambient loop (cut from a fan-uploaded "1 hour PS3 XMB menu background" video) | `android/assets/ambient.ogg` | Sony Interactive Entertainment / uploader |
-| Brand logos (Netflix, YouTube, Prime Video, Apple TV, Spotify, Hotstar, ZEE5, SonyLIV, Plex, Kodi, VLC, Discord, Chrome, Google Play) | `web/src/*` | Respective owners; via Simple Icons (CC0 data, trademarks remain with owners) and others |
+| Brand logos (Netflix, YouTube, Prime Video, Apple TV, Spotify, Hotstar, ZEE5, SonyLIV, Plex, Kodi, VLC, Discord, Chrome, Google Play) | `web/src/*`, `assets/logos` | Respective owners; via Simple Icons (CC0 data, trademarks remain with owners) and others |
 | Movie / series metadata and images | fetched at runtime | TMDB. This product uses the TMDB API but is not endorsed or certified by TMDB. |
 | System glyphs | `web/src/own`, Phosphor, Material Symbols | MIT / Apache-2.0 respectively |
 

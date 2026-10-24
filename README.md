@@ -42,7 +42,7 @@ A PS3 menu is mostly glow, blur and motion, which is exactly what a 2 GB TV chok
 | | |
 |---|---|
 | ![Trending scene behind the menu](docs/images/scene.jpg)<br><sub>Movie scenes behind your apps</sub> | ![Settings and Launcher menu](docs/images/settings.jpg)<br><sub>Launcher settings, on the TV</sub> |
-| ![Dynamic blue ribbon](docs/images/home.jpg)<br><sub>Dynamic blue ribbon, PS3 style</sub> | ![Navigation demo](docs/images/demo.gif)<br><sub>Navigation</sub> |
+| ![Dynamic gold ribbon](docs/images/home.jpg)<br><sub>Dynamic gold ribbon, PS3 style</sub> | ![Navigation demo](docs/images/demo.gif)<br><sub>Navigation</sub> |
 
 ### Colours
 
@@ -213,6 +213,10 @@ bash android/build.sh                          # -> android/out/xmb-launcher.apk
 ```
 
 `tools/mk.py` assembles the UI (`web/xmb.tpl.html` + icon, logo and sound data) into the app. Docs: [docs/DESIGN.md](docs/DESIGN.md), [docs/TECH.md](docs/TECH.md).
+
+## Assets and porting
+
+Sounds, menu glyphs and app logos are in [`assets/`](assets/) as plain WAV and SVG files, with the backgrounds in `android/assets/`. Use them to modify the look or to build the same UI on another platform. The layout, motion and colour rules are in [`docs/DESIGN.md`](docs/DESIGN.md). Third-party rights: [ASSETS.md](ASSETS.md).
 
 ## For AI agents
 
