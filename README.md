@@ -1,6 +1,6 @@
 <h1 align="center">XMB TV Home</h1>
 <hr>
-<p align="center"><b>The PlayStation 3 home screen, on your Android TV.</b> Fast, clean and ad-free. Disable the bloat, install the XMB, and let your AI agent run it.</p>
+<p align="center"><b>The Sony PlayStation 3 (PS3) XMB home screen, rebuilt as an Android TV and Google TV launcher.</b> Fast, clean and ad-free. Disable the bloat, install the XrossMediaBar, and let your AI agent run it.</p>
 <p align="center">
 <a href="https://github.com/sanangoyal/xmb-tv-launcher/releases/latest"><img alt="Download latest release" src="https://img.shields.io/badge/DOWNLOAD-LATEST%20RELEASE-6ccf9a?style=for-the-badge&labelColor=555555"></a>
 <a href="LICENSE"><img alt="MIT licence" src="https://img.shields.io/badge/LICENSE-MIT-2f7bc4?style=for-the-badge&labelColor=555555"></a>
@@ -14,12 +14,14 @@
 
 <p align="center">Made by <a href="https://sanangoyal.com">Sanan Goyal</a> · MIT licence · Third-party material: <a href="ASSETS.md">ASSETS.md</a></p>
 
+XMB TV Home is a free, open-source **Android TV / Google TV launcher** in the style of the **Sony PlayStation 3 XrossMediaBar (XMB)**: the PS3 horizontal category bar, vertical item list, flowing wave ribbon background and PS3 navigation sounds, on your TV. It works as a PS3-style theme and custom home screen for Android TV boxes and smart TVs, and replaces the stock home screen, ads included. Inspired by the PS3 system menu; not affiliated with Sony.
+
 ## Features
 
 | | | |
 |---|---|---|
-| 🎮 **Classic PS3 XMB**<br><sub>Horizontal categories, vertical items, glowing ribbon. The one you remember.</sub> | ⚡ **Built for slow TVs**<br><sub>Tuned for 2 GB of RAM. Static mode draws once and idles at zero redraws.</sub> | 🌊 **Live backgrounds**<br><sub>Looping ribbon in gold, blue or dark. Colour follows the time of day.</sub> |
-| 🔊 **Real XMB sounds**<br><sub>Authentic navigation audio, plus soft ambient music after 5 minutes idle.</sub> | 🤖 **AI-controllable**<br><sub>Built-in MCP server. Agents change settings, press keys and take screenshots.</sub> | 🎨 **Yours to change**<br><sub>Colours, solid themes, your own image, music volume. All on the TV.</sub> |
+| 🎮 **Classic Sony PS3 style**<br><sub>The PlayStation 3 XMB: horizontal categories, vertical items, glowing wave ribbon. The one you remember.</sub> | ⚡ **Built for slow TVs**<br><sub>Tuned for 2 GB of RAM. Static mode draws once and idles at zero redraws.</sub> | 🌊 **Live backgrounds**<br><sub>Looping ribbon in gold, blue or dark. Colour follows the time of day.</sub> |
+| 🔊 **PS3 XMB sounds**<br><sub>Authentic PlayStation-style navigation audio, plus soft ambient music after 5 minutes idle.</sub> | 🤖 **AI-controllable**<br><sub>Built-in MCP server. Agents change settings, press keys and take screenshots.</sub> | 🎨 **Yours to change**<br><sub>Colours, solid themes, your own image, music volume. All on the TV.</sub> |
 | 🧩 **Clean, consistent icons**<br><sub>Real brand logos for your apps, one glyph style for the rest.</sub> | 🧹 **No bloat, no ads**<br><sub>Disables promo apps and ad services. Never uninstalls. Full restore script.</sub> | 🎬 **Movie scenes**<br><sub>Trending titles from TMDB fill the screen behind your apps.</sub> |
 
 The UI stays on: it is its own screensaver.
