@@ -254,12 +254,24 @@ curl -s -H "Authorization: Bearer <token>" -H "Content-Type: application/json" \
 
 Off by default. LAN only: do not expose the port to the internet. Without it, agents can still use `adb shell am start -n com.sanan.xmb/.MainActivity --es js '<javascript>'`.
 
+## Trending content artwork (optional)
+
+Shows trending movie and show art behind your streaming apps (Netflix, Prime Video, Hotstar and so on). It uses TMDB, which needs a free key. The app ships **without** a key, so you add your own. Nobody's key is shared.
+
+1. Make a free account at [themoviedb.org](https://www.themoviedb.org/signup).
+2. Go to Settings > API > Create > Developer (personal use is fine).
+3. Copy the **API Key** or the **API Read Access Token**.
+4. Give it to the launcher, either way:
+   - On the TV: Settings > Launcher > **TMDB key** > Enter key. The launcher checks it and tells you if it works. A key set here wins over the file.
+   - Or put it on one line in `/sdcard/xmb-tmdb.txt`, for example `adb shell "echo YOUR_KEY > /sdcard/xmb-tmdb.txt"`.
+
+Settings > Launcher > **Trending content artwork** switches it on or off. It turns on by itself once a key exists. With no key you get the normal background, plus a small hint under the streaming apps.
+
 ## Build from source
 
 Needs JDK 8+, Android SDK (`platforms/android-30`, build-tools 34), the R8 jar, Python 3, `zip`.
 
 ```
-echo YOUR_TMDB_V3_KEY > android/tmdb.key     # free key from themoviedb.org
 export ANDROID_HOME=/path/to/sdk R8_JAR=/path/to/r8.jar
 bash android/build.sh                          # -> android/out/xmb-launcher.apk
 ```

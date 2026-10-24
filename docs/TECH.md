@@ -29,7 +29,7 @@ Living file. Every technical decision becomes a rule here.
 ## Build (cloud, no Gradle)
 - Template source of truth: `scratchpad/xmb3.tpl.html`. Backups before each change: `xmb3.pre_*.html`, `MainActivity.pre_*.java`.
 - Toolchain: aapt2, javac `--release 8`, R8 D8 (`/tmp/r8.jar` from dl.google.com r8-8.5.35), zipalign, apksigner (`dbg.jks`, pass `android`, alias `k`). SDK `/opt/androidsdk`, build-tools 34.0.0, android-30.
-- Rebuild: `python3 mk3.py && cp /mnt/user-data/outputs/xmb-launcher.html xmbapp/assets/index.html && sed TMDB key in && cd xmbapp && bash build.sh`.
+- Rebuild: `python3 mk3.py && cp /mnt/user-data/outputs/xmb-launcher.html xmbapp/assets/index.html && cd xmbapp && bash build.sh`.
 - JS syntax check before deploy: parse `<script>` with `new Function`.
 - Avoid name clashes with globals (e.g. `bar` is the category bar element; bar nav state is `bnav`).
 
@@ -126,3 +126,9 @@ Method: inject CSS via `am start --es js` debug hook, `dumpsys gfxinfo` jank ove
 - Never call `start()`, `pause()` or `isPlaying()` on a player before `onPrepared` (`mpReady`). Doing it gives error -38.
 - Errors from a player we already replaced are ignored. A real error retries up to 3 times before the JS side falls back (`nvFail`). `nvFail` is permanent until restart, so it is the last resort.
 - Colour change in dynamic mode: do nothing native in `bgvStatic`; JS calls `bgv(newKey)` once.
+
+## Trending content artwork (TMDB)
+- No key ships in the APK. Key source order: Settings field (localStorage `xmb_tk`) then `/sdcard/xmb-tmdb.txt` (`Android.tmdbKey()`). Accepts v3 key (query param) or read token (length > 40, Bearer).
+- `xmb_art`: `''` = auto (on when a key exists), `'off'` = user turned it off. Entering a key validates against `/3/configuration` first; a 401 shows "TMDB rejected this key" and nothing is saved.
+- No key: normal background, small caption-style hint (`#arth`) on streaming rows. A key that later gets 401 shows the rejected hint.
+- Never expose the key through `__agent.get` or MCP.

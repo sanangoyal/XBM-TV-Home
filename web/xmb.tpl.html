@@ -77,6 +77,8 @@ svg.gi{filter:url(#glass);fill:#fff;display:block;overflow:visible;flex:none}
 #opts div{padding:13px 22px;font-size:28px;opacity:var(--o-2);border-radius:10px}#opts div.ttl{font-size:23px;opacity:.75;padding:10px 22px 8px;letter-spacing:.02em}#opts div.sel{opacity:1;background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,.16));box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 0 18px rgba(255,255,255,.16);text-shadow:0 0 10px rgba(255,255,255,.6)}
 #art{position:fixed;inset:0;z-index:4;pointer-events:none;opacity:0;transition:opacity 1.4s ease-in-out}
 #art.on{opacity:1}
+#arth{position:fixed;right:4vw;bottom:7%;z-index:6;max-width:40vw;font-size:1.15vw;line-height:1.35;white-space:pre-line;text-align:right;opacity:0;pointer-events:none;transition:opacity .3s;text-shadow:0 1px 4px rgba(0,0,0,.7),0 0 14px rgba(0,0,0,.55)}#arth.on{opacity:var(--o-3)}
+#tkb{position:fixed;inset:0;z-index:40;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(0,0,0,.8);font-size:16px}#tkb.on{display:flex}#tk{width:600px;font:inherit;padding:8px 14px;border-radius:6px;border:1px solid #fff;background:rgba(255,255,255,.12);color:#fff}
 #art{transition:opacity 1.4s ease-in-out,filter .35s ease-out,transform .35s ease-out}#bgv{transition:opacity .12s linear,filter .35s ease-out,transform .35s ease-out}#gl{transition:filter .35s ease-out,transform .35s ease-out}#bar,#items{transition:opacity .3s ease-out}html.onbar #bar,html.onbar #items{opacity:.3}
 html.sub #art,html.sub #bgv,html.sub #gl{filter:blur(5px) brightness(.82);transform:scale(1.05)}
 #art .sl{position:absolute;inset:0;opacity:0;transition:opacity 2.6s ease-in-out}
@@ -99,7 +101,7 @@ html.lite .lg{backdrop-filter:none!important;-webkit-backdrop-filter:none!import
 #opts.rp{right:0;top:0;bottom:0;width:470px;transform:translate(100%,0);border-radius:0;padding:64px 28px;background:rgba(16,19,26,.94);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:-20px 0 60px rgba(0,0,0,.5)}#opts.rp.on{transform:none}#opts.rp div{opacity:.85;border-radius:12px;padding:14px 22px;font-size:27px}#opts.rp div.ttl{font-size:36px;opacity:1;padding:0 22px 10px}#opts.rp div.dsc{font-size:19px;opacity:.6;line-height:1.35;padding:0 22px 26px}#opts.rp div.sel{opacity:1;background:#e8eaed;color:#202124;text-shadow:none;box-shadow:none}.sw{display:inline-block;width:46px;height:24px;border-radius:12px;background:rgba(255,255,255,.3);margin-left:18px;vertical-align:middle;position:relative}.sw:after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .15s}.sw.on{background:#34a853}.sw.on:after{left:25px}
 html.st #bgv{background-size:cover;background-position:center}html.st #bgv video{display:none}
 </style></head><body>
-<div id="art"><div class="sl" id="slA"></div><div class="sl" id="slB"></div></div>
+<div id="art"><div class="sl" id="slA"></div><div class="sl" id="slB"></div></div><div id="arth"></div><div id="tkb"><div>Paste your TMDB key, then press Enter</div><input id="tk" type="text" autocomplete="off" spellcheck="false"></div>
 <svg id="sheet" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1556 1776"><defs><filter id="glass" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
 <feGaussianBlur in="SourceAlpha" stdDeviation="2.2" result="bl"/>
 <feSpecularLighting in="bl" surfaceScale="6" specularConstant="1.1" specularExponent="26" lighting-color="#fff" result="sp"><feDistantLight azimuth="230" elevation="52"/></feSpecularLighting>
@@ -186,7 +188,8 @@ const LG=/*LG*/{};const LM=1.45;
 const LGU={};const lgUrl=k=>{if(LGU[k])return LGU[k];const u=LG[k].u,i=u.indexOf(',');try{const b=atob(u.slice(i+1)),a=new Uint8Array(b.length);for(let n=0;n<b.length;n++)a[n]=b.charCodeAt(n);return LGU[k]=URL.createObjectURL(new Blob([a],{type:'image/svg+xml'}))}catch(e){return LGU[k]=u}};
 const lg=k=>{const g=LG[k];return `<img class="lgo" alt="" decoding="async" src="${lgUrl(k)}" style="width:${(g.w*LM).toFixed(1)}px;height:${(g.h*LM).toFixed(1)}px;margin:${(g.dy*LM).toFixed(1)}px 0 0 ${(g.dx*LM).toFixed(1)}px">`};
 // Settings mirror stock Android TV 10 on OnePlus TV 55 Y1S Pro (Network & Internet / Accounts / Apps / Device Preferences / Remotes & Accessories)
-const PF=(()=>{const g=(k,d)=>{try{const v=localStorage.getItem('xmb_'+k);return v===null?d:v}catch(e){return d}};return{bg:g('bg','static'),col:g('col','auto'),mus:g('mus','15'),save(){try{for(const k of['bg','col','mus'])localStorage.setItem('xmb_'+k,this[k])}catch(e){}}}})();
+const PF=(()=>{const g=(k,d)=>{try{const v=localStorage.getItem('xmb_'+k);return v===null?d:v}catch(e){return d}};return{bg:g('bg','static'),col:g('col','auto'),mus:g('mus','15'),tk:g('tk',''),art:g('art',''),save(){try{for(const k of['bg','col','mus','tk','art'])localStorage.setItem('xmb_'+k,this[k])}catch(e){}}}})();
+const tmdbKey=()=>(PF.tk||(window.Android?Android.tmdbKey():'')||'').trim(),artOn=()=>!!tmdbKey()&&PF.art!=='off';let artBad=false; // key: Settings field wins over /sdcard/xmb-tmdb.txt; none ships in the APK
 let STATIC=PF.bg==='static';const rpick=()=>['gold','blue','black'][Math.floor(Math.random()*3)];let RK=rpick();setInterval(()=>{RK=rpick()},1800000);const tod=()=>{const h=new Date().getHours();return h>=5&&h<12?'blue':h>=12&&h<19?'gold':'black'};
 const CATS=[
  {name:'Power',icon:'pw_power',root:L_([sys('Sleep','Standby, wake with any key','pw_sleep'),sys('Restart','Reboot launcher','pw_restart'),sys('Shutdown','Power off','pw_power'),sys('Google TV Home','Switch to stock launcher','pw_home')])},
@@ -265,9 +268,9 @@ if(HOST){try{INST=JSON.parse(Android.apps())}catch(e){INST=[]}
  {const CS=CATS.find(c=>c.name==='Settings'),C_=()=>CATS.indexOf(CS),L=sys('Launcher','Background, colour, night','ln_main');
   const sub=(it,t)=>{it.s=t;if(it.el){const e=it.el.querySelector('.s');if(e)e.textContent=t}};
   const apply=()=>{PF.save();vKey=null;vDk=null;try{Android.bgvStatic(STATIC)}catch(e){}setTimeout(()=>{try{vidTick()}catch(e){}},60)};
-  const bgI=sys('Background','','ln_bg'),colI=sys('Color','','ln_col'),cusI=sys('Choose custom image','Static only','ln_img'),solI=sys('Solid colour','Static only','ln_sol'),musI=sys('Ambient music','','ln_mus'),agI=sys('Agent control','','ln_ag'),abI=sys('About','Sanan Goyal · sanangoyal.com','ln_info'),MV=[['0','Off'],['15','Soft'],['30','Medium'],['50','Loud']];
+  const bgI=sys('Background','','ln_bg'),colI=sys('Color','','ln_col'),cusI=sys('Choose custom image','Static only','ln_img'),solI=sys('Solid colour','Static only','ln_sol'),musI=sys('Ambient music','','ln_mus'),agI=sys('Agent control','','ln_ag'),artI=sys('Trending content artwork','','ln_bg'),tkI=sys('TMDB key','','ln_ag'),abI=sys('About','Sanan Goyal · sanangoyal.com','ln_info'),MV=[['0','Off'],['15','Soft'],['30','Medium'],['50','Loud']];
   const CN={auto:'Auto',rand:'Random',gold:'Gold',blue:'Blue',black:'Dark (black)',custom:'Custom image'},SOL=[['black','Black'],['red','Ruby'],['orange','Amber'],['green','Emerald'],['teal','Teal'],['indigo','Indigo'],['purple','Violet']];SOL.forEach(a=>CN['sc_'+a[0]]=a[1]+' (solid)');
-  const agInfo=()=>{try{return JSON.parse(Android.agentInfo())}catch(e){return{}}};const refresh=()=>{sub(bgI,STATIC?'Static':'Dynamic');sub(colI,CN[PF.col]);sub(musI,(MV.find(a=>a[0]===PF.mus)||MV[1])[1]);{const i=agInfo();sub(agI,i.on?'On · '+i.ip:'Off')}};const musApply=pv=>{PF.save();try{Android.ambCfg(+PF.mus,!!pv)}catch(e){}};musApply();
+  const agInfo=()=>{try{return JSON.parse(Android.agentInfo())}catch(e){return{}}};const refresh=()=>{sub(artI,artOn()?'On':'Off');sub(tkI,tmdbKey()?(PF.tk?'Added':'From file'):'Not set');sub(bgI,STATIC?'Static':'Dynamic');sub(colI,CN[PF.col]);sub(musI,(MV.find(a=>a[0]===PF.mus)||MV[1])[1]);{const i=agInfo();sub(agI,i.on?'On · '+i.ip:'Off')}};const musApply=pv=>{PF.save();try{Android.ambCfg(+PF.mus,!!pv)}catch(e){}};musApply();
   const om=(title,rows,cur,desc)=>openMenu({title,desc,panel:1,rows:rows.map(r=>({t:(r.v===cur?'✓  ':'     ')+r.t,fn:()=>{r.fn();if(r.say!==0)say(title+': '+r.t)}}))});
   bgI.fn=()=>om('Background',[{v:'static',t:'Static',fn:()=>{PF.bg='static';STATIC=true;apply();refresh()}},{v:'dynamic',t:'Dynamic',fn:()=>{PF.bg='dynamic';STATIC=false;if(PF.col==='custom'||PF.col.indexOf('sc_')===0)PF.col='auto';apply();refresh()}}],PF.bg,'Static draws one image (smoothest). Dynamic plays the looping video.');
   const hasCus=()=>{try{return Android.hasCustom()}catch(e){return false}};
@@ -277,6 +280,13 @@ if(HOST){try{INST=JSON.parse(Android.apps())}catch(e){INST=[]}
   const dirList=pth=>{let a=[];try{a=JSON.parse(Android.ls(pth))}catch(e){}const its=a.map(o=>{if(o.d){const f=sys(o.n,o.s||'','Layer_41');f.am=1;f.mk=()=>dirList(o.p);f.fn=()=>{amOpen(CATS[C_()],f);layout()};return f}const f=sys(o.n,o.s||'','Layer_5');f.fn=()=>pick(o.p);return f});if(!its.length){const f=sys('No folders or images','','Layer_9');f.fn=()=>SND.bump();its.push(f)}return L_(its)};
   cusI.am=1;cusI.mk=()=>dirList('');cusI.fn=()=>{if(!STATIC){SND.bump();say('Switch Background to Static first');return}amOpen(CATS[C_()],cusI);layout()};
   musI.fn=()=>om('Ambient music',MV.map(a=>({v:a[0],t:a[1],fn:()=>{PF.mus=a[0];musApply(1);refresh()}})),PF.mus,'Plays softly after 5 minutes idle. Stops on any key.');
+  const keyHelp=()=>openMenu({title:'Get a free TMDB key',panel:1,desc:'1. Sign up free at themoviedb.org<br>2. Settings › API › Create › Developer (personal use)<br>3. Copy the “API Key” or the “API Read Access Token”<br>4. Save it in /sdcard/xmb-tmdb.txt, or paste it under Launcher › TMDB key',rows:[{t:'Enter key now',fn:()=>keyEdit()},{t:'Close',fn:()=>{}}]});
+  const keyEdit=()=>{const b=document.getElementById('tkb'),inp=document.getElementById('tk');inp.value='';b.classList.add('on');inp.focus();const done=()=>{b.classList.remove('on');inp.blur();inp.onkeydown=null};
+   inp.onkeydown=async e=>{e.stopPropagation();if(e.key==='Escape'){done();return}if(e.key!=='Enter')return;const v=inp.value.trim();done();if(!v)return;say('Checking key…');
+    try{const r=await fetch('https://api.themoviedb.org/3/configuration'+(v.length>40?'':'?api_key='+encodeURIComponent(v)),v.length>40?{headers:{Authorization:'Bearer '+v}}:{});
+     if(r.ok){PF.tk=v;PF.art='';PF.save();for(const k in ARTC)delete ARTC[k];artBad=false;artKey=null;refresh();say('Key works. Artwork on');SND.ok()}else say(r.status===401?'TMDB rejected this key':'TMDB error '+r.status)}catch(x){say('No network. Key not saved')}}};
+  artI.fn=()=>om('Trending content artwork',[{v:'on',t:'On',say:0,fn:()=>{PF.art='';PF.save();refresh();if(!tmdbKey())keyHelp();else say('Trending content artwork: On')}},{v:'off',t:'Off',fn:()=>{PF.art='off';PF.save();refresh()}}],artOn()?'on':'off','Movie and show art behind your streaming apps. Needs a free TMDB key.');
+  tkI.fn=()=>openMenu({title:'TMDB key',panel:1,desc:tmdbKey()?(PF.tk?'A key is saved on this TV.':'Using the key in /sdcard/xmb-tmdb.txt.'):'No key yet. A free key turns on Trending content artwork.',rows:[{t:tmdbKey()?'Change key':'Enter key',fn:()=>keyEdit()},{t:'How to get a key',fn:()=>keyHelp()}].concat(PF.tk?[{t:'Remove saved key',fn:()=>{PF.tk='';PF.save();for(const k in ARTC)delete ARTC[k];refresh();say('Key removed')}}]:[])});
   agI.fn=()=>{const i=agInfo();om('Agent control',[{v:'on',t:'On',fn:()=>{Android.agentSet(true);refresh()}},{v:'off',t:'Off',fn:()=>{Android.agentSet(false);refresh()}},{v:'x',t:'New token',fn:()=>{Android.agentNewToken();refresh()}}],i.on?'on':'off',i.on?'MCP  http://'+i.ip+':'+i.port+'/mcp   Token: '+i.token:'Lets AI agents change settings and control this launcher over your network (MCP). Off by default.')};
   window.__agent={get:()=>JSON.stringify({background:PF.bg,color:PF.col,music:PF.mus}),set:(k,v)=>{
    if(k==='background'){if(v!=='static'&&v!=='dynamic')return'invalid';PF.bg=v;STATIC=v==='static';if(!STATIC&&(PF.col==='custom'||PF.col.indexOf('sc_')===0))PF.col='auto';apply();refresh();return'ok'}
@@ -284,7 +294,7 @@ if(HOST){try{INST=JSON.parse(Android.apps())}catch(e){INST=[]}
    if(k==='music'){if(!MV.some(a=>a[0]===v))return'invalid';PF.mus=v;musApply(1);refresh();return'ok'}
    return'unknown key'}};
   abI.fn=()=>{openMenu({title:'About',panel:1,desc:'<b>XMB TV Home</b> 1.0<br>Made by Sanan Goyal<br>sanangoyal.com<br><br>MIT License. Personal, non-commercial project, provided “as is” without warranty of any kind. No liability for damage, data loss or device problems. Use at your own risk.<br><br>Not affiliated with Sony, Google, Netflix, Amazon, Apple or any app shown. PlayStation and XMB are trademarks of Sony Interactive Entertainment. Movie data and images from TMDB; this product uses the TMDB API but is not endorsed or certified by TMDB.',rows:[{t:'Close',fn:()=>{}}]});const e=optsEl.lastElementChild;if(e)e.style.cssText='font-size:21px;padding:8px 22px;margin-top:6px'};
-  L.children=L_([bgI,colI,solI,cusI,musI,agI,abI]);refresh();setTimeout(refresh,400);
+  L.children=L_([bgI,colI,solI,cusI,artI,tkI,musI,agI,abI]);refresh();setTimeout(refresh,400);
   const i=CS.root.items.findIndex(x=>x.t==='Personalise');CS.root.items.unshift(L);
   window.__launcherRefresh=refresh}
  for(const c of CATS)if(!c.root.items.length)c.root.items.push(I('Nothing installed','',ini('-')));
@@ -398,32 +408,29 @@ function openOpts(){const C=CATS[cat],it=C.cur.items[C.cur.idx];let rows;
 function closeOpts(snd){optOpen=false;optsEl.classList.remove('on');if(snd)SND.back()}
 
 /* ---------- RECOMMENDED-CONTENT BACKDROP (TMDB trending per streaming provider, India) ---------- */
-const TMDB_KEY=new URLSearchParams(location.search).get('tmdb')||'%%TMDBKEY%%';
 const ARTK={'Netflix':{p:8,c:[229,9,20]},'YouTube':{p:0,c:[255,40,40]},'Prime Video':{p:119,c:[0,168,225]},'Apple TV':{p:350,c:[160,160,170]},'Hotstar':{p:122,c:[30,60,160]},'ZEE5':{p:232,c:[130,50,200]},'SonyLIV':{p:237,c:[40,70,150]}};
 CATS.find(c=>c.name==='Video').root.items.forEach(it=>{if(ARTK[it.t])it.art=it.t});
 const ARTC={};let artTint=null,artKey=null,artPend=null,artPendT=0,artIdx=0,artTm=0,artGen=0,artSlot=0;
-const artEl=document.getElementById('art'),SL=[document.getElementById('slA'),document.getElementById('slB')];
-function demoList(k){const c=ARTK[k].c,out=[];for(let n=0;n<5;n++){const cv=document.createElement('canvas');cv.width=640;cv.height=360;const x=cv.getContext('2d');x.scale(.5,.5);
- const g=x.createLinearGradient(0,0,1280,720);const h=(n*47)%90-45;g.addColorStop(0,`rgb(${Math.max(0,c[0]*.8+h)},${c[1]*.6},${Math.min(255,c[2]*.9-h)})`);g.addColorStop(1,`rgb(${c[0]*.15},${c[1]*.15},${c[2]*.2})`);x.fillStyle=g;x.fillRect(0,0,1280,720);
- for(let i=0;i<6;i++){x.beginPath();x.arc(((n*211+i*337)%1280),((n*131+i*193)%720),90+((i*73+n*41)%160),0,6.283);x.fillStyle=`rgba(255,255,255,${.04+.03*(i%3)})`;x.fill()}
- out.push({t:`${k} pick ${n+1}`,y:'Demo',ty:'No TMDB key',img:cv.toDataURL('image/jpeg',.7),demo:1})}return out}
-async function artList(k){if(ARTC[k])return ARTC[k];let list=[];
- if(TMDB_KEY&&!TMDB_KEY.startsWith('%%')){try{const P=ARTK[k].p,base='https://api.themoviedb.org/3',bear=TMDB_KEY.length>40;
-  const q=path=>fetch(`${base}${path}${bear?'?':`?api_key=${TMDB_KEY}&`}language=en-IN&watch_region=IN&region=IN${path.includes('trending')?'':`&with_watch_providers=${P}&sort_by=popularity.desc`}`,bear?{headers:{Authorization:'Bearer '+TMDB_KEY}}:{}).then(r=>{if(!r.ok)throw 0;return r.json()});
+const arth=document.getElementById('arth'),artEl=document.getElementById('art'),SL=[document.getElementById('slA'),document.getElementById('slB')];
+async function artList(k){if(ARTC[k])return ARTC[k];let list=[];const K=tmdbKey();
+ if(K){try{const P=ARTK[k].p,base='https://api.themoviedb.org/3',bear=K.length>40;
+  const q=path=>fetch(`${base}${path}${bear?'?':`?api_key=${K}&`}language=en-IN&watch_region=IN&region=IN${path.includes('trending')?'':`&with_watch_providers=${P}&sort_by=popularity.desc`}`,bear?{headers:{Authorization:'Bearer '+K}}:{}).then(r=>{if(!r.ok){if(r.status===401)artBad=true;throw 0}artBad=false;return r.json()});
   const rs=P?await Promise.all([q('/discover/movie'),q('/discover/tv')]):[await q('/trending/all/week')];
   const a=rs.map((r,i)=>(r.results||[]).filter(m=>m.backdrop_path).map(m=>({t:m.title||m.name,y:(m.release_date||m.first_air_date||'').slice(0,4),ty:(m.media_type||(i?'tv':'movie'))==='tv'?'Series':'Movie',img:'https://image.tmdb.org/t/p/'+(window.Android?'original':'w1280')+''+m.backdrop_path,r:m.vote_average})));
   for(let i=0;i<5;i++)a.forEach(l=>{if(l[i])list.push(l[i])});list=list.slice(0,8)}catch(e){list=[]}}
- if(!list.length)list=demoList(k);return ARTC[k]=list}
+ return list.length?ARTC[k]=list:list}
 function domColor(im){try{const cv=document.createElement('canvas');cv.width=32;cv.height=18;const x=cv.getContext('2d');x.drawImage(im,0,0,32,18);const d=x.getImageData(0,0,32,18).data;let r=0,g=0,b=0,w=0;
  for(let i=0;i<d.length;i+=4){const mx=Math.max(d[i],d[i+1],d[i+2]),mn=Math.min(d[i],d[i+1],d[i+2]),s=mx?(mx-mn)/mx:0,v=mx/255,k=s*s*(.2+v)+.02;r+=d[i]*k;g+=d[i+1]*k;b+=d[i+2]*k;w+=k}return[r/w,g/w,b/w]}catch(e){return null}}
 function loadImg(src){return new Promise(res=>{const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{(im.decode?im.decode():Promise.resolve()).then(()=>res(im),()=>res(im))};im.onerror=()=>res(null);im.src=src})}
-async function artShow(k,gen){if(window.Android)Android.log('artShow '+k+' '+(performance.now()/1000).toFixed(1));const list=await artList(k);if(gen!==artGen)return;const m=list[artIdx%list.length];const im=await loadImg(m.img);if(gen!==artGen)return;if(!im){clearTimeout(artTm);artTm=setTimeout(()=>{if(gen===artGen){artIdx++;artShow(k,gen)}},4000);return}
+async function artShow(k,gen){if(window.Android)Android.log('artShow '+k+' '+(performance.now()/1000).toFixed(1));const list=await artList(k);if(gen!==artGen||!list.length)return;const m=list[artIdx%list.length];const im=await loadImg(m.img);if(gen!==artGen)return;if(!im){clearTimeout(artTm);artTm=setTimeout(()=>{if(gen===artGen){artIdx++;artShow(k,gen)}},4000);return}
  const s=SL[artSlot^=1],o=SL[artSlot^1];s.innerHTML=`<img class="b" src="${im.src}" alt=""><div class="hw"><div class="h"><img src="${im.src}" alt=""></div><div class="cap"><b></b><span></span><i></i></div></div>`;
- s.querySelector('b').textContent=m.t;s.querySelector('span').textContent=[m.ty,m.y,m.r?'★ '+m.r.toFixed(1):''].filter(Boolean).join('  ·  ');s.querySelector('i').textContent=m.demo?'Demo art — add a TMDB key':'Trending in India · Source: TMDB';
+ s.querySelector('b').textContent=m.t;s.querySelector('span').textContent=[m.ty,m.y,m.r?'★ '+m.r.toFixed(1):''].filter(Boolean).join('  ·  ');s.querySelector('i').textContent='Trending in India · Source: TMDB';
  s.classList.add('show');o.classList.remove('show');artEl.classList.add('on');artTint=domColor(im);tg=targetPalette();
  clearTimeout(artTm);artTm=setTimeout(()=>{if(gen===artGen){artIdx++;artShow(k,gen)}},20000);setTimeout(()=>{if(gen===artGen)loadImg(list[(artIdx+1)%list.length].img)},3000)}
 function artHide(){artGen++;clearTimeout(artTm);artEl.classList.remove('on');SL.forEach(s=>s.classList.remove('show'));if(artTint){artTint=null;tg=targetPalette()}artKey=null}
-setInterval(()=>{const C=CATS[cat],l=C.cur,it=l.items[l.idx],ok=phase==='ready'&&!appOpen&&!pwOff&&!pwBusy&&!optOpen&&!l.parent&&it&&it.art;const key=ok?it.art:null;
+setInterval(()=>{const C=CATS[cat],l=C.cur,it=l.items[l.idx],ok0=phase==='ready'&&!appOpen&&!pwOff&&!pwBusy&&!optOpen&&!l.parent&&it&&it.art,ok=ok0&&artOn();const key=ok?it.art:null;
+ const hn=!!(ok0&&((!tmdbKey()&&PF.art!=='off')||artBad));arth.classList.toggle('on',hn);if(hn){const t=artBad?'TMDB rejected the key\nCheck Settings › Launcher › TMDB key':'Add a TMDB key to receive Trending content artwork\nSettings › Launcher › TMDB key';if(arth.dataset.t!==t){arth.dataset.t=t;arth.textContent=t}}
+
  if(key!==(artPend)){artPend=key;artPendT=performance.now();if(!key||key!==artKey)artHide();return}
  if(key&&key!==artKey&&performance.now()-artPendT>600){artKey=key;artIdx=0;artGen++;artShow(key,artGen)}},150);
 
@@ -456,7 +463,7 @@ let lpT=0,lpDone=0,lpGo=0;function amOpen(C,it){if(it.am){if(!it.children){it.ch
 addEventListener('keyup',e=>{if(e.key!=='Enter')return;if(lpT){clearTimeout(lpT);lpT=0;if(!lpDone){lpGo=1;try{window.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}))}finally{lpGo=0}}}lpDone=0});
 let lastKeyT=0;
 addEventListener('keydown',e=>{
- lastKeyT=performance.now();
+ lastKeyT=performance.now();if(document.getElementById('tkb').classList.contains('on'))return;
  hintWake();
  if(e.key==='Enter'&&(lpDone||(e.repeat&&!lpT))){e.preventDefault();return}
  if(e.key==='r'||e.key==='R'){calm=!calm;document.documentElement.classList.toggle('calm',calm);say(calm?'Calm mode on':'Calm mode off');return}

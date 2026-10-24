@@ -307,6 +307,8 @@ public class MainActivity extends Activity {
     @JavascriptInterface public void bgvPause(final boolean p) { runOnUiThread(new Runnable() { public void run() { try { if (mp != null && mpReady) { if (p && mp.isPlaying()) mp.pause(); else if (!p && bgOn && !mp.isPlaying()) mp.start(); } } catch (Throwable e) {} } }); }
     @JavascriptInterface public boolean hasCustom() { return new java.io.File(getFilesDir(), "custom_bg.jpg").exists(); }
     @JavascriptInterface public void ambCfg(final int vol, final boolean preview) { runOnUiThread(new Runnable() { public void run() { ambVol = vol; if (preview) ambForce = System.currentTimeMillis() + 8000; else if (vol == 0) ambForce = 0; } }); }
+    // Optional user key: one line in /sdcard/xmb-tmdb.txt. Never shipped in the APK.
+    @JavascriptInterface public String tmdbKey() { try { java.io.File f = new java.io.File("/sdcard/xmb-tmdb.txt"); if (f.exists() && f.length() < 400) { java.io.BufferedReader r = new java.io.BufferedReader(new java.io.FileReader(f)); String l = r.readLine(); r.close(); if (l != null) return l.trim(); } } catch (Throwable t) {} return ""; }
     @JavascriptInterface public String agentInfo() { try { return new JSONObject().put("on", agent.enabled()).put("ip", agent.ip()).put("port", AgentServer.PORT).put("token", agent.token()).toString(); } catch (Throwable t) { return "{}"; } }
     @JavascriptInterface public void agentSet(final boolean on) { agent.setEnabled(on); }
     @JavascriptInterface public void agentNewToken() { agent.newToken(); }

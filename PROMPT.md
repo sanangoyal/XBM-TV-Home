@@ -21,7 +21,7 @@ Tick what the family uses; everything unticked is fair game to disable:
 - Chromecast / Miracast / screen cast
 - System/firmware updates (keep these enabled unless the user says otherwise)
 - Smart-home or vendor hub apps
-- Movie scenes need a free TMDB API key (themoviedb.org > Settings > API). Optional.
+- Trending content artwork needs a free TMDB key from the user (themoviedb.org > Settings > API). Optional. The user adds it under Settings > Launcher > TMDB key, or in /sdcard/xmb-tmdb.txt. Never put a key in the APK.
 
 ## Procedure
 

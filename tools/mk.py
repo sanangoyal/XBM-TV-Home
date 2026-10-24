@@ -42,9 +42,5 @@ def _wh(s):
 for _k,_v in LGD.items():
     _s=_b.b64decode(_v['u'].split(',',1)[1]).decode('utf-8','ignore');_v['u']='data:image/svg+xml;base64,'+_b.b64encode(_wh(_s).encode()).decode()
 t=t.replace('/*LG*/{}',_j.dumps(LGD))
-key=''
-try: key=open(ROOT+'/android/tmdb.key').read().strip()
-except Exception: print('note: android/tmdb.key missing, movie scenes disabled')
-t=t.replace('%%TMDBKEY%%',key)
 open(ROOT+'/android/assets/index.html','w').write(t)
 print(len(t))

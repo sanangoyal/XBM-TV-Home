@@ -59,7 +59,7 @@ Ads: on many TVs ads come from the stock launcher's "recommendations" row and pr
 
 ## 3. Install XMB TV Home
 
-Prefer the prebuilt APK from the repo Releases. To build: see README "Build from source" (needs TMDB v3 key for movie scenes; ask the user, they are free).
+Prefer the prebuilt APK from the repo Releases. To build: see README "Build from source" (the APK ships without a TMDB key; users add their own, see README "Trending content artwork").
 
 ```
 scripts/install.sh <ip> xmb-launcher.apk
