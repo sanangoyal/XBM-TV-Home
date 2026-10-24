@@ -81,6 +81,12 @@ Controlling the launcher by agent: ask the user to turn on Settings > Launcher >
 
 Without MCP: `adb shell am start -n com.sanan.xmb/.MainActivity --es js '<js>'` runs JavaScript in the launcher page (debug hook).
 
+## Maintenance and privacy tools
+
+- After a firmware update: `scripts/check.sh <ip>` (add `--fix` to disable re-enabled packages).
+- Privacy review: `scripts/privacy.sh <ip>` is read-only; show the user the list and ask before disabling anything.
+- When finished: `scripts/adb-closed.sh <ip>`, then tell the user to revoke USB debugging authorisations.
+
 ## 4. Using this project as an example to build a custom XMB-style UI
 
 Read `references/architecture.md`, then `docs/DESIGN.md` and `docs/TECH.md`. Key ideas to reuse:

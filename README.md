@@ -116,6 +116,20 @@ Tested on OnePlus TV 55 Y1S Pro (Android 11, 1080p, 2 GB RAM). Some China-market
 - The stock home screen is only disabled after XMB TV Home is confirmed working. If anything looks wrong, run `scripts/restore-launcher.sh <TV-IP>`.
 - Turn ADB off when you are done: see [SECURITY.md](SECURITY.md).
 
+## Tools
+
+All in `scripts/`. Each takes the TV address (`<TV-IP>` or `<TV-IP>:port`).
+
+| Script | What it does |
+|---|---|
+| `backup.sh` | Snapshots packages, settings, current home app and a screenshot before any change |
+| `debloat.sh` | Disables the packages on a list and writes `restore-bloat.sh` |
+| `install.sh` | Installs the APK and grants its permissions |
+| `check.sh` | After a firmware update: confirms XMB TV Home is still Home and lists packages the update re-enabled. `--fix` disables them again |
+| `privacy.sh` | Read-only audit of voice, content-recognition (ACR), telemetry and ad packages, and which apps can use the microphone |
+| `adb-closed.sh` | Turns network ADB off and confirms the port no longer answers. Run it when you are done |
+| `restore-launcher.sh` | Brings the stock home screen back |
+
 ## Settings (on the TV: Settings > Launcher)
 
 | Item | Options |
