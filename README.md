@@ -145,25 +145,75 @@ All in `scripts/`. Each takes the TV address (`<TV-IP>` or `<TV-IP>:port`).
 
 ## FAQ and troubleshooting
 
-**Do I need to factory reset?** No. Nothing is uninstalled, and `restore-bloat.sh` and `restore-launcher.sh` undo every change.
+<details>
+<summary><b>Do I need to factory reset?</b></summary>
 
-**Will it work on my TV?** See [Compatibility](#compatibility). Android TV and Google TV: yes. Fire TV, Tizen, webOS: no.
+No. Nothing is uninstalled, and `restore-bloat.sh` and `restore-launcher.sh` undo every change.
 
-**Home still opens the old launcher.** Press Home on the remote, pick *XMB*, choose *Always*. If the stock one keeps winning: `adb shell pm disable-user --user 0 com.google.android.tvlauncher`.
+</details>
 
-**Black screen or remote does nothing.** `adb shell am force-stop com.sanan.xmb`, then press Home. Still stuck: `scripts/restore-launcher.sh <TV-IP>`.
+<details>
+<summary><b>Will it work on my TV?</b></summary>
 
-**`adb` says unauthorized.** Accept the prompt on the TV (tick *Always allow*). If none appears, revoke USB debugging authorisations and reconnect.
+See [Compatibility](#compatibility). Android TV and Google TV: yes. Fire TV, Tizen, webOS: no.
 
-**Install fails with INSTALL_FAILED_UPDATE_INCOMPATIBLE.** `adb uninstall com.sanan.xmb`, then install again.
+</details>
 
-**File browser is empty.** `adb shell appops set com.sanan.xmb MANAGE_EXTERNAL_STORAGE allow`.
+<details>
+<summary><b>Home still opens the old launcher.</b></summary>
 
-**Connection drops when the TV sleeps.** Wake it first: `adb shell input keyevent KEYCODE_WAKEUP`, then reconnect.
+Press Home on the remote, pick *XMB*, choose *Always*. If the stock one keeps winning: `adb shell pm disable-user --user 0 com.google.android.tvlauncher`.
 
-**An update brought the ads back.** Run `scripts/check.sh <TV-IP> --fix`.
+</details>
 
-**Avatar shows "G".** Android 11 hides your Google account from apps. Put your address on one line in `/sdcard/xmb-account.txt` to show your initial.
+<details>
+<summary><b>Black screen or remote does nothing.</b></summary>
+
+`adb shell am force-stop com.sanan.xmb`, then press Home. Still stuck: `scripts/restore-launcher.sh <TV-IP>`.
+
+</details>
+
+<details>
+<summary><b>`adb` says unauthorized.</b></summary>
+
+Accept the prompt on the TV (tick *Always allow*). If none appears, revoke USB debugging authorisations and reconnect.
+
+</details>
+
+<details>
+<summary><b>Install fails with INSTALL_FAILED_UPDATE_INCOMPATIBLE.</b></summary>
+
+`adb uninstall com.sanan.xmb`, then install again.
+
+</details>
+
+<details>
+<summary><b>File browser is empty.</b></summary>
+
+`adb shell appops set com.sanan.xmb MANAGE_EXTERNAL_STORAGE allow`.
+
+</details>
+
+<details>
+<summary><b>Connection drops when the TV sleeps.</b></summary>
+
+Wake it first: `adb shell input keyevent KEYCODE_WAKEUP`, then reconnect.
+
+</details>
+
+<details>
+<summary><b>An update brought the ads back.</b></summary>
+
+Run `scripts/check.sh <TV-IP> --fix`.
+
+</details>
+
+<details>
+<summary><b>Avatar shows "G".</b></summary>
+
+Android 11 hides your Google account from apps. Put your address on one line in `/sdcard/xmb-account.txt` to show your initial.
+
+</details>
 
 ## Contributing
 
