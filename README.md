@@ -42,7 +42,7 @@ A PS3 menu is mostly glow, blur and motion, which is exactly what a 2 GB TV chok
 | | |
 |---|---|
 | ![Trending scene behind the menu](docs/images/scene.jpg)<br><sub>Movie scenes behind your apps</sub> | ![Settings and Launcher menu](docs/images/settings.jpg)<br><sub>Launcher settings, on the TV</sub> |
-| ![Dynamic gold ribbon](docs/images/home.jpg)<br><sub>Dynamic gold ribbon, PS3 style</sub> | ![Navigation demo](docs/images/demo.gif)<br><sub>Navigation</sub> |
+| ![Dynamic blue ribbon](docs/images/home.jpg)<br><sub>Dynamic blue ribbon, PS3 style</sub> | ![Navigation demo](docs/images/demo.gif)<br><sub>Navigation</sub> |
 
 ### Colours
 
