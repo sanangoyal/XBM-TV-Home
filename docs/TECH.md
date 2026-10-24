@@ -120,3 +120,10 @@ Method: inject CSS via `am start --es js` debug hook, `dumpsys gfxinfo` jank ove
 - `AgentServer.java`: ServerSocket on 8765, POST /mcp JSON-RPC (initialize, tools/list, tools/call, ping), `Authorization: Bearer` token from SharedPreferences `agent`, off by default. Bridge: `agentInfo/agentSet/agentNewToken`. JS side `window.__agent.get/set`. Screenshot uses PixelCopy of the window (includes the SurfaceView).
 - Image scenes: `#art .hw` is full-bleed; the left fade is `#art .sl::after` (100% black at the edge, to transparent by 72%).
 - About panel: last item in Launcher settings.
+
+## Background video rules (learned the hard way)
+- A SurfaceView surface that has been drawn on with `lockCanvas` (static mode) cannot be handed to the video decoder again (`IllegalStateException`). Leaving static mode must recreate the surface: hide the SurfaceView, show it again, let `surfaceCreated` start the video (`resetSurface()`).
+- This TV's MediaTek AVC decoder fails to allocate buffers if players are torn down and rebuilt in quick succession. `bgPlay` waits 250 ms and only the latest request starts (`bgGen`).
+- Never call `start()`, `pause()` or `isPlaying()` on a player before `onPrepared` (`mpReady`). Doing it gives error -38.
+- Errors from a player we already replaced are ignored. A real error retries up to 3 times before the JS side falls back (`nvFail`). `nvFail` is permanent until restart, so it is the last resort.
+- Colour change in dynamic mode: do nothing native in `bgvStatic`; JS calls `bgv(newKey)` once.

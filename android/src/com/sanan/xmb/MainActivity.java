@@ -52,12 +52,14 @@ public class MainActivity extends Activity {
     ambH.postDelayed(this, 100);
   } };
   @Override public boolean dispatchKeyEvent(KeyEvent e) { lastKey = System.currentTimeMillis(); return super.dispatchKeyEvent(e); }
-  android.view.SurfaceView sv; android.view.Surface surf; android.media.MediaPlayer mp; String bgKey; boolean bgOn = true; boolean bgStatic = false;
-  void bgRelease() { try { if (mp != null) { mp.release(); } } catch (Throwable e) {} mp = null; }
+  android.view.SurfaceView sv; android.view.Surface surf; android.media.MediaPlayer mp; String bgKey; boolean bgOn = true; boolean bgStatic = false; int bgErr = 0; int bgGen = 0; volatile boolean mpReady = false;
+  void bgRelease() { mpReady = false; try { if (mp != null) { mp.release(); } } catch (Throwable e) {} mp = null; }
+  // A surface that has been drawn on with lockCanvas (static mode) cannot be given to the video decoder again. Hiding and showing the SurfaceView makes Android build a fresh one.
+  void resetSurface() { try { surf = null; sv.setVisibility(View.GONE); ambH.postDelayed(new Runnable() { public void run() { sv.setVisibility(bgOn ? View.VISIBLE : View.INVISIBLE); } }, 150); } catch (Throwable e) {} }
   void bgPlay(final String key, boolean force) {
     if (!force && key.equals(bgKey) && mp != null) return;
     bgKey = key; if (surf == null) return;
-    bgRelease();
+    bgRelease(); final int gen = ++bgGen; // any video start still waiting is now stale
     if (bgStatic) {
       try {
         android.graphics.Bitmap bm = null;
@@ -96,20 +98,32 @@ public class MainActivity extends Activity {
       } catch (Throwable e) { Log.e(TAG, "bgStatic", e); }
       return;
     }
+    // Wait briefly so rapid colour/mode changes only start the last video: this TV's hardware decoder fails if it is torn down and rebuilt in quick succession.
+    final String vk = key;
+    ambH.postDelayed(new Runnable() { public void run() { if (gen == bgGen && !bgStatic && surf != null) bgStart(vk); } }, 250);
+  }
+  void bgStart(String key) {
     try {
       android.content.res.AssetFileDescriptor f = getAssets().openFd("bg_" + key + ".mp4");
       android.media.MediaPlayer n = new android.media.MediaPlayer();
       n.setDataSource(f.getFileDescriptor(), f.getStartOffset(), f.getLength()); f.close();
       n.setSurface(surf); n.setLooping(true); n.setVolume(0f, 0f);
       n.setVideoScalingMode(android.media.MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT_WITH_CROPPING);
-      n.setOnPreparedListener(new android.media.MediaPlayer.OnPreparedListener() { public void onPrepared(android.media.MediaPlayer p) { if (bgOn && mp == p) p.start(); } });
-      n.setOnErrorListener(new android.media.MediaPlayer.OnErrorListener() { public boolean onError(android.media.MediaPlayer p, int w, int x) { Log.i(TAG, "bgv error " + w + "/" + x); js("window.nvFail&&nvFail()"); return true; } });
-      mp = n; n.prepareAsync();
-    } catch (Throwable e) { Log.e(TAG, "bgPlay", e); js("window.nvFail&&nvFail()"); }
+      n.setOnPreparedListener(new android.media.MediaPlayer.OnPreparedListener() { public void onPrepared(android.media.MediaPlayer p) { if (mp == p) { bgErr = 0; mpReady = true; } if (bgOn && mp == p) p.start(); } });
+      n.setOnErrorListener(new android.media.MediaPlayer.OnErrorListener() { public boolean onError(android.media.MediaPlayer p, int w, int x) {
+        Log.i(TAG, "bgv error " + w + "/" + x + (p == mp ? "" : " (stale, ignored)"));
+        if (p != mp) return true; // a player we already replaced: not a real failure
+        if (++bgErr <= 3) { ambH.postDelayed(new Runnable() { public void run() { if (bgKey != null && bgStatic == false) bgPlay(bgKey, true); } }, 600); }
+        else js("window.nvFail&&nvFail()");
+        return true; } });
+      mpReady = false; mp = n; n.prepareAsync();
+    } catch (Throwable e) { Log.e(TAG, "bgStart", e); mpReady = false; resetSurface();
+      if (++bgErr <= 3) ambH.postDelayed(new Runnable() { public void run() { if (bgKey != null && !bgStatic) bgPlay(bgKey, true); } }, 800);
+      else js("window.nvFail&&nvFail()"); }
   }
   void bgShow(boolean on) {
     bgOn = on; sv.setVisibility(on ? View.VISIBLE : View.INVISIBLE);
-    try { if (mp != null) { if (on && !mp.isPlaying()) mp.start(); else if (!on && mp.isPlaying()) mp.pause(); } } catch (Throwable e) {}
+    try { if (mp != null && mpReady) { if (on && !mp.isPlaying()) mp.start(); else if (!on && mp.isPlaying()) mp.pause(); } } catch (Throwable e) {}
   }
   float brightness = -1f;
 
@@ -170,8 +184,8 @@ public class MainActivity extends Activity {
     if (i != null && i.getStringExtra("js") != null) { js(i.getStringExtra("js")); return; } // debug hook
     if (i != null && i.hasCategory(Intent.CATEGORY_HOME)) js("window.hostHome&&hostHome()");
   }
-  @Override protected void onPause() { super.onPause(); fg = false; try { if (mp != null && mp.isPlaying()) mp.pause(); } catch (Throwable e) {} }
-  @Override protected void onResume() { super.onResume(); fg = true; lastKey = System.currentTimeMillis(); try { if (mp != null && bgOn && !mp.isPlaying()) mp.start(); } catch (Throwable e) {} MemGuard.start(this); MemGuard.nudge(); hideBars(); js("window.hostResume&&hostResume()"); }
+  @Override protected void onPause() { super.onPause(); fg = false; try { if (mp != null && mpReady && mp.isPlaying()) mp.pause(); } catch (Throwable e) {} }
+  @Override protected void onResume() { super.onResume(); fg = true; lastKey = System.currentTimeMillis(); try { if (mp != null && mpReady && bgOn && !mp.isPlaying()) mp.start(); } catch (Throwable e) {} MemGuard.start(this); MemGuard.nudge(); hideBars(); js("window.hostResume&&hostResume()"); }
 
   @Override public boolean onKeyDown(int code, KeyEvent e) {
     if (code == KeyEvent.KEYCODE_BACK) { js("window.hostKey&&hostKey('Escape')"); return true; }
@@ -290,13 +304,18 @@ public class MainActivity extends Activity {
       return out.toString();
     }
     @JavascriptInterface public void bgv(final String key) { runOnUiThread(new Runnable() { public void run() { bgPlay(key, false); } }); }
-    @JavascriptInterface public void bgvPause(final boolean p) { runOnUiThread(new Runnable() { public void run() { try { if (mp != null) { if (p && mp.isPlaying()) mp.pause(); else if (!p && bgOn && !mp.isPlaying()) mp.start(); } } catch (Throwable e) {} } }); }
+    @JavascriptInterface public void bgvPause(final boolean p) { runOnUiThread(new Runnable() { public void run() { try { if (mp != null && mpReady) { if (p && mp.isPlaying()) mp.pause(); else if (!p && bgOn && !mp.isPlaying()) mp.start(); } } catch (Throwable e) {} } }); }
     @JavascriptInterface public boolean hasCustom() { return new java.io.File(getFilesDir(), "custom_bg.jpg").exists(); }
     @JavascriptInterface public void ambCfg(final int vol, final boolean preview) { runOnUiThread(new Runnable() { public void run() { ambVol = vol; if (preview) ambForce = System.currentTimeMillis() + 8000; else if (vol == 0) ambForce = 0; } }); }
     @JavascriptInterface public String agentInfo() { try { return new JSONObject().put("on", agent.enabled()).put("ip", agent.ip()).put("port", AgentServer.PORT).put("token", agent.token()).toString(); } catch (Throwable t) { return "{}"; } }
     @JavascriptInterface public void agentSet(final boolean on) { agent.setEnabled(on); }
     @JavascriptInterface public void agentNewToken() { agent.newToken(); }
-    @JavascriptInterface public void bgvStatic(final boolean on) { runOnUiThread(new Runnable() { public void run() { bgStatic = on; if (bgKey != null) bgPlay(bgKey, true); } }); }
+    @JavascriptInterface public void bgvStatic(final boolean on) { runOnUiThread(new Runnable() { public void run() {
+      boolean was = bgStatic; bgStatic = on;
+      if (on) { if (bgKey != null) bgPlay(bgKey, true); }          // draw the still now
+      else if (was) { bgRelease(); ++bgGen; resetSurface(); }       // leaving static: fresh surface, then surfaceCreated / bgv(key) starts the video
+      // dynamic -> dynamic (colour change): do nothing here, bgv(newKey) switches the video once
+    } }); }
     @JavascriptInterface public String loc() {
       try {
         android.location.LocationManager lm = (android.location.LocationManager) getSystemService(LOCATION_SERVICE);
