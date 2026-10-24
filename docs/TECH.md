@@ -100,7 +100,6 @@ Method: inject CSS via `am start --es js` debug hook, `dumpsys gfxinfo` jank ove
 ## Static BG + launcher settings
 - Static = native SurfaceView gets a jpg drawn via lockCanvas (`bgvStatic(true)`), no MediaPlayer, 0 idle redraws. Assets `bg_gold.jpg`, `bg_blue.jpg` (frame at 3s of the videos), custom = `files/custom_bg.jpg` (downsampled to <=1920w by `setCustom`).
 - Prefs in localStorage `xmb_bg|col|man|img|night` (object `PF`). `vidKey()` order: intro, night, static image, scrCol, black mode, manual, random, auto.
-- Night: NOAA sunrise/sunset in JS (`sunT`), location from `Android.loc()` (LocationManager last known; needs `pm grant ACCESS_COARSE_LOCATION`), fallback = time-zone longitude, lat 20 (approx).
 - File browser: `Android.ls(path)`, needs `appops set com.sanan.xmb MANAGE_EXTERNAL_STORAGE allow` (+ READ_EXTERNAL_STORAGE grant) after each reinstall.
 - Metric caveat: gfxinfo jank % is not comparable between video and static (video adds cheap frames). Use p50/p90 frame time + feel.
 
@@ -109,10 +108,10 @@ Method: inject CSS via `am start --es js` debug hook, `dumpsys gfxinfo` jank ove
 - Solid `sc_*` = code gradient (Linear+Radial) + 4/255 noise tile; black c1 0xFF34363B c2 0xFF040405. No image assets.
 - Dark video v5: ffmpeg temporal median (removes particles, keeps lines crisp) + supersample AA; blend filters need gbrp. Script mkA.sh. Gold/blue videos 1080p24 stored uncompressed (`zip -0`), apk ~29MB (commit limit 30MB).
 - Stale flag fix: JS always calls `Android.bgvStatic(STATIC)` in apply()/boot.
-- Bridge: bgvStatic, hasCustom, loc, ls, setCustom. After each reinstall: allow_listener, appops GET_USAGE_STATS + MANAGE_EXTERNAL_STORAGE, pm grant ACCESS_COARSE_LOCATION + READ_EXTERNAL_STORAGE.
+- Bridge: bgvStatic, hasCustom, ls, setCustom. After each reinstall: allow_listener, appops GET_USAGE_STATS + MANAGE_EXTERNAL_STORAGE, pm grant ACCESS_COARSE_LOCATION + READ_EXTERNAL_STORAGE.
 - Panel UI: `#opts.rp` CSS, `openMenu({panel:1,desc,rows})`.
 - vidKey auto -> tod() by getHours; random RK=rpick() on load + setInterval 30min.
-- Dark at night / sun calc code fully deleted (JS). Java Bridge.loc() still present, unused.
+- Dead code removed (ponytail audit): Bridge.loc()/can(), JS TILE/known, CSS .bw, ACCESS_COARSE_LOCATION permission (least privilege).
 
 ## Ambient music, agent control, about (v1.0)
 - `ambient.ogg`: one 187.7 s loop cut from the 1 h source (autocorrelation found the repeat period), 6 s equal-power crossfade at the seam, Opus 40 kbps, ~1 MB. Stored uncompressed in the APK. Native MediaPlayer, `ambCfg(vol,preview)` bridge, 100 ms handler fades in after 5 min without a key (static `lastKey`), fast fade out on key, pauses off-screen.

@@ -316,15 +316,6 @@ public class MainActivity extends Activity {
       else if (was) { bgRelease(); ++bgGen; resetSurface(); }       // leaving static: fresh surface, then surfaceCreated / bgv(key) starts the video
       // dynamic -> dynamic (colour change): do nothing here, bgv(newKey) switches the video once
     } }); }
-    @JavascriptInterface public String loc() {
-      try {
-        android.location.LocationManager lm = (android.location.LocationManager) getSystemService(LOCATION_SERVICE);
-        android.location.Location best = null;
-        for (String pv : lm.getAllProviders()) { try { android.location.Location l = lm.getLastKnownLocation(pv); if (l != null && (best == null || l.getTime() > best.getTime())) best = l; } catch (Throwable e) {} }
-        if (best != null) return best.getLatitude() + "," + best.getLongitude();
-      } catch (Throwable e) {}
-      return "";
-    }
     @JavascriptInterface public String ls(String path) {
       try {
         org.json.JSONArray out = new org.json.JSONArray();
@@ -391,16 +382,6 @@ public class MainActivity extends Activity {
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(i); return true;
       } catch (Throwable e) { Log.i(TAG, "open fail " + spec + " " + e); return false; }
-    }
-    @JavascriptInterface public String can(String spec) {
-      try {
-        Intent i;
-        if (spec.startsWith("c:")) { String[] p = spec.substring(2).split("/", 2); String cls = p[1].startsWith(".") ? p[0] + p[1] : p[1]; i = new Intent().setComponent(new android.content.ComponentName(p[0], cls)); }
-        else i = new Intent(spec.substring(2));
-        android.content.pm.ResolveInfo r = getPackageManager().resolveActivity(i, 0);
-        if (r == null) return "NO";
-        return r.activityInfo.exported ? "OK " + r.activityInfo.name : "NOEXPORT";
-      } catch (Throwable e) { return "ERR " + e; }
     }
     @JavascriptInterface public boolean settings(String action) {
       try {

@@ -41,7 +41,6 @@ svg.gi{filter:url(#glass);fill:#fff;display:block;overflow:visible;flex:none}
 #info .f{opacity:1;transform:scale(1.28);background:radial-gradient(circle,rgba(255,255,255,.42) 0%,rgba(255,255,255,.2) 45%,rgba(255,255,255,0) 72%)}
 #info svg.f{outline:0}
 #info .av.f{background-color:#5f6368;box-shadow:0 0 0 2px #fff,0 0 14px rgba(255,255,255,.6)}
-#info .bw{position:relative;display:flex}
 #info .dt,#info #tm{line-height:1;display:flex;align-items:center;height:64px;padding-top:3px;box-sizing:border-box;font-size:28px;font-weight:600;font-variant-numeric:tabular-nums;text-shadow:0 1px 4px rgba(0,0,0,.55)}
 #hint{position:absolute;left:96px;bottom:54px;font-size:24px;opacity:var(--o-2);letter-spacing:.3px;transition:opacity .6s}
 #hint.idle{opacity:0!important}
@@ -189,7 +188,6 @@ const lg=k=>{const g=LG[k];return `<img class="lgo" alt="" decoding="async" src=
 // Settings mirror stock Android TV 10 on OnePlus TV 55 Y1S Pro (Network & Internet / Accounts / Apps / Device Preferences / Remotes & Accessories)
 const PF=(()=>{const g=(k,d)=>{try{const v=localStorage.getItem('xmb_'+k);return v===null?d:v}catch(e){return d}};return{bg:g('bg','static'),col:g('col','auto'),mus:g('mus','15'),save(){try{for(const k of['bg','col','mus'])localStorage.setItem('xmb_'+k,this[k])}catch(e){}}}})();
 let STATIC=PF.bg==='static';const rpick=()=>['gold','blue','black'][Math.floor(Math.random()*3)];let RK=rpick();setInterval(()=>{RK=rpick()},1800000);const tod=()=>{const h=new Date().getHours();return h>=5&&h<12?'blue':h>=12&&h<19?'gold':'black'};
-const TILE='rgba(10,14,22,.6)';
 const CATS=[
  {name:'Power',icon:'pw_power',root:L_([sys('Sleep','Standby, wake with any key','pw_sleep'),sys('Restart','Reboot launcher','pw_restart'),sys('Shutdown','Power off','pw_power'),sys('Google TV Home','Switch to stock launcher','pw_home')])},
  {name:'Settings',icon:'Layer_32',root:L_([
@@ -254,7 +252,6 @@ if(HOST){try{INST=JSON.parse(Android.apps())}catch(e){INST=[]}
  for(const c of CATS)if(['Video','Music','Apps'].includes(c.name))c.root.items=c.root.items.filter(it=>!PKG[it.t]||have.has(PKG[it.t]));
  // extra installed apps we know but did not list
  const music=CATS.find(c=>c.name==='Music').root,apps=CATS.find(c=>c.name==='Apps').root;
- const known=new Set(Object.values(PKG));
  const musicX=INST.filter(a=>a.p==='com.google.android.youtube.tvmusic');
  musicX.forEach(a=>music.items.push(I('YouTube Music','',lg('ytmusic'))));PKG['YouTube Music']='com.google.android.youtube.tvmusic';
  const PLG={'com.netflix.ninja':'netflix','com.google.android.youtube.tv':'youtube','com.amazon.amazonvideo.livingroom':'primevideo','com.apple.atve.androidtv.appletv':'appletv','in.startv.hotstar':'hotstar','com.graymatrix.did':'zee5','com.sonyliv':'sonyliv','com.spotify.tv.android':'spotify','com.plexapp.android':'plex','org.xbmc.kodi':'kodi','org.videolan.vlc':'vlcmediaplayer','com.discord':'discord','com.android.chrome':'googlechrome','com.android.vending':'googleplay','com.apple.android.music':'applemusic','com.google.android.youtube.tvmusic':'ytmusic','com.heytap.tv.camera':'camera','com.heytap.tv.filebrowser':'files','com.tcl.browser':'browse','com.oneplus.tv.btspeaker':'bt','com.oneplus.tv.android.livetv':'livetv'};

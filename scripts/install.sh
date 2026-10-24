@@ -7,7 +7,6 @@ adb -s "$D" install -r "$APK" || exit 1
 adb -s "$D" shell cmd notification allow_listener $P/$P.NotifService
 adb -s "$D" shell appops set $P GET_USAGE_STATS allow
 adb -s "$D" shell appops set $P MANAGE_EXTERNAL_STORAGE allow
-adb -s "$D" shell pm grant $P android.permission.ACCESS_COARSE_LOCATION
 adb -s "$D" shell pm grant $P android.permission.READ_EXTERNAL_STORAGE
 adb -s "$D" shell input keyevent KEYCODE_WAKEUP
 adb -s "$D" shell am force-stop $P
