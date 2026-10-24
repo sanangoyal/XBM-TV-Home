@@ -128,6 +128,7 @@ Method: inject CSS via `am start --es js` debug hook, `dumpsys gfxinfo` jank ove
 - Colour change in dynamic mode: do nothing native in `bgvStatic`; JS calls `bgv(newKey)` once.
 
 ## Trending content artwork (TMDB)
+- One Launcher row, "Trending content artwork": On / Off / Enter or Change key / How to get a key / Remove saved key. Back cancels the key entry.
 - No key ships in the APK. Key source order: Settings field (localStorage `xmb_tk`) then `/sdcard/xmb-tmdb.txt` (`Android.tmdbKey()`). Accepts v3 key (query param) or read token (length > 40, Bearer).
 - `xmb_art`: `''` = auto (on when a key exists), `'off'` = user turned it off. Entering a key validates against `/3/configuration` first; a 401 shows "TMDB rejected this key" and nothing is saved.
 - No key: normal background, small caption-style hint (`#arth`) on streaming rows. A key that later gets 401 shows the rejected hint.

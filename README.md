@@ -262,10 +262,10 @@ Shows trending movie and show art behind your streaming apps (Netflix, Prime Vid
 2. Go to Settings > API > Create > Developer (personal use is fine).
 3. Copy the **API Key** or the **API Read Access Token**.
 4. Give it to the launcher, either way:
-   - On the TV: Settings > Launcher > **TMDB key** > Enter key. The launcher checks it and tells you if it works. A key set here wins over the file.
+   - On the TV: Settings > Launcher > **Trending content artwork** > Enter key. The launcher checks it and tells you if it works. A key set here wins over the file.
    - Or put it on one line in `/sdcard/xmb-tmdb.txt`, for example `adb shell "echo YOUR_KEY > /sdcard/xmb-tmdb.txt"`.
 
-Settings > Launcher > **Trending content artwork** switches it on or off. It turns on by itself once a key exists. With no key you get the normal background, plus a small hint under the streaming apps.
+The same menu has the On and Off switch. It turns on by itself once a key exists. With no key you get the normal background, plus a small hint under the streaming apps.
 
 ## Build from source
 
