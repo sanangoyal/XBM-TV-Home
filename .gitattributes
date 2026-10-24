@@ -1,0 +1,10 @@
+* text=auto eol=lf
+*.mp4 binary
+*.ogg binary
+*.png binary
+*.jpg binary
+*.gif binary
+*.mp3 binary
+*.wav binary
+*.apk binary
+*.jks binary
