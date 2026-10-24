@@ -80,7 +80,7 @@ svg.gi{filter:url(#glass);fill:#fff;display:block;overflow:visible;flex:none}
 #arth{position:fixed;right:4vw;bottom:7%;z-index:6;max-width:40vw;font-size:1.15vw;line-height:1.35;white-space:pre-line;text-align:right;opacity:0;pointer-events:none;transition:opacity .3s;text-shadow:0 1px 4px rgba(0,0,0,.7),0 0 14px rgba(0,0,0,.55)}#arth.on{opacity:var(--o-3)}
 #tkb{position:fixed;inset:0;z-index:40;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(0,0,0,.8);font-size:16px}#tkb.on{display:flex}.tkh{font-size:11px;opacity:.6}#tk{width:600px;font:inherit;padding:8px 14px;border-radius:6px;border:1px solid #fff;background:rgba(255,255,255,.12);color:#fff}
 #art{transition:opacity 1.4s ease-in-out,filter .35s ease-out,transform .35s ease-out}#bgv{transition:opacity .12s linear,filter .35s ease-out,transform .35s ease-out}#gl{transition:filter .35s ease-out,transform .35s ease-out}#bar,#items{transition:opacity .3s ease-out}html.onbar #bar,html.onbar #items{opacity:.3}
-html.sub #art,html.sub #bgv,html.sub #gl,html.pnl #art,html.pnl #bgv,html.pnl #gl{filter:blur(5px) brightness(.82);transform:scale(1.05)}
+html.sub #art,html.sub #bgv,html.sub #gl,html.pnl #art,html.pnl #bgv,html.pnl #gl{transform:scale(1.05)}
 #art .sl{position:absolute;inset:0;opacity:0;transition:opacity 2.6s ease-in-out}
 #art .sl.show{opacity:1}
 #art .b{position:absolute;inset:-6%;width:112%;height:112%;object-fit:cover;filter:blur(38px) brightness(.5) saturate(1.25);opacity:.38}
@@ -105,8 +105,8 @@ html.lite .lg{backdrop-filter:none!important;-webkit-backdrop-filter:none!import
 #opts.rp div.sel{background:#2468e8;color:#fff;text-shadow:none;box-shadow:none}
 #opts.rp .l{flex:1}.rad{flex:none;width:34px;height:34px;box-sizing:border-box;border-radius:50%;border:3px solid rgba(255,255,255,.62);position:relative}.rad.on{border-color:#5aa2ff}.rad.on:after{content:'';position:absolute;inset:6px;border-radius:50%;background:#5aa2ff}#opts.rp div.sel .rad{border-color:#fff}#opts.rp div.sel .rad.on:after{background:#fff}
 .sw{flex:none;width:68px;height:28px;border-radius:14px;background:rgba(255,255,255,.34);position:relative}.sw:after{content:'';position:absolute;top:-6px;left:-4px;width:40px;height:40px;border-radius:50%;background:#e8eaed;box-shadow:0 1px 5px rgba(0,0,0,.55);transition:left .15s}.sw.on{background:#7aa7f5}.sw.on:after{left:32px;background:#fff}#opts.rp div.sel .sw{background:rgba(255,255,255,.4)}#opts.rp div.sel .sw.on{background:#a9c7fb}
-html.pnl #info{opacity:0!important;transition:opacity .2s}
-#pdim{position:fixed;inset:0;z-index:14;background:rgba(0,0,0,.12);opacity:0;pointer-events:none;transition:opacity .25s}#pdim.on{opacity:1}
+html.pnl #info,html.pnl #stage.rev ~ #info{opacity:0!important;transition:opacity .15s 0s!important}
+#bfx{position:fixed;inset:0;z-index:1;background:#000;opacity:0;pointer-events:none;transition:opacity .35s}html.sub #bfx{opacity:.16}html.pnl #bfx{opacity:.24}#pdim{position:fixed;inset:0;z-index:14;background:rgba(0,0,0,.12);opacity:0;pointer-events:none;transition:opacity .25s}#pdim.on{opacity:1}
 html.st #bgv{background-size:cover;background-position:center}html.st #bgv video{display:none}
 </style></head><body>
 <div id="art"><div class="sl" id="slA"></div><div class="sl" id="slB"></div></div><div id="arth"></div><div id="tkb"><div>Paste your TMDB key, then press Enter</div><div class="tkh">Press Back to cancel</div><input id="tk" type="text" autocomplete="off" spellcheck="false"></div>
@@ -136,7 +136,7 @@ html.st #bgv{background-size:cover;background-position:center}html.st #bgv video
   <div id="items"></div>
   <div id="hint"><b>&larr;</b><b>&rarr;</b>category<b>&uarr;</b><b>&darr;</b>item<b>Enter</b>launch<b>Esc</b>back<b>M</b>mute<b>C</b>colour<b>R</b>calm</div>
   
-  <div id="pdim"></div><div id="opts"></div><div id="app"><div class="ic"></div><h2></h2><p></p></div>
+  <div id="bfx"></div><div id="pdim"></div><div id="opts"></div><div id="app"><div class="ic"></div><h2></h2><p></p></div>
   <div id="toast"></div><div id="flash"></div><div id="pw"></div>
 </div>
 <div id="info"><div class="l"><div class="av" id="av"></div><svg id="nw" viewBox="0 -960 960 960" class="off"><path d="M417-154q-27-27-27-63t27-63q27-27 63-27t63 27q27 27 27 63t-27 63q-27 27-63 27t-63-27ZM232-357l-63-63q70-70 146.5-105T480-560q88 0 164.5 35T791-420l-63 63q-61-61-123-87t-125-26q-63 0-125 26t-123 87ZM63-526 0-589q93-95 216.5-153T480-800q140 0 263.5 58T960-589l-63 63q-88-84-192.5-134T480-710q-120 0-224.5 50T63-526Z"/></svg><svg id="bl" viewBox="0 -960 960 960"><path d="M160-200v-60h80v-304q0-84 49.5-150.5T420-798v-22q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v22q81 17 130.5 83.5T720-564v304h80v60H160Zm320-302Zm0 422q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM300-260h360v-304q0-75-52.5-127.5T480-744q-75 0-127.5 52.5T300-564v304Z"/></svg></div><div class="r"><span class="dt" id="dt"></span><span id="tm"></span></div></div>
@@ -667,7 +667,7 @@ let vKey=null,vIdx=0,vPend=null;const VEL=[document.getElementById('v0'),documen
 function vidShow(k){if(NV){if(k===vKey)return;vKey=k;Android.bgv(k);return}if(k===vKey||k===vPend)return;vPend=k;if(window.Android)Android.log('vidShow '+k);const n=VEL[1-vIdx],o=VEL[vIdx];
  const go=()=>{n.removeEventListener('canplay',go);if(window.Android)Android.log('vid canplay '+k);if(vPend!==k)return;vKey=k;vPend=null;n.currentTime=0;const pr=n.play();n.classList.add('on');o.classList.remove('on');vIdx=1-vIdx;setTimeout(()=>{if(VEL[vIdx]!==o)try{o.pause()}catch(e){}},2000)};
  n.addEventListener('canplay',go);n.src='bg_'+k+'.mp4';n.load()}
-let vBz=false,vDk=null;function vidTick(){if(vFail)return;const k=vidKey(),dk=!!artTint;if(NV){if(dk!==vDk){vDk=dk;BGV.classList.toggle('dk',dk);clearTimeout(vOff);if(dk)vOff=setTimeout(()=>{if(vDk)Android.bgvShow(false)},1500);else Android.bgvShow(true)}if(!dk)vidShow(k);if(!vDk){const bz=performance.now()-lastKeyT<1500;if(bz!==vBz){vBz=bz;Android.bgvPause(bz)}}BGV.style.opacity=vDk?1:Math.max(0,1-Math.min(1,B()))}
+let vBz=false,vDk=null;function vidTick(){if(vFail)return;const k=vidKey(),dk=!!artTint;if(NV){if(dk!==vDk){vDk=dk;BGV.classList.toggle('dk',dk);clearTimeout(vOff);if(dk)vOff=setTimeout(()=>{if(vDk)Android.bgvShow(false)},1500);else Android.bgvShow(true)}if(!dk)vidShow(k);BGV.style.opacity=vDk?1:Math.max(0,1-Math.min(1,B()))}
  else{if(dk!==vDk){vDk=dk;BGV.classList.toggle('dk',dk);if(dk)setTimeout(()=>{if(vDk)VEL.forEach(v=>{try{v.pause()}catch(e){}})},1900);else{const c=VEL[vIdx];try{c.play()}catch(e){}}}if(!dk)vidShow(k);BGV.style.opacity=Math.min(1,B())}
  if(phase==='intro'||artTint===null)tg=targetPalette();else tg=targetPalette();
  for(const q in cur)for(let i=0;i<3;i++)cur[q][i]+=(tg[q][i]-cur[q][i])*.3;

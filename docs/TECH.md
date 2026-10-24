@@ -134,7 +134,7 @@ Method: inject CSS via `am start --es js` debug hook, `dumpsys gfxinfo` jank ove
 - No key: normal background, small caption-style hint (`#arth`) on streaming rows. A key that later gets 401 shows the rejected hint.
 - Never expose the key through `__agent.get` or MCP.
 
-## Side panels and background blur
+## Side panels and background zoom
 - Settings panels (`openMenu({panel:1})`) copy the Android TV settings look: 720px wide, Roboto, full-width blue selected row, radio circles for choice lists (`rad`), real toggles for on/off rows (`sw`, flips in place). Panel is neutral translucent glass; `#pdim` dims the rest.
-- The background is a native SurfaceView, so CSS filters cannot touch it. `Android.bgBlur(level)` (0 none, 1 submenu, 2 panel) zooms the SurfaceView 1.05x and, in Static mode, redraws the still shrunk and stretched (soft blur) in `paintStill`. Dynamic (video) mode gets the zoom and dim only: no blur API for video on Android 11.
+- The background is a native SurfaceView, so CSS filters cannot touch it. `Android.bgBlur(level)` (0 none, 1 submenu, 2 panel) zooms only the SurfaceView 1.05x; `#bfx` (inside `#stage`, below the UI) adds a plain dim. No blur: video cannot be blurred on Android 11, and a frosted `backdrop-filter` overlay was tested and does nothing over native video. The earlier blur seen on video was the web GL fallback (`#gl`), which CSS can blur, removed when the permanent fallback was fixed. A GLSurfaceView with a blur shader would allow real blur (not built). Icons and menus never zoom.
 - `backdrop-filter` over the native layer renders black, so panels use plain translucent colour.
