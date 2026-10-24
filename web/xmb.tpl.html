@@ -80,7 +80,7 @@ svg.gi{filter:url(#glass);fill:#fff;display:block;overflow:visible;flex:none}
 #arth{position:fixed;right:4vw;bottom:7%;z-index:6;max-width:40vw;font-size:1.15vw;line-height:1.35;white-space:pre-line;text-align:right;opacity:0;pointer-events:none;transition:opacity .3s;text-shadow:0 1px 4px rgba(0,0,0,.7),0 0 14px rgba(0,0,0,.55)}#arth.on{opacity:var(--o-3)}
 #tkb{position:fixed;inset:0;z-index:40;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(0,0,0,.8);font-size:16px}#tkb.on{display:flex}.tkh{font-size:11px;opacity:.6}#tk{width:600px;font:inherit;padding:8px 14px;border-radius:6px;border:1px solid #fff;background:rgba(255,255,255,.12);color:#fff}
 #art{transition:opacity 1.4s ease-in-out,filter .35s ease-out,transform .35s ease-out}#bgv{transition:opacity .12s linear,filter .35s ease-out,transform .35s ease-out}#gl{transition:filter .35s ease-out,transform .35s ease-out}#bar,#items{transition:opacity .3s ease-out}html.onbar #bar,html.onbar #items{opacity:.3}
-html.sub #art,html.sub #bgv,html.sub #gl{filter:blur(5px) brightness(.82);transform:scale(1.05)}
+html.sub #art,html.sub #bgv,html.sub #gl,html.pnl #art,html.pnl #bgv,html.pnl #gl{filter:blur(5px) brightness(.82);transform:scale(1.05)}
 #art .sl{position:absolute;inset:0;opacity:0;transition:opacity 2.6s ease-in-out}
 #art .sl.show{opacity:1}
 #art .b{position:absolute;inset:-6%;width:112%;height:112%;object-fit:cover;filter:blur(38px) brightness(.5) saturate(1.25);opacity:.38}
@@ -98,7 +98,15 @@ html.lite #app,html.lite #info{backdrop-filter:none!important;-webkit-backdrop-f
 html.lite #hint,html.lite .hint,html.lite #keys{display:none!important}
 html.lite #art .b{display:none}
 html.lite .lg{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(255,255,255,.1)}
-#opts.rp{right:0;top:0;bottom:0;width:470px;transform:translate(100%,0);border-radius:0;padding:64px 28px;background:rgba(16,19,26,.94);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:-20px 0 60px rgba(0,0,0,.5)}#opts.rp.on{transform:none}#opts.rp div{opacity:.85;border-radius:12px;padding:14px 22px;font-size:27px}#opts.rp div.ttl{font-size:36px;opacity:1;padding:0 22px 10px}#opts.rp div.dsc{font-size:19px;opacity:.6;line-height:1.35;padding:0 22px 26px}#opts.rp div.sel{opacity:1;background:#e8eaed;color:#202124;text-shadow:none;box-shadow:none}.sw{display:inline-block;width:46px;height:24px;border-radius:12px;background:rgba(255,255,255,.3);margin-left:18px;vertical-align:middle;position:relative}.sw:after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .15s}.sw.on{background:#34a853}.sw.on:after{left:25px}
+#opts.rp{right:0;top:0;bottom:0;width:720px;transform:translate(100%,0);border-radius:0;padding:0;background:rgba(120,124,134,.30);-webkit-backdrop-filter:none;backdrop-filter:none;box-shadow:inset 1px 0 0 rgba(255,255,255,.14);font-family:Roboto,"Noto Sans",system-ui,sans-serif;text-shadow:none}#opts.rp.on{transform:none}
+#opts.rp div{opacity:1;border-radius:0;padding:0 56px 0 48px;font-size:30px;min-height:88px;display:flex;align-items:center;justify-content:space-between;color:rgba(255,255,255,.94)}
+#opts.rp div.ttl{display:block;min-height:0;font-size:40px;font-weight:500;color:#fff;padding:112px 48px 26px;border-bottom:1px solid rgba(255,255,255,.14);margin-bottom:10px}
+#opts.rp div.dsc{display:block;min-height:0;font-size:23px;line-height:1.42;color:rgba(255,255,255,.62);padding:16px 48px 22px}
+#opts.rp div.sel{background:#2468e8;color:#fff;text-shadow:none;box-shadow:none}
+#opts.rp .l{flex:1}.rad{flex:none;width:34px;height:34px;box-sizing:border-box;border-radius:50%;border:3px solid rgba(255,255,255,.62);position:relative}.rad.on{border-color:#5aa2ff}.rad.on:after{content:'';position:absolute;inset:6px;border-radius:50%;background:#5aa2ff}#opts.rp div.sel .rad{border-color:#fff}#opts.rp div.sel .rad.on:after{background:#fff}
+.sw{flex:none;width:68px;height:28px;border-radius:14px;background:rgba(255,255,255,.34);position:relative}.sw:after{content:'';position:absolute;top:-6px;left:-4px;width:40px;height:40px;border-radius:50%;background:#e8eaed;box-shadow:0 1px 5px rgba(0,0,0,.55);transition:left .15s}.sw.on{background:#7aa7f5}.sw.on:after{left:32px;background:#fff}#opts.rp div.sel .sw{background:rgba(255,255,255,.4)}#opts.rp div.sel .sw.on{background:#a9c7fb}
+html.pnl #info{opacity:0!important;transition:opacity .2s}
+#pdim{position:fixed;inset:0;z-index:14;background:rgba(0,0,0,.12);opacity:0;pointer-events:none;transition:opacity .25s}#pdim.on{opacity:1}
 html.st #bgv{background-size:cover;background-position:center}html.st #bgv video{display:none}
 </style></head><body>
 <div id="art"><div class="sl" id="slA"></div><div class="sl" id="slB"></div></div><div id="arth"></div><div id="tkb"><div>Paste your TMDB key, then press Enter</div><div class="tkh">Press Back to cancel</div><input id="tk" type="text" autocomplete="off" spellcheck="false"></div>
@@ -128,7 +136,7 @@ html.st #bgv{background-size:cover;background-position:center}html.st #bgv video
   <div id="items"></div>
   <div id="hint"><b>&larr;</b><b>&rarr;</b>category<b>&uarr;</b><b>&darr;</b>item<b>Enter</b>launch<b>Esc</b>back<b>M</b>mute<b>C</b>colour<b>R</b>calm</div>
   
-  <div id="opts"></div><div id="app"><div class="ic"></div><h2></h2><p></p></div>
+  <div id="pdim"></div><div id="opts"></div><div id="app"><div class="ic"></div><h2></h2><p></p></div>
   <div id="toast"></div><div id="flash"></div><div id="pw"></div>
 </div>
 <div id="info"><div class="l"><div class="av" id="av"></div><svg id="nw" viewBox="0 -960 960 960" class="off"><path d="M417-154q-27-27-27-63t27-63q27-27 63-27t63 27q27 27 27 63t-27 63q-27 27-63 27t-63-27ZM232-357l-63-63q70-70 146.5-105T480-560q88 0 164.5 35T791-420l-63 63q-61-61-123-87t-125-26q-63 0-125 26t-123 87ZM63-526 0-589q93-95 216.5-153T480-800q140 0 263.5 58T960-589l-63 63q-88-84-192.5-134T480-710q-120 0-224.5 50T63-526Z"/></svg><svg id="bl" viewBox="0 -960 960 960"><path d="M160-200v-60h80v-304q0-84 49.5-150.5T420-798v-22q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v22q81 17 130.5 83.5T720-564v304h80v60H160Zm320-302Zm0 422q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80ZM300-260h360v-304q0-75-52.5-127.5T480-744q-75 0-127.5 52.5T300-564v304Z"/></svg></div><div class="r"><span class="dt" id="dt"></span><span id="tm"></span></div></div>
@@ -271,7 +279,7 @@ if(HOST){try{INST=JSON.parse(Android.apps())}catch(e){INST=[]}
   const bgI=sys('Background','','ln_bg'),colI=sys('Color','','ln_col'),cusI=sys('Choose custom image','Static only','ln_img'),solI=sys('Solid colour','Static only','ln_sol'),musI=sys('Ambient music','','ln_mus'),agI=sys('Agent control','','ln_ag'),artI=sys('Trending content artwork','','ln_bg'),abI=sys('About','Sanan Goyal · sanangoyal.com','ln_info'),MV=[['0','Off'],['15','Soft'],['30','Medium'],['50','Loud']];
   const CN={auto:'Auto',rand:'Random',gold:'Gold',blue:'Blue',black:'Dark (black)',custom:'Custom image'},SOL=[['black','Black'],['red','Ruby'],['orange','Amber'],['green','Emerald'],['teal','Teal'],['indigo','Indigo'],['purple','Violet']];SOL.forEach(a=>CN['sc_'+a[0]]=a[1]+' (solid)');
   const agInfo=()=>{try{return JSON.parse(Android.agentInfo())}catch(e){return{}}};const refresh=()=>{sub(artI,artOn()?'On':tmdbKey()?'Off':'Needs a TMDB key');sub(bgI,STATIC?'Static':'Dynamic');sub(colI,CN[PF.col]);sub(musI,(MV.find(a=>a[0]===PF.mus)||MV[1])[1]);{const i=agInfo();sub(agI,i.on?'On · '+i.ip:'Off')}};const musApply=pv=>{PF.save();try{Android.ambCfg(+PF.mus,!!pv)}catch(e){}};musApply();
-  const om=(title,rows,cur,desc)=>openMenu({title,desc,panel:1,rows:rows.map(r=>({t:(r.v===cur?'✓  ':'     ')+r.t,fn:()=>{r.fn();if(r.say!==0)say(title+': '+r.t)}}))});
+  const om=(title,rows,cur,desc)=>openMenu({title,desc,panel:1,rows:rows.map(r=>({t:r.t,rad:r.v===cur,fn:()=>{r.fn();if(r.say!==0)say(title+': '+r.t)}}))});
   bgI.fn=()=>om('Background',[{v:'static',t:'Static',fn:()=>{PF.bg='static';STATIC=true;apply();refresh()}},{v:'dynamic',t:'Dynamic',fn:()=>{PF.bg='dynamic';STATIC=false;if(PF.col==='custom'||PF.col.indexOf('sc_')===0)PF.col='auto';apply();refresh()}}],PF.bg,'Static draws one image (smoothest). Dynamic plays the looping video.');
   const hasCus=()=>{try{return Android.hasCustom()}catch(e){return false}};
   colI.fn=()=>om('Color',[{v:'auto',t:'Auto',fn:()=>{PF.col='auto';apply();refresh()}},{v:'rand',t:'Random',fn:()=>{PF.col='rand';RK=rpick();apply();refresh()}},{v:'gold',t:'Gold',fn:()=>{PF.col='gold';apply();refresh()}},{v:'blue',t:'Blue',fn:()=>{PF.col='blue';apply();refresh()}},{v:'black',t:'Dark (black)',fn:()=>{PF.col='black';apply();refresh()}},{v:'custom',t:STATIC?'Custom image':'Custom (static)',fn:()=>{if(!STATIC)say('Switch Background to Static first');else if(!hasCus())say('Pick one with Choose custom image');else{PF.col='custom';apply();refresh()}},say:0}],PF.col,'Auto follows the time of year. Applies to both Static and Dynamic.');
@@ -285,11 +293,10 @@ if(HOST){try{INST=JSON.parse(Android.apps())}catch(e){INST=[]}
    inp.onkeydown=async e=>{e.stopPropagation();if(e.key==='Escape'){done();return}if(e.key!=='Enter')return;const v=inp.value.trim();done();if(!v)return;say('Checking key…');
     try{const r=await fetch('https://api.themoviedb.org/3/configuration'+(v.length>40?'':'?api_key='+encodeURIComponent(v)),v.length>40?{headers:{Authorization:'Bearer '+v}}:{});
      if(r.ok){PF.tk=v;PF.art='';PF.save();for(const k in ARTC)delete ARTC[k];artBad=false;artKey=null;refresh();say('Key works. Artwork on');SND.ok()}else say(r.status===401?'TMDB rejected this key':'TMDB error '+r.status)}catch(x){say('No network. Key not saved')}}};
-  artI.fn=()=>{const on=artOn(),has=!!tmdbKey(),ck=v=>(v?'✓  ':'     ');openMenu({title:'Trending content artwork',panel:1,desc:'Movie and show art behind your streaming apps. '+(has?(PF.tk?'Key saved on this TV.':'Using the key in /sdcard/xmb-tmdb.txt.'):'Needs a free TMDB key.'),rows:[
-   {t:ck(on)+'On',fn:()=>{PF.art='';PF.save();refresh();if(!tmdbKey())keyHelp();else say('Trending content artwork: On')}},
-   {t:ck(!on)+'Off',fn:()=>{PF.art='off';PF.save();refresh();say('Trending content artwork: Off')}},
-   {t:'     '+(has?'Change key':'Enter key'),fn:()=>keyEdit()},{t:'     How to get a key',fn:()=>keyHelp()}].concat(PF.tk?[{t:'     Remove saved key',fn:()=>{PF.tk='';PF.save();for(const k in ARTC)delete ARTC[k];refresh();say('Key removed')}}]:[])})};
-  agI.fn=()=>{const i=agInfo();om('Agent control',[{v:'on',t:'On',fn:()=>{Android.agentSet(true);refresh()}},{v:'off',t:'Off',fn:()=>{Android.agentSet(false);refresh()}},{v:'x',t:'New token',fn:()=>{Android.agentNewToken();refresh()}}],i.on?'on':'off',i.on?'MCP  http://'+i.ip+':'+i.port+'/mcp   Token: '+i.token:'Lets AI agents change settings and control this launcher over your network (MCP). Off by default.')};
+  artI.fn=()=>{const has=!!tmdbKey();openMenu({title:'Trending content artwork',panel:1,desc:()=>'Movie and show art behind your streaming apps. '+(tmdbKey()?(PF.tk?'Key saved on this TV.':'Using the key in /sdcard/xmb-tmdb.txt.'):'Needs a free TMDB key.'),rows:[
+   {t:'Show trending artwork',sw:1,on:artOn(),fn:on=>{if(on&&!tmdbKey()){PF.art='';PF.save();refresh();closeOpts(false);keyHelp();return}PF.art=on?'':'off';PF.save();refresh()}},
+   {t:has?'Change key':'Enter key',fn:()=>keyEdit()},{t:'How to get a key',fn:()=>keyHelp()}].concat(PF.tk?[{t:'Remove saved key',fn:()=>{PF.tk='';PF.save();for(const k in ARTC)delete ARTC[k];refresh();say('Key removed')}}]:[])})};
+  agI.fn=()=>openMenu({title:'Agent control',panel:1,desc:()=>{const i=agInfo();return i.on?'MCP  http://'+i.ip+':'+i.port+'/mcp<br>Token: '+i.token:'Lets AI agents change settings and control this launcher over your network (MCP). Off by default. LAN only.'},rows:[{t:'Allow AI agents',sw:1,on:!!agInfo().on,fn:on=>{Android.agentSet(!!on);refresh()}},{t:'New token',fn:()=>{Android.agentNewToken();refresh();say('New token created')}}]});
   window.__agent={get:()=>JSON.stringify({background:PF.bg,color:PF.col,music:PF.mus}),set:(k,v)=>{
    if(k==='background'){if(v!=='static'&&v!=='dynamic')return'invalid';PF.bg=v;STATIC=v==='static';if(!STATIC&&(PF.col==='custom'||PF.col.indexOf('sc_')===0))PF.col='auto';apply();refresh();return'ok'}
    if(k==='color'){const ok=['auto','rand','gold','blue','black'].includes(v)||(v.indexOf('sc_')===0&&SOL.some(a=>'sc_'+a[0]===v)&&STATIC);if(!ok)return'invalid (solid colours need static background)';PF.col=v;if(v==='rand')RK=rpick();apply();refresh();return'ok'}
@@ -332,7 +339,7 @@ CATS.forEach(c=>{build(c.root,c,null,null);c.cur=c.root});
 const X0=565,GAP=200,SHIFT=-358,CATY=283,SELY=500;
 const depthOf=l=>{let d=0;while(l.parent){d++;l=l.parent}return d};
 function itemY(dj){return dj===0?SELY:dj>0?SELY+180+(dj-1)*92:122+(dj+1)*92}
-function layout(){document.documentElement.classList.toggle('sub',bnav>=0||!!CATS[cat].cur.parent);
+function layout(){document.documentElement.classList.toggle('sub',bnav>=0||!!CATS[cat].cur.parent);blurSync();
  const C=CATS[cat],depth=depthOf(C.cur),shift=depth?SHIFT:0;
  CATS.forEach((c,i)=>{const d=i-cat,act=d===0;
   const cx=X0+shift+d*GAP+(d?Math.sign(d)*10:0);
@@ -401,13 +408,17 @@ function openApp(it,C){appOpen=true;appEl.querySelector('.ic').innerHTML=it.ic;a
  setTimeout(()=>{if(appOpen){p.textContent='Demo: would start '+it.t;SND.done()}},1100);
  if(C.name==='Games'&&!it._tr){it._tr=1;setTimeout(()=>{if(appOpen){SND.trophy();say('Trophy earned: First Launch')}},1500)}}
 function closeApp(){appOpen=false;scrCol=null;tg=targetPalette();appEl.classList.remove('on');SND.pout()}
-function openMenu(m){optOpen=true;OPTFN=m.rows;OPTS=m.rows.map(r=>r.t);OPTTTL=m.title||'';optIdx=0;optsEl.classList.toggle('rp',!!m.panel);optsEl.innerHTML=(m.title?`<div class="ttl">${m.title}</div>`:'')+(m.desc?`<div class="dsc">${m.desc}</div>`:'')+OPTS.map((o,i)=>`<div class="${i?'':'sel'}">${o.replace(/ /g,'&nbsp;')}</div>`).join('');optsEl.classList.add('on');SND.opt()}
+var BL=-1;function blurSync(){const lv=optOpen&&OPTM&&OPTM.panel?2:(document.documentElement.classList.contains('sub')?1:0);if(lv!==BL){BL=lv;try{Android.bgBlur(lv)}catch(e){}}}
+let OPTM=null;const pdim=document.getElementById('pdim');
+function rowHTML(r,i){const sel=i===optIdx?' sel':'';const lab=`<span class="l">${String(r.t).replace(/ /g,'&nbsp;')}</span>`;return `<div class="${sel.trim()}">${lab}${r.sw!==undefined?`<i class="sw${r.on?' on':''}"></i>`:r.rad!==undefined?`<i class="rad${r.rad?' on':''}"></i>`:''}</div>`}
+function renderMenu(){const m=OPTM,d=typeof m.desc==='function'?m.desc():m.desc;optsEl.innerHTML=(m.title?`<div class="ttl">${m.title}</div>`:'')+(d?`<div class="dsc">${d}</div>`:'')+m.rows.map(rowHTML).join('')}
+function openMenu(m){optOpen=true;OPTM=m;OPTFN=m.rows;OPTS=m.rows.map(r=>r.t);OPTTTL=m.title||'';optIdx=0;optsEl.classList.toggle('rp',!!m.panel);pdim.classList.toggle('on',!!m.panel);document.documentElement.classList.toggle('pnl',!!m.panel);blurSync();renderMenu();optsEl.classList.add('on');SND.opt()}
 function openOpts(){const C=CATS[cat],it=C.cur.items[C.cur.idx];let rows;
  if(HOST&&it&&(it.pkg||PKG[it.t])){const pk=it.pkg||PKG[it.t];rows=[{t:'Open',fn:()=>{SND.ok();Android.launch(pk)}},{t:'App info',fn:()=>{SND.ok();Android.open('i:'+pk)}},{t:'Uninstall',fn:()=>{SND.ok();Android.open('d:'+pk)}},{t:'Play Store page',fn:()=>{SND.ok();Android.open('m:'+pk)}}]}
  else if(HOST&&C.name==='Settings'&&it&&!it.children){rows=[{t:'Open',fn:()=>{SND.ok();openSet(it.t)}},{t:'Settings home',fn:()=>{SND.ok();Android.open('a:android.settings.SETTINGS')}}]}
  else rows=['Information','Move','Hide','Reset Layout'].map(t=>({t,fn:()=>say(t+' (demo)')}));
  openMenu({title:it?it.t:'',rows})}
-function closeOpts(snd){optOpen=false;optsEl.classList.remove('on');if(snd)SND.back()}
+function closeOpts(snd){optOpen=false;optsEl.classList.remove('on');pdim.classList.remove('on');document.documentElement.classList.remove('pnl');blurSync();if(snd)SND.back()}
 
 /* ---------- RECOMMENDED-CONTENT BACKDROP (TMDB trending per streaming provider, India) ---------- */
 const ARTK={'Netflix':{p:8,c:[229,9,20]},'YouTube':{p:0,c:[255,40,40]},'Prime Video':{p:119,c:[0,168,225]},'Apple TV':{p:350,c:[160,160,170]},'Hotstar':{p:122,c:[30,60,160]},'ZEE5':{p:232,c:[130,50,200]},'SonyLIV':{p:237,c:[40,70,150]}};
@@ -476,7 +487,7 @@ addEventListener('keydown',e=>{
  if(appOpen){e.preventDefault();if(e.key==='Escape'||e.key==='Backspace')closeApp();return}
  if(optOpen){e.preventDefault();if(e.repeat||lpDone)return;const rows=optsEl.children;
   if(e.key==='ArrowDown'&&optIdx<OPTS.length-1){optIdx++;SND.focus()}else if(e.key==='ArrowUp'&&optIdx>0){optIdx--;SND.focus()}
-  else if(e.key==='Enter'){SND.click();const r=OPTFN[optIdx];closeOpts(false);if(r&&r.fn)r.fn()}
+  else if(e.key==='Enter'){SND.click();const r=OPTFN[optIdx];if(r&&r.sw!==undefined){r.on=!r.on;if(r.fn)r.fn(r.on);renderMenu();return}closeOpts(false);if(r&&r.fn)r.fn()}
   else if(e.key==='Escape'||e.key==='Backspace'||e.key==='o'||e.key==='O')closeOpts(true);
   [...rows].filter(r=>!r.classList.contains('ttl')&&!r.classList.contains('dsc')).forEach((r,i)=>r.classList.toggle('sel',i===optIdx));return}
  if(bnav>=0){e.preventDefault();
@@ -507,7 +518,7 @@ addEventListener('keydown',e=>{
  }layout()});
 addEventListener('pointerdown',()=>{if(phase==='gate')startIntro()});
 /* ---------- BAR NAV ---------- */
-function setBar(){document.documentElement.classList.toggle('sub',bnav>=0||!!CATS[cat].cur.parent);document.documentElement.classList.toggle('onbar',bnav>=0);['av','nw','bl'].forEach((id,i)=>document.getElementById(id).classList.toggle('f',i===bnav))}
+function setBar(){document.documentElement.classList.toggle('sub',bnav>=0||!!CATS[cat].cur.parent);blurSync();document.documentElement.classList.toggle('onbar',bnav>=0);['av','nw','bl'].forEach((id,i)=>document.getElementById(id).classList.toggle('f',i===bnav))}
 function barGo(i){SND.ok();
  if(i===0){try{if(Android.account())return}catch(e){}const L=SETACT.Google||['a:android.settings.SYNC_SETTINGS'];for(const x of L){if(Android.open(x))return}Android.open('a:android.settings.SYNC_SETTINGS')}
  else if(i===1)openSet('Network and internet');

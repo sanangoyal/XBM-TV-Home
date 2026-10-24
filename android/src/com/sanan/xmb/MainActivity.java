@@ -56,6 +56,25 @@ public class MainActivity extends Activity {
   void bgRelease() { mpReady = false; try { if (mp != null) { mp.release(); } } catch (Throwable e) {} mp = null; }
   // A surface that has been drawn on with lockCanvas (static mode) cannot be given to the video decoder again. Hiding and showing the SurfaceView makes Android build a fresh one.
   void resetSurface() { try { surf = null; sv.setVisibility(View.GONE); ambH.postDelayed(new Runnable() { public void run() { sv.setVisibility(bgOn ? View.VISIBLE : View.INVISIBLE); } }, 150); } catch (Throwable e) {} }
+  volatile int bgBlur = 0; // 0 none, 1 submenu (soft), 2 settings panel (softer + dim)
+  // Settings panels: draw the still soft (shrunk then stretched) and slightly dimmed. Video cannot be blurred on Android 11, so dynamic mode only gets the web-side dim.
+  void paintStill(android.graphics.Canvas c, android.graphics.Bitmap gb, android.graphics.Bitmap rb) {
+    int w = c.getWidth(), h = c.getHeight();
+    android.graphics.Paint p1 = new android.graphics.Paint(); p1.setDither(true); p1.setFilterBitmap(true);
+    android.graphics.Paint p2 = null;
+    if (rb != null) { p2 = new android.graphics.Paint(); p2.setFilterBitmap(true); p2.setXfermode(new android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.ADD)); }
+    final int lv = bgBlur;
+    if (lv == 0) { c.drawColor(android.graphics.Color.BLACK); c.drawBitmap(gb, null, new android.graphics.Rect(0, 0, w, h), p1); if (rb != null) c.drawBitmap(rb, null, new android.graphics.Rect(0, 0, w, h), p2); return; }
+    int dv = lv == 1 ? 6 : 12; int sw = Math.max(16, w / dv), sh = Math.max(9, h / dv);
+    android.graphics.Bitmap off = android.graphics.Bitmap.createBitmap(sw, sh, android.graphics.Bitmap.Config.ARGB_8888);
+    android.graphics.Canvas oc = new android.graphics.Canvas(off); oc.drawColor(android.graphics.Color.BLACK);
+    android.graphics.Bitmap a = gb; for (int k = 0; k < 3 && a.getWidth() > sw * 2; k++) { android.graphics.Bitmap n = android.graphics.Bitmap.createScaledBitmap(a, Math.max(sw, a.getWidth() / 2), Math.max(sh, a.getHeight() / 2), true); if (a != gb) a.recycle(); a = n; }
+    oc.drawBitmap(a, null, new android.graphics.Rect(0, 0, sw, sh), p1); if (a != gb) a.recycle();
+    if (rb != null) { android.graphics.Bitmap r = rb; for (int k = 0; k < 3 && r.getWidth() > sw * 2; k++) { android.graphics.Bitmap n = android.graphics.Bitmap.createScaledBitmap(r, Math.max(sw, r.getWidth() / 2), Math.max(sh, r.getHeight() / 2), true); if (r != rb) r.recycle(); r = n; } oc.drawBitmap(r, null, new android.graphics.Rect(0, 0, sw, sh), p2); if (r != rb) r.recycle(); }
+    android.graphics.Bitmap mid = android.graphics.Bitmap.createScaledBitmap(off, sw * 3, sh * 3, true);
+    c.drawColor(android.graphics.Color.BLACK); c.drawBitmap(mid, null, new android.graphics.Rect(0, 0, w, h), p1); c.drawColor(lv == 1 ? 0x1A000000 : 0x33000000);
+    mid.recycle(); off.recycle();
+  }
   void bgPlay(final String key, boolean force) {
     if (!force && key.equals(bgKey) && mp != null) return;
     bgKey = key; if (surf == null) return;
@@ -84,16 +103,12 @@ public class MainActivity extends Activity {
           java.io.InputStream is = getAssets().open("bg_" + key + "_g.png"); android.graphics.Bitmap gb = android.graphics.BitmapFactory.decodeStream(is); is.close();
           java.io.InputStream is2 = getAssets().open("bg_" + key + "_r.png"); android.graphics.Bitmap rb = android.graphics.BitmapFactory.decodeStream(is2); is2.close();
           android.view.SurfaceHolder sh3 = sv.getHolder(); android.graphics.Canvas c3 = sh3.lockCanvas();
-          if (c3 != null) { int w = c3.getWidth(), h = c3.getHeight(); android.graphics.Paint p1 = new android.graphics.Paint(); p1.setDither(true); p1.setFilterBitmap(true);
-            c3.drawBitmap(gb, null, new android.graphics.Rect(0, 0, w, h), p1);
-            android.graphics.Paint p2 = new android.graphics.Paint(); p2.setFilterBitmap(true); p2.setXfermode(new android.graphics.PorterDuffXfermode(android.graphics.PorterDuff.Mode.ADD));
-            c3.drawBitmap(rb, null, new android.graphics.Rect(0, 0, w, h), p2);
-            sh3.unlockCanvasAndPost(c3); }
+          if (c3 != null) { paintStill(c3, gb, rb); sh3.unlockCanvasAndPost(c3); }
           gb.recycle(); rb.recycle(); return;
         }
         android.view.SurfaceHolder sh = sv.getHolder();
         android.graphics.Canvas c = sh.lockCanvas();
-        if (c != null) { c.drawColor(android.graphics.Color.BLACK); if (bm != null) { android.graphics.Paint bp = new android.graphics.Paint(); bp.setDither(true); bp.setFilterBitmap(true); c.drawBitmap(bm, null, new android.graphics.Rect(0, 0, c.getWidth(), c.getHeight()), bp); } sh.unlockCanvasAndPost(c); }
+        if (c != null) { if (bm != null) paintStill(c, bm, null); else c.drawColor(android.graphics.Color.BLACK); sh.unlockCanvasAndPost(c); }
         if (bm != null) bm.recycle();
       } catch (Throwable e) { Log.e(TAG, "bgStatic", e); }
       return;
@@ -312,6 +327,9 @@ public class MainActivity extends Activity {
     @JavascriptInterface public String agentInfo() { try { return new JSONObject().put("on", agent.enabled()).put("ip", agent.ip()).put("port", AgentServer.PORT).put("token", agent.token()).toString(); } catch (Throwable t) { return "{}"; } }
     @JavascriptInterface public void agentSet(final boolean on) { agent.setEnabled(on); }
     @JavascriptInterface public void agentNewToken() { agent.newToken(); }
+    @JavascriptInterface public void bgBlur(final int lv) { runOnUiThread(new Runnable() { public void run() {
+      float s = lv > 0 ? 1.05f : 1f; sv.animate().scaleX(s).scaleY(s).setDuration(320).start(); // slight zoom works for still and video
+      if (bgBlur == lv) return; bgBlur = lv; if (bgStatic && bgKey != null && surf != null) bgPlay(bgKey, true); } }); }
     @JavascriptInterface public void bgvStatic(final boolean on) { runOnUiThread(new Runnable() { public void run() {
       boolean was = bgStatic; bgStatic = on;
       if (on) { if (bgKey != null) bgPlay(bgKey, true); }          // draw the still now
