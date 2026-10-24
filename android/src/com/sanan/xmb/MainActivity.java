@@ -164,7 +164,7 @@ public class MainActivity extends Activity {
     String q = getIntent() != null && getIntent().getStringExtra("q") != null ? getIntent().getStringExtra("q") : "";
     wv.loadUrl("file:///android_asset/index.html" + q);
     hideBars();
-    WebView.setWebContentsDebuggingEnabled(true);
+    WebView.setWebContentsDebuggingEnabled(false); // release build: no remote DevTools
     ambH.postDelayed(ambTick, 1000);
     agent = new AgentServer(this); if (agent.enabled()) agent.start();
     final android.os.Handler h = new android.os.Handler();
