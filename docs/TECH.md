@@ -1,4 +1,4 @@
-# XMB Launcher — Tech Rules
+# XMB TV Home — Tech Rules
 Living file. Every technical decision becomes a rule here.
 
 ## Target

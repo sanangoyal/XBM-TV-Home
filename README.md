@@ -1,34 +1,49 @@
-# XMB TV Launcher
+<h1 align="center">XMB TV Home</h1>
+<hr>
+<p align="center"><b>The PlayStation 3 home screen, on your Android TV.</b> Fast, clean and ad-free. Disable the bloat, install the XMB, and let your AI agent run it.</p>
+<p align="center">
+<a href="https://github.com/sanangoyal/xmb-tv-launcher/releases/latest"><img alt="Download latest release" src="https://img.shields.io/badge/DOWNLOAD-LATEST%20RELEASE-6ccf9a?style=for-the-badge&labelColor=555555"></a>
+<a href="LICENSE"><img alt="MIT licence" src="https://img.shields.io/badge/LICENSE-MIT-2f7bc4?style=for-the-badge&labelColor=555555"></a>
+<img alt="Android TV 9+" src="https://img.shields.io/badge/ANDROID%20TV-9%2B-000000?style=for-the-badge&labelColor=555555">
+<img alt="Runs on 2 GB RAM" src="https://img.shields.io/badge/RUNS%20ON-2%20GB%20RAM-555555?style=for-the-badge&labelColor=555555">
+</p>
+<p align="center"><a href="#install">Install</a> · <a href="#screenshots">Screenshots</a> · <a href="#how-it-works">How it works</a> · <a href="#ai-control-mcp">AI control</a> · <a href="#compatibility">Compatibility</a> · <a href="#safety-and-undo">Safety</a> · <a href="#build-from-source">Build</a></p>
+<hr>
 
-**The classic PlayStation 3 XrossMediaBar, rebuilt as a fast, clean home screen for Android TV.**
-Debloat the TV, install the launcher, let your AI agent manage it.
+<p align="center"><img alt="Before and after: stock Google TV home vs XMB TV Home" src="docs/images/before-after.png"></p>
 
-Made by [Sanan Goyal](https://sanangoyal.com) · MIT licence · see [ASSETS.md](ASSETS.md) for third-party material
-
-![Before and after: stock Google TV home vs the XMB launcher](docs/images/before-after.png)
+<p align="center">Made by <a href="https://sanangoyal.com">Sanan Goyal</a> · MIT licence · Third-party material: <a href="ASSETS.md">ASSETS.md</a></p>
 
 ## Features
 
 | | | |
 |---|---|---|
-| **Classic Sony PS3 style UI**<br>Horizontal categories, vertical items, glowing ribbon. The XMB you remember. | **Custom optimised UI**<br>Hand-tuned for 2GB RAM TVs. Lite rendering paths, memory guard, no heavy effects. | **Dynamic backgrounds**<br>Looping ribbon video in gold, blue and dark, or a static image. Auto colour by time of day. |
-| **Authentic system audio**<br>Real XMB navigation sounds. Soft ambient music after 5 min idle. | **Speed**<br>Static mode draws one image and idles at zero redraws. Smooth on weak hardware. | **AI / MCP enabled**<br>Built-in MCP server on the TV. Agents read and change settings, press keys, open apps, take screenshots. |
-| **Customisable**<br>Background, colour, solid colours, your own image, music volume, all on the TV. | **Custom clean icons**<br>Consistent glyphs, real brand logos for apps. No hand-drawn mush. | **Remove bloatware and ads**<br>Disable (never uninstall) promo apps, ad services and junk. One command, full restore script. |
+| 🎮 **Classic PS3 XMB**<br><sub>Horizontal categories, vertical items, glowing ribbon. The one you remember.</sub> | ⚡ **Built for slow TVs**<br><sub>Tuned for 2 GB of RAM. Static mode draws once and idles at zero redraws.</sub> | 🌊 **Live backgrounds**<br><sub>Looping ribbon in gold, blue or dark. Colour follows the time of day.</sub> |
+| 🔊 **Real XMB sounds**<br><sub>Authentic navigation audio, plus soft ambient music after 5 minutes idle.</sub> | 🤖 **AI-controllable**<br><sub>Built-in MCP server. Agents change settings, press keys and take screenshots.</sub> | 🎨 **Yours to change**<br><sub>Colours, solid themes, your own image, music volume. All on the TV.</sub> |
+| 🧩 **Clean, consistent icons**<br><sub>Real brand logos for your apps, one glyph style for the rest.</sub> | 🧹 **No bloat, no ads**<br><sub>Disables promo apps and ad services. Never uninstalls. Full restore script.</sub> | 🎬 **Movie scenes**<br><sub>Trending titles from TMDB fill the screen behind your apps.</sub> |
 
-Also: trending movie and series scenes (TMDB) behind your apps, full-bleed with a left fade. Stays awake: the UI is the screensaver.
+The UI stays on: it is its own screensaver.
 
 ## Screenshots
 
 | | |
 |---|---|
-| ![Trending scene behind the menu](docs/images/scene.jpg)<br>Movie scenes behind your apps | ![Settings and Launcher menu](docs/images/settings.jpg)<br>Launcher settings, on the TV |
-| ![Dynamic gold ribbon](docs/images/home.jpg)<br>Dynamic gold ribbon, PS3 style | ![Navigation demo](docs/images/demo.gif)<br>Navigation (GIF) |
+| ![Trending scene behind the menu](docs/images/scene.jpg)<br><sub>Movie scenes behind your apps</sub> | ![Settings and Launcher menu](docs/images/settings.jpg)<br><sub>Launcher settings, on the TV</sub> |
+| ![Dynamic gold ribbon](docs/images/home.jpg)<br><sub>Dynamic gold ribbon, PS3 style</sub> | ![Navigation demo](docs/images/demo.gif)<br><sub>Navigation</sub> |
 
 ### Colours
 
-Gold, blue and dark are animated videos (Dynamic) or images (Static). The solid colours are static gradients.
+Gold, blue and dark are animated videos (Dynamic) or still images (Static). The solid colours are static gradients.
 
 ![All colours](docs/images/colors.jpg)
+
+## How it works
+
+1. **Connect.** Turn on USB debugging on the TV and connect over Wi-Fi with `adb`. No root, no cable.
+2. **Back up.** Package list, settings, current home app and a screenshot are saved first.
+3. **Disable the junk.** Ad services, promo apps and vendor extras are switched off with `pm disable-user`. Nothing is uninstalled, and a restore script undoes every step.
+4. **Install XMB TV Home.** The APK is installed, its permissions granted, and it becomes your home screen.
+5. **Verify.** Each step is checked with a TV screenshot before the next one.
 
 ## Install
 
@@ -39,7 +54,7 @@ Needs a coding agent with shell access (Claude Code, Codex, Gemini CLI, Cursor..
 ```
 Read https://github.com/sanangoyal/xmb-tv-launcher and follow PROMPT.md and skill/SKILL.md.
 My Android TV is at <TV IP>. Back it up first, show me the bloatware you plan to
-disable and ask before each group, install the XMB launcher, grant its permissions,
+disable and ask before each group, install XMB TV Home, grant its permissions,
 make it my home screen, and confirm with a screenshot. Ask before anything destructive.
 Keep a restore script.
 ```
@@ -84,7 +99,22 @@ adb shell pm disable-user --user 0 com.google.android.tvlauncher
 
 9. **Undo everything:** `scripts/restore-launcher.sh <TV-IP>` and `./restore-bloat.sh`.
 
-Tested on OnePlus TV 55 Y1S Pro (Android 11, 1080p UI, 2GB RAM). Android 9+ should work.
+## Compatibility
+
+| Platform | Status |
+|---|---|
+| Android TV, Google TV (Android 9+) | Supported |
+| Fire TV | Not supported. Fire OS blocks third-party home screens |
+| Samsung (Tizen), LG (webOS) | Not supported. Different operating systems |
+
+Tested on OnePlus TV 55 Y1S Pro (Android 11, 1080p, 2 GB RAM). Some China-market sets refuse any third-party launcher. If you try another model, [open an issue](https://github.com/sanangoyal/xmb-tv-launcher/issues) with the model name and what happened.
+
+## Safety and undo
+
+- Back up first: `scripts/backup.sh` runs before any change.
+- Disable, never uninstall. Every disabled package is written to `restore-bloat.sh`.
+- The stock home screen is only disabled after XMB TV Home is confirmed working. If anything looks wrong, run `scripts/restore-launcher.sh <TV-IP>`.
+- Turn ADB off when you are done: see [SECURITY.md](SECURITY.md).
 
 ## Settings (on the TV: Settings > Launcher)
 

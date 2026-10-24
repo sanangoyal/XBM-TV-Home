@@ -3,9 +3,9 @@ name: android-tv-xmb
 description: Connect to an Android TV over ADB, back it up, safely disable bloatware and ad services, optimise it, and install or build the custom PS3 XMB-style launcher (this repo). Use when the user wants to debloat or speed up an Android TV, replace its home screen, or build a custom TV launcher UI.
 ---
 
-# Android TV: ADB, debloat, custom XMB launcher
+# Android TV: ADB, debloat, custom XMB TV Home
 
-Three parts: (1) connect, (2) back up and optimise, (3) install the XMB launcher, or use it as the example for building a custom launcher. Do them in order. Ask the user before every change that is hard to see or undo.
+Three parts: (1) connect, (2) back up and optimise, (3) install XMB TV Home, or use it as the example for building a custom launcher. Do them in order. Ask the user before every change that is hard to see or undo.
 
 ## Rules (never skip)
 
@@ -57,7 +57,7 @@ Optional speed-ups (ask first, all reversible):
 
 Ads: on many TVs ads come from the stock launcher's "recommendations" row and promo apps. Disabling the stock launcher (after the XMB launcher works) removes the ad row entirely. Do not block hostnames system-wide unless the user asks.
 
-## 3. Install the XMB launcher
+## 3. Install XMB TV Home
 
 Prefer the prebuilt APK from the repo Releases. To build: see README "Build from source" (needs TMDB v3 key for movie scenes; ask the user, they are free).
 

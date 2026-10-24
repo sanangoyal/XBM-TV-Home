@@ -1,4 +1,4 @@
-# PROMPT: debloat an Android TV and install the XMB launcher
+# PROMPT: debloat an Android TV and install XMB TV Home
 
 You are a coding agent with shell access. Follow this file, then `skill/SKILL.md` for the detail. The user is not technical: keep messages short, ask before anything not obviously safe, and show screenshots of the TV.
 

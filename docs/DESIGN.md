@@ -1,4 +1,4 @@
-# XMB Launcher — Design Rules
+# XMB TV Home — Design Rules
 Living file. Every design decision becomes a rule here. Newest changes go in the Changelog at the bottom.
 
 ## Identity
