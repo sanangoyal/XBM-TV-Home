@@ -92,3 +92,9 @@ Background: Static (default) / Dynamic. Color (dynamic only): Auto / Select manu
 - Auto colour: blue 05-12, gold 12-19, dark 19-05 (TV local time). Random: new colour each load and every 30 min.
 - Up inside a submenu never jumps to the top bar; Left leaves the submenu first.
 - Image scenes full-bleed, black fade from the left, starts fully black at the edge.
+
+## Launch text, system-screen cover, Settings order
+- Boot logo text is user-editable: Settings > Launcher > Launch text, max 15 chars, uppercase, default XMB. Clarendon lettering in the same glass material as app icons (white ~.6 fill, soft inner rim), with a small right-aligned "TV HOME" caption below. Font auto-shrinks (150 px down to 44 px) to stay within 1000 px wide.
+- While a stock system screen is open (Settings panel, etc.), our UI hides and the background dims to .42 and stays playing. No blur on video (see TECH.md).
+- Developer options has no confirm popup. Confirms remain only for Factory reset and the audio/picture restore items.
+- Settings content and order on other TVs follow the device OS default, not this TV's tree. See docs/PORTING.md.

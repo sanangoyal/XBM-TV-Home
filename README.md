@@ -229,6 +229,7 @@ Tried it on another TV? [Open an issue](https://github.com/sanangoyal/xmb-tv-lau
 | Color | Auto (blue morning, gold afternoon and evening, dark night), Random (each load and every 30 min), Gold, Blue, Dark, Custom image |
 | Solid colour | Black, Ruby, Amber, Emerald, Teal, Indigo, Violet (static) |
 | Choose custom image | File browser: TV storage or USB (static) |
+| Launch text | Custom text on the boot logo, up to 15 characters (default XMB) |
 | Ambient music | Off, Soft, Medium, Loud (plays after 5 min idle, stops on any key) |
 | Agent control | On/Off, shows address and token, New token |
 | About | Credits, licence, disclaimers |
@@ -280,7 +281,7 @@ bash android/build.sh                          # -> android/out/xmb-launcher.apk
 
 ## Assets and porting
 
-Sounds, menu glyphs and app logos are in [`assets/`](assets/) as plain WAV and SVG files, with the backgrounds in `android/assets/`. Use them to modify the look or to build the same UI on another platform. The layout, motion and colour rules are in [`docs/DESIGN.md`](docs/DESIGN.md). Third-party rights: [ASSETS.md](ASSETS.md).
+Sounds, menu glyphs and app logos are in [`assets/`](assets/) as plain WAV and SVG files, with the backgrounds in `android/assets/`. Use them to modify the look or to build the same UI on another platform. The layout, motion and colour rules are in [`docs/DESIGN.md`](docs/DESIGN.md). For another TV, use the porting prompt in [`docs/PORTING.md`](docs/PORTING.md): Settings follow the device OS default order. Third-party rights: [ASSETS.md](ASSETS.md).
 
 ## For AI agents
 

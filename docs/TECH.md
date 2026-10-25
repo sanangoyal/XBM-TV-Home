@@ -143,3 +143,7 @@ Method: inject CSS via `am start --es js` debug hook, `dumpsys gfxinfo` jank ove
 - Boot logo is built in JS (`buildLogo`): text from `PF.nm` (Settings > Launcher > Launch text, max 15 chars, default XMB), uppercased, "Launch Face" font (`assets/clarendon.otf`), auto-sized to max 1000 px wide. Drawn as a glass mask + `lgFilter` backdrop displacement, same material as app icons, plus a "TV HOME" caption. `#blogo` must keep opacity 1; fade via `logoO()` on the `.w` child (backdrop-filter does not sample through ancestor opacity < 1).
 - The font is licensed and NOT in git (`.gitignore`). Drop your own `clarendon.otf` into `android/assets/`; without it the browser fallback font is used.
 - Stock Settings is a translucent activity with DIM_BEHIND. `onPause` calls `cover(1)` which sets `html.cov` (hides UI, dims `#bfx` to .42); `onResume` calls `cover(0)`. Video pause moved to `onStop` so it keeps playing behind translucent screens.
+
+## Porting rule and prompt removal
+- `SETCONF` in the template lists Settings items that get an "Open ...?" confirm. Developer options was removed from it (opens directly).
+- Cross-device build guidance (Settings order follows the device OS, fresh or existing setup) lives in docs/PORTING.md, linked from AGENTS.md and README.
