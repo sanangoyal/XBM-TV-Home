@@ -56,8 +56,8 @@ svg.gi{filter:url(#glass);fill:#fff;display:block;overflow:visible;flex:none}
 #boot{position:fixed;inset:0;z-index:50;background:#000;display:flex;align-items:center;justify-content:center;font-size:24px;letter-spacing:.4px;color:rgba(255,255,255,.7);transition:opacity .5s}
 #boot.off{opacity:0;pointer-events:none}
 #blogo{position:fixed;z-index:40;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0;pointer-events:none;opacity:0}
-#blogo .w{position:absolute;left:1180px;top:500px;font-size:96px;font-style:italic;letter-spacing:6px;line-height:1;text-shadow:0 0 18px rgba(255,255,255,.35)}
-#blogo .w small{display:block;font-size:20px;font-style:normal;letter-spacing:1.5px;opacity:.7;margin:6px 0 0 4px;text-align:right}
+@font-face{font-family:"Launch Face";src:url(clarendon.otf)}
+#blogo{opacity:1!important}#blogo .w{position:absolute;left:0;top:0;opacity:0}#blogo .w>*{position:absolute;left:0;top:0}#blogo .gl{background:rgba(255,255,255,.07);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:100% 100%;mask-size:100% 100%}#blogo small{position:absolute;left:auto!important;white-space:nowrap;letter-spacing:.02em;color:rgba(255,255,255,.88);text-shadow:0 0 10px rgba(255,255,255,.25)}
 #glassLayer{position:absolute;inset:0;pointer-events:none}
 .lg{position:absolute;left:0;top:0;transform-origin:50% 50%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-size:100% 100%;mask-size:100% 100%;background:rgba(255,255,255,.07)}
 #stage{opacity:0;z-index:6}
@@ -106,7 +106,7 @@ html.lite .lg{backdrop-filter:none!important;-webkit-backdrop-filter:none!import
 #opts.rp .l{flex:1}.rad{flex:none;width:34px;height:34px;box-sizing:border-box;border-radius:50%;border:3px solid rgba(255,255,255,.62);position:relative}.rad.on{border-color:#5aa2ff}.rad.on:after{content:'';position:absolute;inset:6px;border-radius:50%;background:#5aa2ff}#opts.rp div.sel .rad{border-color:#fff}#opts.rp div.sel .rad.on:after{background:#fff}
 .sw{flex:none;width:68px;height:28px;border-radius:14px;background:rgba(255,255,255,.34);position:relative}.sw:after{content:'';position:absolute;top:-6px;left:-4px;width:40px;height:40px;border-radius:50%;background:#e8eaed;box-shadow:0 1px 5px rgba(0,0,0,.55);transition:left .15s}.sw.on{background:#7aa7f5}.sw.on:after{left:32px;background:#fff}#opts.rp div.sel .sw{background:rgba(255,255,255,.4)}#opts.rp div.sel .sw.on{background:#a9c7fb}
 html.pnl #info,html.pnl #stage.rev ~ #info{opacity:0!important;transition:opacity .15s 0s!important}
-#bfx{position:fixed;inset:0;z-index:1;background:#000;opacity:0;pointer-events:none;transition:opacity .35s}html.sub #bfx{opacity:.16}html.pnl #bfx{opacity:.24}#pdim{position:fixed;inset:0;z-index:14;background:rgba(0,0,0,.12);opacity:0;pointer-events:none;transition:opacity .25s}#pdim.on{opacity:1}
+html.cov #stage>*:not(#bfx){opacity:0!important;transition:opacity .2s!important}html.cov #info{opacity:0!important;transition:opacity .15s 0s!important}html.cov #arth,html.cov #art .cap{opacity:0!important;transition:opacity .2s!important}html.cov #bfx{opacity:.42}#bfx{position:fixed;inset:0;z-index:1;background:#000;opacity:0;pointer-events:none;transition:opacity .35s}html.sub #bfx{opacity:.16}html.pnl #bfx{opacity:.24}#pdim{position:fixed;inset:0;z-index:14;background:rgba(0,0,0,.12);opacity:0;pointer-events:none;transition:opacity .25s}#pdim.on{opacity:1}
 html.st #bgv{background-size:cover;background-position:center}html.st #bgv video{display:none}
 </style></head><body>
 <div id="art"><div class="sl" id="slA"></div><div class="sl" id="slB"></div></div><div id="arth"></div><div id="tkb"><div>Paste your TMDB key, then press Enter</div><div class="tkh">Press Back to cancel</div><input id="tk" type="text" autocomplete="off" spellcheck="false"></div>
@@ -129,7 +129,7 @@ html.st #bgv{background-size:cover;background-position:center}html.st #bgv video
 </filter></defs>/*SHEET*/</svg>
 <svg id="lgdefs" width="0" height="0" style="position:absolute"></svg>
 <div id="bgv"><video id="v0" muted loop playsinline preload="auto"></video><video id="v1" muted loop playsinline preload="auto"></video></div><canvas id="gl"></canvas>
-<div id="blogo"><div class="w">XMB<small>TV HOME</small></div></div>
+<div id="blogo"><div class="w"></div></div>
 <div id="stage">
   <div id="glassLayer"></div>
   <div id="bar"></div>
@@ -182,22 +182,47 @@ function lgMap(img,w,h){
    const mag=prof[Math.round(d[i]/B*128)]/pm*M;r=128+127*(-gx/L)*mag/M;g=128+127*(-gy/L)*mag/M}
   o[p]=r;o[p+1]=g;o[p+2]=128;o[p+3]=255}
  x.putImageData(out,0,0);return cv.toDataURL()}
-function lgFilter(id,w,h,cb){const key=id+'|'+w+'|'+h;if(LGC[key]){cb(LGC[key]);return}
+function lgFilter(id,w,h,cb,mu){const key=id+'|'+w+'|'+h;if(LGC[key]){cb(LGC[key]);return}
  const img=new Image();img.onload=()=>{const fid='lgf'+Object.keys(LGC).length,url=lgMap(img,w,h);
   lgDefs.insertAdjacentHTML('beforeend',`<filter id="${fid}" filterUnits="userSpaceOnUse" x="0" y="0" width="${w}" height="${h}" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceGraphic" stdDeviation="${LGP.blur}" result="b"/><feImage href="${url}" x="0" y="0" width="${w}" height="${h}" preserveAspectRatio="none" result="m"/><feDisplacementMap in="b" in2="m" scale="${2*LGP.maxD}" xChannelSelector="R" yChannelSelector="G"/></filter>`);
-  LGC[key]=fid;cb(fid)};img.src=lgMask(id)}
+  LGC[key]=fid;cb(fid)};img.src=mu||lgMask(id)}
 function mkGlass(id,k){if(document.documentElement.classList.contains('lite'))return{style:{}};const v=vb(id).split(' ').map(Number),w=Math.round(v[2]*k),h=Math.round(v[3]*k);
  const e=document.createElement('div');e.className='lg';e.style.width=w+'px';e.style.height=h+'px';e.style.marginLeft=-w/2+'px';e.style.marginTop=-h/2+'px';
  const m='url("'+lgMask(id)+'")';e.style.webkitMaskImage=m;e.style.maskImage=m;lgLayer.appendChild(e);
  lgFilter(id,w,h,fid=>{e.style.backdropFilter=e.style.webkitBackdropFilter=`url(#${fid})`});return e}
+
+/* ---------- LAUNCH TEXT: glass lettering (same refraction as the icons), name from Settings > Launcher > Launch text, max 15 chars */
+const logoName=()=>String(PF.nm||'XMB').toUpperCase().replace(/\s+/g,' ').trim().slice(0,15)||'XMB';
+let logoV=0;const logoO=v=>{logoV=+v;const w=document.querySelector('#blogo .w');if(w)w.style.opacity=logoV};
+let logoGen=0;
+async function buildLogo(){const gen=++logoGen,txt=logoName(),host=document.querySelector('#blogo .w');if(!host)return;
+ try{await document.fonts.load('150px "Launch Face"')}catch(e){}
+ if(gen!==logoGen)return;
+ const fam='"Launch Face",Georgia,"Times New Roman",serif',c0=document.createElement('canvas').getContext('2d');
+ const meas=s=>{c0.font=s+'px '+fam;let w=0;for(const ch of txt)w+=c0.measureText(ch).width+s*.10;return w-s*.10};
+ let size=150;while(size>44&&meas(size)>1000)size-=2;
+ const pad=24,w=Math.ceil(meas(size))+pad*2,h=Math.ceil(size*1.2)+pad,base=pad+size*.88;
+ const draw=(c,fn)=>{c.font=size+'px '+fam;let x=pad;for(const ch of txt){fn(ch,x);x+=c.measureText(ch).width+size*.10}};
+ const m=document.createElement('canvas');m.width=w;m.height=h;const mc=m.getContext('2d');mc.fillStyle='#000';draw(mc,(ch,x)=>mc.fillText(ch,x,base));
+ const v=document.createElement('canvas');v.width=w;v.height=h;const vc=v.getContext('2d');
+ vc.fillStyle='rgba(255,255,255,.6)';draw(vc,(ch,x)=>vc.fillText(ch,x,base));
+ vc.globalCompositeOperation='source-atop';const gr=vc.createLinearGradient(0,pad,w*.5,h);gr.addColorStop(0,'rgba(255,255,255,1)');gr.addColorStop(.55,'rgba(255,255,255,.55)');gr.addColorStop(1,'rgba(255,255,255,.2)');
+ vc.strokeStyle=gr;vc.lineWidth=Math.max(3,size*.035);vc.lineJoin='round';draw(vc,(ch,x)=>vc.strokeText(ch,x,base));
+ const mu=m.toDataURL(),vu=v.toDataURL();
+ host.innerHTML='';host.style.width=w+'px';host.style.height=h+'px';host.style.left=(1320-w/2)+'px';host.style.top='430px';
+ const gl=document.createElement('div');gl.className='gl';gl.style.width=w+'px';gl.style.height=h+'px';gl.style.webkitMaskImage=gl.style.maskImage='url("'+mu+'")';host.appendChild(gl);
+ lgFilter('logo:'+txt+size,w,h,fid=>{if(gen===logoGen)gl.style.backdropFilter=gl.style.webkitBackdropFilter=`url(#${fid})`},mu);
+ const im=new Image();im.src=vu;im.style.cssText='position:absolute;left:0;top:0;width:'+w+'px;height:'+h+'px';host.appendChild(im);
+ const sm=document.createElement('small');sm.textContent='TV HOME';sm.style.fontSize=Math.round(size*.28)+'px';sm.style.right=pad+'px';sm.style.top=Math.round(base+size*.1)+'px';host.appendChild(sm);
+ host.style.opacity=logoV}
 function syncLG(e,s){e.style.transform=`translate(${s.x}px,${s.y}px) scale(${s.s})`;e.style.opacity=s.o;e.style.display=s.o<.02?'none':''}
 const L_=(items)=>({items,idx:0});
 const LG=/*LG*/{};const LM=1.45;
 const LGU={};const lgUrl=k=>{if(LGU[k])return LGU[k];const u=LG[k].u,i=u.indexOf(',');try{const b=atob(u.slice(i+1)),a=new Uint8Array(b.length);for(let n=0;n<b.length;n++)a[n]=b.charCodeAt(n);return LGU[k]=URL.createObjectURL(new Blob([a],{type:'image/svg+xml'}))}catch(e){return LGU[k]=u}};
 const lg=k=>{const g=LG[k];return `<img class="lgo" alt="" decoding="async" src="${lgUrl(k)}" style="width:${(g.w*LM).toFixed(1)}px;height:${(g.h*LM).toFixed(1)}px;margin:${(g.dy*LM).toFixed(1)}px 0 0 ${(g.dx*LM).toFixed(1)}px">`};
 // Settings mirror stock Android TV 10 on OnePlus TV 55 Y1S Pro (Network & Internet / Accounts / Apps / Device Preferences / Remotes & Accessories)
-const PF=(()=>{const g=(k,d)=>{try{const v=localStorage.getItem('xmb_'+k);return v===null?d:v}catch(e){return d}};return{bg:g('bg','static'),col:g('col','auto'),mus:g('mus','15'),tk:g('tk',''),art:g('art',''),save(){try{for(const k of['bg','col','mus','tk','art'])localStorage.setItem('xmb_'+k,this[k])}catch(e){}}}})();
-const tmdbKey=()=>(PF.tk||(window.Android?Android.tmdbKey():'')||'').trim(),artOn=()=>!!tmdbKey()&&PF.art!=='off';let artBad=false,tkClose=null; // key: Settings field wins over /sdcard/xmb-tmdb.txt; none ships in the APK
+const PF=(()=>{const g=(k,d)=>{try{const v=localStorage.getItem('xmb_'+k);return v===null?d:v}catch(e){return d}};return{bg:g('bg','static'),col:g('col','auto'),mus:g('mus','15'),tk:g('tk',''),art:g('art',''),nm:g('nm','XMB'),save(){try{for(const k of['bg','col','mus','tk','art','nm'])localStorage.setItem('xmb_'+k,this[k])}catch(e){}}}})();
+const tmdbKey=()=>(PF.tk||(window.Android?Android.tmdbKey():'')||'').trim(),artOn=()=>!!tmdbKey()&&PF.art!=='off';let artBad=false,tkClose=null;buildLogo(); // key: Settings field wins over /sdcard/xmb-tmdb.txt; none ships in the APK
 let STATIC=PF.bg==='static';const rpick=()=>['gold','blue','black'][Math.floor(Math.random()*3)];let RK=rpick();setInterval(()=>{RK=rpick()},1800000);const tod=()=>{const h=new Date().getHours();return h>=5&&h<12?'blue':h>=12&&h<19?'gold':'black'};
 const CATS=[
  {name:'Power',icon:'pw_power',root:L_([sys('Sleep','Standby, wake with any key','pw_sleep'),sys('Restart','Reboot launcher','pw_restart'),sys('Shutdown','Power off','pw_power'),sys('Google TV Home','Switch to stock launcher','pw_home')])},
@@ -276,9 +301,9 @@ if(HOST){try{INST=JSON.parse(Android.apps())}catch(e){INST=[]}
  {const CS=CATS.find(c=>c.name==='Settings'),C_=()=>CATS.indexOf(CS),L=sys('Launcher','Background, colour, night','ln_main');
   const sub=(it,t)=>{it.s=t;if(it.el){const e=it.el.querySelector('.s');if(e)e.textContent=t}};
   const apply=()=>{PF.save();vKey=null;vDk=null;try{Android.bgvStatic(STATIC)}catch(e){}setTimeout(()=>{try{vidTick()}catch(e){}},60)};
-  const bgI=sys('Background','','ln_bg'),colI=sys('Color','','ln_col'),cusI=sys('Choose custom image','Static only','ln_img'),solI=sys('Solid colour','Static only','ln_sol'),musI=sys('Ambient music','','ln_mus'),agI=sys('Agent control','','ln_ag'),artI=sys('Trending content artwork','','ln_bg'),abI=sys('About','Sanan Goyal · sanangoyal.com','ln_info'),MV=[['0','Off'],['15','Soft'],['30','Medium'],['50','Loud']];
+  const bgI=sys('Background','','ln_bg'),colI=sys('Color','','ln_col'),cusI=sys('Choose custom image','Static only','ln_img'),solI=sys('Solid colour','Static only','ln_sol'),musI=sys('Ambient music','','ln_mus'),agI=sys('Agent control','','ln_ag'),artI=sys('Trending content artwork','','ln_bg'),txtI=sys('Launch text','','ln_info'),abI=sys('About','Sanan Goyal · sanangoyal.com','ln_info'),MV=[['0','Off'],['15','Soft'],['30','Medium'],['50','Loud']];
   const CN={auto:'Auto',rand:'Random',gold:'Gold',blue:'Blue',black:'Dark (black)',custom:'Custom image'},SOL=[['black','Black'],['red','Ruby'],['orange','Amber'],['green','Emerald'],['teal','Teal'],['indigo','Indigo'],['purple','Violet']];SOL.forEach(a=>CN['sc_'+a[0]]=a[1]+' (solid)');
-  const agInfo=()=>{try{return JSON.parse(Android.agentInfo())}catch(e){return{}}};const refresh=()=>{sub(artI,artOn()?'On':tmdbKey()?'Off':'Needs a TMDB key');sub(bgI,STATIC?'Static':'Dynamic');sub(colI,CN[PF.col]);sub(musI,(MV.find(a=>a[0]===PF.mus)||MV[1])[1]);{const i=agInfo();sub(agI,i.on?'On · '+i.ip:'Off')}};const musApply=pv=>{PF.save();try{Android.ambCfg(+PF.mus,!!pv)}catch(e){}};musApply();
+  const agInfo=()=>{try{return JSON.parse(Android.agentInfo())}catch(e){return{}}};const refresh=()=>{sub(txtI,logoName());sub(artI,artOn()?'On':tmdbKey()?'Off':'Needs a TMDB key');sub(bgI,STATIC?'Static':'Dynamic');sub(colI,CN[PF.col]);sub(musI,(MV.find(a=>a[0]===PF.mus)||MV[1])[1]);{const i=agInfo();sub(agI,i.on?'On · '+i.ip:'Off')}};const musApply=pv=>{PF.save();try{Android.ambCfg(+PF.mus,!!pv)}catch(e){}};musApply();
   const om=(title,rows,cur,desc)=>openMenu({title,desc,panel:1,rows:rows.map(r=>({t:r.t,rad:r.v===cur,fn:()=>{r.fn();if(r.say!==0)say(title+': '+r.t)}}))});
   bgI.fn=()=>om('Background',[{v:'static',t:'Static',fn:()=>{PF.bg='static';STATIC=true;apply();refresh()}},{v:'dynamic',t:'Dynamic',fn:()=>{PF.bg='dynamic';STATIC=false;if(PF.col==='custom'||PF.col.indexOf('sc_')===0)PF.col='auto';apply();refresh()}}],PF.bg,'Static draws one image (smoothest). Dynamic plays the looping video.');
   const hasCus=()=>{try{return Android.hasCustom()}catch(e){return false}};
@@ -296,6 +321,9 @@ if(HOST){try{INST=JSON.parse(Android.apps())}catch(e){INST=[]}
   artI.fn=()=>{const has=!!tmdbKey();openMenu({title:'Trending content artwork',panel:1,desc:()=>'Movie and show art behind your streaming apps. '+(tmdbKey()?(PF.tk?'Key saved on this TV.':'Using the key in /sdcard/xmb-tmdb.txt.'):'Needs a free TMDB key.'),rows:[
    {t:'Show trending artwork',sw:1,on:artOn(),fn:on=>{if(on&&!tmdbKey()){PF.art='';PF.save();refresh();closeOpts(false);keyHelp();return}PF.art=on?'':'off';PF.save();refresh()}},
    {t:has?'Change key':'Enter key',fn:()=>keyEdit()},{t:'How to get a key',fn:()=>keyHelp()}].concat(PF.tk?[{t:'Remove saved key',fn:()=>{PF.tk='';PF.save();for(const k in ARTC)delete ARTC[k];refresh();say('Key removed')}}]:[])})};
+  const txtEdit=(msg,init,max,cb)=>{const b=document.getElementById('tkb'),inp=document.getElementById('tk'),p=b.firstChild,old=p.textContent;p.textContent=msg;inp.maxLength=max;inp.value=init;b.classList.add('on');inp.focus();const done=()=>{b.classList.remove('on');inp.blur();inp.onkeydown=null;tkClose=null;p.textContent=old;inp.removeAttribute('maxlength')};tkClose=done;inp.onkeydown=e=>{e.stopPropagation();if(e.key==='Escape'){done();return}if(e.key!=='Enter')return;const v=inp.value;done();cb(v)}};
+  const setNm=v=>{PF.nm=v;PF.save();buildLogo();refresh()};
+  txtI.fn=()=>openMenu({title:'Launch text',panel:1,desc:()=>'Shown when the launcher starts. Up to 15 characters. Now: '+logoName(),rows:[{t:'Change text',fn:()=>txtEdit('Type the launch text, then press Enter',logoName(),15,v=>{v=v.trim().toUpperCase().slice(0,15);setNm(v||'XMB');say('Launch text saved')})},{t:'Reset to XMB',fn:()=>{setNm('XMB');say('Launch text reset')}}]});
   agI.fn=()=>openMenu({title:'Agent control',panel:1,desc:()=>{const i=agInfo();return i.on?'MCP  http://'+i.ip+':'+i.port+'/mcp<br>Token: '+i.token:'Lets AI agents change settings and control this launcher over your network (MCP). Off by default. LAN only.'},rows:[{t:'Allow AI agents',sw:1,on:!!agInfo().on,fn:on=>{Android.agentSet(!!on);refresh()}},{t:'New token',fn:()=>{Android.agentNewToken();refresh();say('New token created')}}]});
   window.__agent={get:()=>JSON.stringify({background:PF.bg,color:PF.col,music:PF.mus}),set:(k,v)=>{
    if(k==='background'){if(v!=='static'&&v!=='dynamic')return'invalid';PF.bg=v;STATIC=v==='static';if(!STATIC&&(PF.col==='custom'||PF.col.indexOf('sc_')===0))PF.col='auto';apply();refresh();return'ok'}
@@ -303,7 +331,7 @@ if(HOST){try{INST=JSON.parse(Android.apps())}catch(e){INST=[]}
    if(k==='music'){if(!MV.some(a=>a[0]===v))return'invalid';PF.mus=v;musApply(1);refresh();return'ok'}
    return'unknown key'}};
   abI.fn=()=>{openMenu({title:'About',panel:1,desc:'<b>XMB TV Home</b> 1.0<br>Made by Sanan Goyal<br>sanangoyal.com<br><br>MIT License. Personal, non-commercial project, provided “as is” without warranty of any kind. No liability for damage, data loss or device problems. Use at your own risk.<br><br>Not affiliated with Sony, Google, Netflix, Amazon, Apple or any app shown. PlayStation and XMB are trademarks of Sony Interactive Entertainment. Movie data and images from TMDB; this product uses the TMDB API but is not endorsed or certified by TMDB.',rows:[{t:'Close',fn:()=>{}}]});const e=optsEl.lastElementChild;if(e)e.style.cssText='font-size:21px;padding:8px 22px;margin-top:6px'};
-  L.children=L_([bgI,colI,solI,cusI,artI,musI,agI,abI]);refresh();setTimeout(refresh,400);
+  L.children=L_([bgI,colI,solI,cusI,artI,musI,txtI,agI,abI]);refresh();setTimeout(refresh,400);
   const i=CS.root.items.findIndex(x=>x.t==='Personalise');CS.root.items.unshift(L);
   window.__launcherRefresh=refresh}
  for(const c of CATS)if(!c.root.items.length)c.root.items.push(I('Nothing installed','',ini('-')));
@@ -391,10 +419,10 @@ function revealUI(){if(uiRev)return;uiRev=true;stageEl.classList.add('rev')}
 function introFrame(now){
  if(phase!=='intro')return;const t=(now-tI)/1000;
  IB=sm(.4,2.6,t);
- blogo.style.opacity=(sm(2.5,3.1,t)*(1-sm(5.4,6.2,t))).toFixed(3);
+ logoO((sm(2.5,3.1,t)*(1-sm(5.4,6.2,t))).toFixed(3));
  if(t>6.3)revealUI();
  if(t>7.3)finishIntro();else requestAnimationFrame(introFrame)}
-function finishIntro(skip){if(window.Android)Android.log('finishIntro '+(performance.now()/1000).toFixed(1));phase='ready';IB=1;blogo.style.opacity=0;revealUI();if(skip&&bootSrc){try{bootSrc.g.gain.setTargetAtTime(0,AC.currentTime,.12);bootSrc.s.stop(AC.currentTime+.5)}catch(e){}}}
+function finishIntro(skip){if(window.Android)Android.log('finishIntro '+(performance.now()/1000).toFixed(1));phase='ready';IB=1;logoO(0);revealUI();if(skip&&bootSrc){try{bootSrc.g.gain.setTargetAtTime(0,AC.currentTime,.12);bootSrc.s.stop(AC.currentTime+.5)}catch(e){}}}
 function startIntro(){bootEl.classList.add('off');IB=0;ac();
  const go=()=>{if(!playBoot()){setTimeout(go,50);return}tI=performance.now();phase='intro';requestAnimationFrame(introFrame)};go()}
 function skipIntroNow(){if(phase==='intro')finishIntro(true)}
@@ -408,7 +436,7 @@ function openApp(it,C){appOpen=true;appEl.querySelector('.ic').innerHTML=it.ic;a
  setTimeout(()=>{if(appOpen){p.textContent='Demo: would start '+it.t;SND.done()}},1100);
  if(C.name==='Games'&&!it._tr){it._tr=1;setTimeout(()=>{if(appOpen){SND.trophy();say('Trophy earned: First Launch')}},1500)}}
 function closeApp(){appOpen=false;scrCol=null;tg=targetPalette();appEl.classList.remove('on');SND.pout()}
-var BL=-1;function blurSync(){const lv=optOpen&&OPTM&&OPTM.panel?2:(document.documentElement.classList.contains('sub')?1:0);if(lv!==BL){BL=lv;try{Android.bgBlur(lv)}catch(e){}}}
+var BL=-1;window.cover=on=>{document.documentElement.classList.toggle('cov',!!on);blurSync()};function blurSync(){const lv=document.documentElement.classList.contains('cov')||(optOpen&&OPTM&&OPTM.panel)?2:(document.documentElement.classList.contains('sub')?1:0);if(lv!==BL){BL=lv;try{Android.bgBlur(lv)}catch(e){}}}
 let OPTM=null;const pdim=document.getElementById('pdim');
 function rowHTML(r,i){const sel=i===optIdx?' sel':'';const lab=`<span class="l">${String(r.t).replace(/ /g,'&nbsp;')}</span>`;return `<div class="${sel.trim()}">${lab}${r.sw!==undefined?`<i class="sw${r.on?' on':''}"></i>`:r.rad!==undefined?`<i class="rad${r.rad?' on':''}"></i>`:''}</div>`}
 function renderMenu(){const m=OPTM,d=typeof m.desc==='function'?m.desc():m.desc;optsEl.innerHTML=(m.title?`<div class="ttl">${m.title}</div>`:'')+(d?`<div class="dsc">${d}</div>`:'')+m.rows.map(rowHTML).join('')}

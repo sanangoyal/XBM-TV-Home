@@ -187,8 +187,9 @@ public class MainActivity extends Activity {
     if (i != null && i.getStringExtra("js") != null) { js(i.getStringExtra("js")); return; } // debug hook
     if (i != null && i.hasCategory(Intent.CATEGORY_HOME)) js("window.hostHome&&hostHome()");
   }
-  @Override protected void onPause() { super.onPause(); fg = false; try { if (mp != null && mpReady && mp.isPlaying()) mp.pause(); } catch (Throwable e) {} }
-  @Override protected void onResume() { super.onResume(); fg = true; lastKey = System.currentTimeMillis(); try { if (mp != null && mpReady && bgOn && !mp.isPlaying()) mp.start(); } catch (Throwable e) {} MemGuard.start(this); MemGuard.nudge(); hideBars(); js("window.hostResume&&hostResume()"); }
+  @Override protected void onPause() { super.onPause(); fg = false; js("window.cover&&cover(1)"); }
+  @Override protected void onStop() { super.onStop(); try { if (mp != null && mpReady && mp.isPlaying()) mp.pause(); } catch (Throwable e) {} } // a translucent system screen (Settings) only pauses us: the video keeps playing behind it, a full-screen app stops it
+  @Override protected void onResume() { super.onResume(); fg = true; js("window.cover&&cover(0)"); lastKey = System.currentTimeMillis(); try { if (mp != null && mpReady && bgOn && !mp.isPlaying()) mp.start(); } catch (Throwable e) {} MemGuard.start(this); MemGuard.nudge(); hideBars(); js("window.hostResume&&hostResume()"); }
 
   @Override public boolean onKeyDown(int code, KeyEvent e) {
     if (code == KeyEvent.KEYCODE_BACK) { js("window.hostKey&&hostKey('Escape')"); return true; }

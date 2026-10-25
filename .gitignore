@@ -4,3 +4,4 @@ android/out/
 android/assets/index.html
 *.apk
 .DS_Store
+assets/clarendon.otf
