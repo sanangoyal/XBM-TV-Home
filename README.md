@@ -10,7 +10,7 @@
 <p align="center"><a href="#install">Install</a> · <a href="#screenshots">Screenshots</a> · <a href="#how-it-works">How it works</a> · <a href="#ai-control-mcp">AI control</a> · <a href="#compatibility">Compatibility</a> · <a href="#safety-and-undo">Safety</a> · <a href="#faq-and-troubleshooting">FAQ</a> · <a href="#build-from-source">Build</a></p>
 <hr>
 
-<p align="center"><img alt="Before and after: stock Google TV home vs XMB TV Home" src="docs/images/before-after.png"></p>
+<p align="center"><img alt="Before and after: stock Google TV home vs XMB TV Home, animated" src="docs/images/hero.gif"></p>
 
 <p align="center">Made by <a href="https://sanangoyal.com">Sanan Goyal</a> · MIT licence · Third-party material: <a href="ASSETS.md">ASSETS.md</a></p>
 
