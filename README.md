@@ -122,7 +122,16 @@ adb shell pm disable-user --user 0 com.google.android.tvlauncher
 | Fire TV | Not supported. Fire OS blocks third-party home screens |
 | Samsung (Tizen), LG (webOS) | Not supported. Different operating systems |
 
-Tested on OnePlus TV 55 Y1S Pro (Android 11, 1080p, 2 GB RAM). Some China-market sets refuse any third-party launcher. If you try another model, [open an issue](https://github.com/sanangoyal/xmb-tv-launcher/issues) with the model name and what happened.
+### Tested devices
+
+| TV / box | Android TV version | RAM | Stays responsive? | Notes |
+|---|---|---|---|---|
+| OnePlus TV 55 Y1S Pro | 11 | 2 GB | Yes (static background; video is fine too) | Author's TV |
+| *yours?* | | | | [Add it](https://github.com/sanangoyal/xmb-tv-launcher/issues) with model, Android version, RAM and how it feels |
+
+Low-RAM sets (2 GB or less) are the most useful reports.
+
+Some China-market sets refuse any third-party launcher. If you try another model, [open an issue](https://github.com/sanangoyal/xmb-tv-launcher/issues) with the model name and what happened.
 
 ## Safety and undo
 
