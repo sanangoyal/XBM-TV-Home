@@ -94,7 +94,7 @@ html.sub #art,html.sub #bgv,html.sub #gl,html.pnl #art,html.pnl #bgv,html.pnl #g
 #art .cap i{display:block;font-style:normal;font-size:.95vw;opacity:var(--o-3);margin-top:.5vw}
 html.calm *{transition-duration:.01s!important}
 html.lite svg.gi,html.lite .item .ic svg.gi,html.lite .pitem .ic svg.gi,html.lite .cat .ic,html.lite .ic>img.logo,html.lite #info svg,html.lite #art .b,html.lite #art .h img{filter:none!important}
-html.lite #app,html.lite #info{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+html.lite #app,html.lite #info,html.lite #opts{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(20,20,24,.92)!important}
 html.lite #hint,html.lite .hint,html.lite #keys{display:none!important}
 html.lite #art .b{display:none}
 html.lite .lg{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;background:rgba(255,255,255,.1)}
@@ -106,8 +106,32 @@ html.lite .lg{backdrop-filter:none!important;-webkit-backdrop-filter:none!import
 #opts.rp .l{flex:1}.rad{flex:none;width:34px;height:34px;box-sizing:border-box;border-radius:50%;border:3px solid rgba(255,255,255,.62);position:relative}.rad.on{border-color:#5aa2ff}.rad.on:after{content:'';position:absolute;inset:6px;border-radius:50%;background:#5aa2ff}#opts.rp div.sel .rad{border-color:#fff}#opts.rp div.sel .rad.on:after{background:#fff}
 .sw{flex:none;width:68px;height:28px;border-radius:14px;background:rgba(255,255,255,.34);position:relative}.sw:after{content:'';position:absolute;top:-6px;left:-4px;width:40px;height:40px;border-radius:50%;background:#e8eaed;box-shadow:0 1px 5px rgba(0,0,0,.55);transition:left .15s}.sw.on{background:#7aa7f5}.sw.on:after{left:32px;background:#fff}#opts.rp div.sel .sw{background:rgba(255,255,255,.4)}#opts.rp div.sel .sw.on{background:#a9c7fb}
 html.pnl #info,html.pnl #stage.rev ~ #info{opacity:0!important;transition:opacity .15s 0s!important}
-html.cov #stage>*:not(#bfx){opacity:0!important;transition:opacity .2s!important}html.cov #info{opacity:0!important;transition:opacity .15s 0s!important}html.cov #arth,html.cov #art .cap{opacity:0!important;transition:opacity .2s!important}html.cov #bfx{opacity:.42}#bfx{position:fixed;inset:0;z-index:1;background:#000;opacity:0;pointer-events:none;transition:opacity .35s}html.sub #bfx{opacity:.16}html.pnl #bfx{opacity:.24}#pdim{position:fixed;inset:0;z-index:14;background:rgba(0,0,0,.12);opacity:0;pointer-events:none;transition:opacity .25s}#pdim.on{opacity:1}
+html.cov #stage>*:not(#bfx){opacity:0!important;transition:opacity .2s!important}html.cov #info{opacity:0!important;transition:opacity .15s 0s!important}html.cov #arth,html.cov #art .cap{opacity:0!important;transition:opacity .2s!important}html.cov #bfx{opacity:.42}#bfx{position:fixed;inset:0;z-index:1;background:#000;opacity:0;pointer-events:none;transition:opacity .35s}html.sub #bfx{opacity:.16}html.pnl #bfx{opacity:.24}
+/* #stage (and the #bfx dimmer inside it) stays opacity:0 until the intro finishes and reveals it
+   (see #stage.rev), so darkening #bfx during intro is invisible — the boot logo needs its own
+   layer, outside #stage, that is actually on screen while the logo plays. */
+#introdim{position:fixed;inset:0;z-index:39;background:rgba(0,0,0,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .3s}
+html.intro #introdim{opacity:1}#pdim{position:fixed;inset:0;z-index:14;background:rgba(0,0,0,.12);opacity:0;pointer-events:none;transition:opacity .25s}#pdim.on{opacity:1}
 html.st #bgv{background-size:cover;background-position:center}html.st #bgv video{display:none}
+/* Photo wallpaper (GTA VI slideshow / a custom image) sits behind the menu column on the left,
+   same scrim recipe #art .sl::after already uses for trending-art captions: a hard left-to-right
+   dark gradient plus a top-left vignette, strongest where the category bar and item list live and
+   gone by 72% across so the picture itself still reads clearly. Solid-colour and video backgrounds
+   keep their original per-element text-shadows untouched; this only shows for a photo background. */
+#wps{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0;transition:opacity .4s;background:linear-gradient(90deg,rgba(0,0,0,.92) 0,rgba(0,0,0,.85) 20%,rgba(0,0,0,.65) 35%,rgba(0,0,0,.45) 48%,rgba(0,0,0,.25) 60%,rgba(0,0,0,.1) 72%,transparent 85%),radial-gradient(ellipse 70% 60% at 0 0,rgba(0,0,0,.5),transparent 70%)}
+/* Slideshow photos as plain <img> layers instead of native Canvas blits: a GPU compositor cross-fades
+   and slides two already-rasterised layers on transform+opacity alone, no per-frame redraw, no blur,
+   nothing the MediaTek GPU on this board has to work for. object-fit:cover plus a 6% overscan
+   (width/height 106%, centred with a -3% inset) gives translateX room to slide without ever showing
+   a bare edge. Only active in 'slide' colour mode; the native Canvas path still draws every other
+   background (solid colours, the bundled gold/blue/dark video, a single custom image). */
+.wpimg{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:0;pointer-events:none;transition:opacity .9s ease,transform .9s ease;transform:translateX(0)}
+.wpimg.show{opacity:1;transform:translateX(0)}
+.wpimg.in-l{transform:translateX(-2.5%)}
+.wpimg.in-r{transform:translateX(2.5%)}
+.wpimg.out-l{transform:translateX(-2.5%)}
+.wpimg.out-r{transform:translateX(2.5%)}
+html.photobg #wps{opacity:1}
 </style></head><body>
 <div id="art"><div class="sl" id="slA"></div><div class="sl" id="slB"></div></div><div id="arth"></div><div id="tkb"><div>Paste your TMDB key, then press Enter</div><div class="tkh">Press Back to cancel</div><input id="tk" type="text" autocomplete="off" spellcheck="false"></div>
 <svg id="sheet" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1556 1776"><defs><filter id="glass" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB">
@@ -128,8 +152,8 @@ html.st #bgv{background-size:cover;background-position:center}html.st #bgv video
 <feMerge><feMergeNode in="sh"/><feMergeNode in="body"/><feMergeNode in="sheen"/><feMergeNode in="rimShade"/><feMergeNode in="rimLite"/><feMergeNode in="spIn"/></feMerge>
 </filter></defs>/*SHEET*/</svg>
 <svg id="lgdefs" width="0" height="0" style="position:absolute"></svg>
-<div id="bgv"><video id="v0" muted loop playsinline preload="auto"></video><video id="v1" muted loop playsinline preload="auto"></video></div><canvas id="gl"></canvas>
-<div id="blogo"><div class="w"></div></div>
+<div id="bgv"><video id="v0" muted loop playsinline preload="auto"></video><video id="v1" muted loop playsinline preload="auto"></video></div><canvas id="gl"></canvas><img id="wpA" class="wpimg"><img id="wpB" class="wpimg"><div id="wps"></div>
+<div id="introdim"></div><div id="blogo"><div class="w"></div></div>
 <div id="stage">
   <div id="glassLayer"></div>
   <div id="bar"></div>
@@ -224,6 +248,23 @@ const lg=k=>{const g=LG[k];return `<img class="lgo" alt="" decoding="async" src=
 const PF=(()=>{const g=(k,d)=>{try{const v=localStorage.getItem('xmb_'+k);return v===null?d:v}catch(e){return d}};return{bg:g('bg','static'),col:g('col','auto'),mus:g('mus','15'),tk:g('tk',''),art:g('art',''),nm:g('nm','XMB'),save(){try{for(const k of['bg','col','mus','tk','art','nm'])localStorage.setItem('xmb_'+k,this[k])}catch(e){}}}})();
 const tmdbKey=()=>(PF.tk||(window.Android?Android.tmdbKey():'')||'').trim(),artOn=()=>!!tmdbKey()&&PF.art!=='off';let artBad=false,tkClose=null;buildLogo(); // key: Settings field wins over /sdcard/xmb-tmdb.txt; none ships in the APK
 let STATIC=PF.bg==='static';const rpick=()=>['gold','blue','black'][Math.floor(Math.random()*3)];let RK=rpick();setInterval(()=>{RK=rpick()},1800000);const tod=()=>{const h=new Date().getHours();return h>=5&&h<12?'blue':h>=12&&h<19?'gold':'black'};
+const SL_N=11;let SL_I=Math.floor(Date.now()/8000)%SL_N;
+let wpFront='A',wpShown=false;
+const wpSrc=i=>'file:///android_asset/wallpaper_'+i+'.jpg';
+function slideShow(idx,dir){
+ const front=document.getElementById('wp'+wpFront),back=document.getElementById('wp'+(wpFront==='A'?'B':'A'));
+ if(!dir){front.classList.remove('show','in-l','in-r','out-l','out-r');back.classList.remove('in-l','in-r','out-l','out-r');
+  back.onload=()=>requestAnimationFrame(()=>requestAnimationFrame(()=>back.classList.add('show')));back.src=wpSrc(idx);wpFront=(wpFront==='A'?'B':'A');return}
+ back.classList.remove('show','in-l','in-r','out-l','out-r');back.classList.add(dir>0?'in-r':'in-l');
+ back.onload=()=>requestAnimationFrame(()=>requestAnimationFrame(()=>{
+  back.classList.remove('in-l','in-r');back.classList.add('show');
+  front.classList.remove('show');front.classList.add(dir>0?'out-l':'out-r');
+ }));
+ back.src=wpSrc(idx);wpFront=(wpFront==='A'?'B':'A');
+}
+setInterval(()=>{SL_I=(SL_I+1)%SL_N;if(PF.col==='slide'&&STATIC){slideShow(SL_I,1);refresh()}},8000);
+document.documentElement.classList.toggle('photobg',STATIC&&(PF.col==='slide'||PF.col==='custom'));
+if(STATIC&&PF.col==='slide'){wpShown=true;slideShow(SL_I,0)}
 const CATS=[
  {name:'Power',icon:'pw_power',root:L_([sys('Sleep','Standby, wake with any key','pw_sleep'),sys('Restart','Reboot launcher','pw_restart'),sys('Shutdown','Power off','pw_power'),sys('Google TV Home','Switch to stock launcher','pw_home')])},
  {name:'Settings',icon:'Layer_32',root:L_([
@@ -248,27 +289,27 @@ const CATS=[
     sys('Developer options','','Layer_26'),sys('Location','','Layer_34'),sys('Security','','Layer_9'),
     sys('Accessibility','','headset'),sys('Factory reset','','Layer_19_copy')]))])},
  {name:'Video',icon:'Layer_39',root:L_([
-  I('Netflix','',lg('netflix')),I('YouTube','',lg('youtube')),I('Prime Video','',lg('primevideo')),I('Apple TV','',lg('appletv')),
-  I('Hotstar','',lg('hotstar')),I('ZEE5','',lg('zee5')),I('SonyLIV','',lg('sonyliv'))])},
- {name:'Music',icon:'music',root:L_([I('Apple Music','',lg('applemusic')),I('Spotify','',lg('spotify'))])},
+  I('Netflix','',lg('netflix')),I('Prime Video','',lg('primevideo')),I('JioHotstar','',lg('hotstar')),I('YouTube','',lg('youtube'))])},
+ {name:'Music',icon:'music',root:L_([I('Spotify','',lg('spotify'))])},
  {name:'Games',icon:'game',root:L_([
-  sys('Game 01','Coming soon','bd'),sys('Game 02','Coming soon','Layer_27'),sys('Game 03','Coming soon','bd'),sys('Game 04','Coming soon','Layer_27'),sys('Trophies','Coming soon','trophy')])},
+  I('PS Remote Play','',`<img class="aic" data-pkg="com.playstation.remoteplay.tv" alt="">`)])},
+ {name:'PS5',icon:'ps5_logo',root:L_([sys('PS5','Switches straight to it over HDMI-CEC','ps5_logo')])},
  {name:'Apps',icon:'folder',root:L_([
-  sys('Live TV','','src_tv'),I('Chrome','',lg('googlechrome')),I('Play Store','',lg('googleplay')),
-  I('Plex','',lg('plex')),I('Kodi','',lg('kodi')),I('VLC','',lg('vlcmediaplayer')),
-  I('Discord','',lg('discord')),sys('All Apps','','Layer_41')])},
- {name:'Sources',icon:'src_cat',root:L_([
-  sys('HDMI 1','Set-top box','src_hdmi'),sys('HDMI 2 (ARC)','Soundbar / AVR','src_hdmi'),sys('HDMI 3','Game console','src_hdmi'),
+  sys('Live TV','','src_tv'),I('TV Bro','',lg('browse')),I('Play Store','',lg('googleplay')),
+  I('PS Remote Play','',`<img class="aic" data-pkg="com.playstation.remoteplay.tv" alt="">`),
+  sys('All Apps','','Layer_41')])},
+ {name:'Other Sources',icon:'src_cat',root:L_([
+  sys('HDMI 2 (ARC)','Soundbar / AVR','src_hdmi'),sys('HDMI 3','Game console','src_hdmi'),
   sys('AV','Composite input','src_av'),sys('USB','Media storage','g2_03'),sys('Live TV','Antenna / cable','src_tv')])}
 ];
 /* power icons: traced from user-supplied source image */
-sheet.insertAdjacentHTML('beforeend',`<g id="src_cat"><g transform="scale(.078) translate(0 960)"><path fill="#fff" d="M140-160q-24 0-42-18t-18-42v-169h60v169h680v-520H140v171H80v-171q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H140Zm319-143-43-43 103-103H80v-60h439L416-612l43-43 176 176-176 176Z"/></g></g><g id="src_av"><g transform="scale(.078) translate(0 960)"><path fill="#fff" d="M323-111q-73-31-127-85t-85-127q-31-73-31-157t31-157q31-73 85-127t127-85q73-31 157-31t157 31q73 31 127 85t85 127q31 73 31 157t-31 157q-31 73-85 127t-127 85q-73 31-157 31t-157-31Zm157-369Zm-154.5 12.5Q340-482 340-503t-14.5-35.5Q311-553 290-553t-35.5 14.5Q240-524 240-503t14.5 35.5Q269-453 290-453t35.5-14.5Zm380 0Q720-482 720-503t-14.5-35.5Q691-553 670-553t-35.5 14.5Q620-524 620-503t14.5 35.5Q649-453 670-453t35.5-14.5Zm-317 197Q403-285 403-306t-14.5-35.5Q374-356 353-356t-35.5 14.5Q303-327 303-306t14.5 35.5Q332-256 353-256t35.5-14.5Zm253 0Q656-285 656-306t-14.5-35.5Q627-356 606-356t-35.5 14.5Q556-327 556-306t14.5 35.5Q585-256 606-256t35.5-14.5ZM416-620h127q20 0 35-15t15-35q0-20-15-38t-35-18H416q-20 0-35 18t-15 38q0 20 15 35t35 15Zm64 480q140 0 240-100t100-240q0-140-100-240T480-820q-140 0-240 100T140-480q0 140 100 240t240 100Z"/></g></g><g id="src_hdmi"><g transform="scale(4.6)"><path fill="#fff" d="M2.5 7a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1z"/><path fill="#fff" d="M1 5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h.293l.707.707a1 1 0 0 0 .707.293h10.586a1 1 0 0 0 .707-.293l.707-.707H15a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1zm0 1h14v3h-.293a1 1 0 0 0-.707.293l-.707.707H2.707L2 9.293A1 1 0 0 0 1.293 9H1z"/></g></g><g id="src_tv"><g transform="scale(.34)"><path fill="#fff" d="M216,64H147.31l34.35-34.34a8,8,0,1,0-11.32-11.32L128,60.69,85.66,18.34A8,8,0,0,0,74.34,29.66L108.69,64H40A16,16,0,0,0,24,80V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64Zm0,136H40V80H216V200Z"/></g></g>`);
+sheet.insertAdjacentHTML('beforeend',`<g id="src_cat"><g transform="scale(.078) translate(0 960)"><path fill="#fff" d="M140-160q-24 0-42-18t-18-42v-169h60v169h680v-520H140v171H80v-171q0-24 18-42t42-18h680q24 0 42 18t18 42v520q0 24-18 42t-42 18H140Zm319-143-43-43 103-103H80v-60h439L416-612l43-43 176 176-176 176Z"/></g></g><g id="src_av"><g transform="scale(.078) translate(0 960)"><path fill="#fff" d="M323-111q-73-31-127-85t-85-127q-31-73-31-157t31-157q31-73 85-127t127-85q73-31 157-31t157 31q73 31 127 85t85 127q31 73 31 157t-31 157q-31 73-85 127t-127 85q-73 31-157 31t-157-31Zm157-369Zm-154.5 12.5Q340-482 340-503t-14.5-35.5Q311-553 290-553t-35.5 14.5Q240-524 240-503t14.5 35.5Q269-453 290-453t35.5-14.5Zm380 0Q720-482 720-503t-14.5-35.5Q691-553 670-553t-35.5 14.5Q620-524 620-503t14.5 35.5Q649-453 670-453t35.5-14.5Zm-317 197Q403-285 403-306t-14.5-35.5Q374-356 353-356t-35.5 14.5Q303-327 303-306t14.5 35.5Q332-256 353-256t35.5-14.5Zm253 0Q656-285 656-306t-14.5-35.5Q627-356 606-356t-35.5 14.5Q556-327 556-306t14.5 35.5Q585-256 606-256t35.5-14.5ZM416-620h127q20 0 35-15t15-35q0-20-15-38t-35-18H416q-20 0-35 18t-15 38q0 20 15 35t35 15Zm64 480q140 0 240-100t100-240q0-140-100-240T480-820q-140 0-240 100T140-480q0 140 100 240t240 100Z"/></g></g><g id="src_hdmi"><g transform="scale(4.6)"><path fill="#fff" d="M2.5 7a.5.5 0 0 0 0 1h11a.5.5 0 0 0 0-1z"/><path fill="#fff" d="M1 5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h.293l.707.707a1 1 0 0 0 .707.293h10.586a1 1 0 0 0 .707-.293l.707-.707H15a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1zm0 1h14v3h-.293a1 1 0 0 0-.707.293l-.707.707H2.707L2 9.293A1 1 0 0 0 1.293 9H1z"/></g></g><g id="src_tv"><g transform="scale(.34)"><path fill="#fff" d="M216,64H147.31l34.35-34.34a8,8,0,1,0-11.32-11.32L128,60.69,85.66,18.34A8,8,0,0,0,74.34,29.66L108.69,64H40A16,16,0,0,0,24,80V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64Zm0,136H40V80H216V200Z"/></g></g><g id="ps5_logo"><g transform="scale(4)"><path fill="#fff" d="M8.984 2.596v17.547l3.915 1.261V6.688c0-.69.304-1.151.794-.991.636.18.76.814.76 1.505v5.875c2.441 1.193 4.362-.002 4.362-3.152 0-3.237-1.126-4.675-4.438-5.827-1.307-.448-3.728-1.186-5.39-1.502zm4.656 16.241l6.296-2.275c.715-.258.826-.625.246-.818-.586-.192-1.637-.139-2.357.123l-4.205 1.5V14.98l.24-.085s1.201-.42 2.913-.615c1.696-.18 3.785.03 5.437.661 1.848.601 2.04 1.472 1.576 2.072-.465.6-1.622 1.036-1.622 1.036l-8.544 3.107V18.86zM1.807 18.6c-1.9-.545-2.214-1.668-1.352-2.32.801-.586 2.16-1.052 2.16-1.052l5.615-2.013v2.313L4.205 17c-.705.271-.825.632-.239.826.586.195 1.637.15 2.343-.12L8.247 17v2.074c-.12.03-.256.044-.39.073-1.939.331-3.996.196-6.038-.479z"/></g></g>`);
 sheet.insertAdjacentHTML('beforeend',`<g id="ln_mus"><g transform="scale(.078) translate(0 960)"><path fill="#fff" d="M286.5-163.5Q243-207 243-270t43.5-106.5Q330-420 393-420q28 0 50.5 8t39.5 22v-450h234v135H543v435q0 63-43.5 106.5T393-120q-63 0-106.5-43.5Z"/></g></g><g id="ln_ag"><g transform="scale(.078) translate(0 960)"><path fill="#fff" d="M147-376q-45 0-76-31.21T40-483q0-44.58 31.21-75.79Q102.42-590 147-590v-123q0-24 18-42t42-18h166q0-45 31-76t76-31q45 0 76 31.21T587-773h166q24 0 42 18t18 42v123q45 0 76 31.21T920-483q0 44.58-31.21 75.79Q857.58-376 813-376v196q0 24-18 42t-42 18H207q-24 0-42-18t-18-42v-196Zm224.5-111.74q11.5-11.73 11.5-28.5 0-16.76-11.74-28.26-11.73-11.5-28.5-11.5-16.76 0-28.26 11.74-11.5 11.73-11.5 28.5 0 16.76 11.74 28.26 11.73 11.5 28.5 11.5 16.76 0 28.26-11.74Zm274 0q11.5-11.73 11.5-28.5 0-16.76-11.74-28.26-11.73-11.5-28.5-11.5-16.76 0-28.26 11.74-11.5 11.73-11.5 28.5 0 16.76 11.74 28.26 11.73 11.5 28.5 11.5 16.76 0 28.26-11.74ZM312-285h336v-60H312v60ZM207-180h546v-533H207v533Zm273-267Z"/></g></g><g id="ln_info"><g transform="scale(.078) translate(0 960)"><path fill="#fff" d="M453-280h60v-240h-60v240Zm50.5-323.2q9.5-9.2 9.5-22.8 0-14.45-9.48-24.22-9.48-9.78-23.5-9.78t-23.52 9.78Q447-640.45 447-626q0 13.6 9.48 22.8 9.48 9.2 23.5 9.2t23.52-9.2ZM480.27-80q-82.74 0-155.5-31.5Q252-143 197.5-197.5t-86-127.34Q80-397.68 80-480.5t31.5-155.66Q143-709 197.5-763t127.34-85.5Q397.68-880 480.5-880t155.66 31.5Q709-817 763-763t85.5 127Q880-563 880-480.27q0 82.74-31.5 155.5Q817-252 763-197.68q-54 54.31-127 86Q563-80 480.27-80Zm.23-60Q622-140 721-239.5t99-241Q820-622 721.19-721T480-820q-141 0-240.5 98.81T140-480q0 141 99.5 240.5t241 99.5Zm-.5-340Z"/></g></g><g id="ln_main"><g transform="scale(.078) translate(0 960)"><path fill="#fff" d="M427-120v-225h60v83h353v60H487v82h-60Zm-307-82v-60h247v60H120Zm187-166v-82H120v-60h187v-84h60v226h-60Zm120-82v-60h413v60H427Zm166-165v-225h60v82h187v60H653v83h-60Zm-473-83v-60h413v60H120Z"/></g></g><g id="ln_bg"><g transform="scale(.078) translate(0 960)"><path fill="#fff" d="M180-120q-24 0-42-18t-18-42v-270h60v270h270v60H180Zm330 0v-60h270v-270h60v270q0 24-18 42t-42 18H510ZM237-268l118-152 93 127 132-171 147 196H237ZM120-510v-270q0-24 18-42t42-18h270v60H180v270h-60Zm660 0v-270H510v-60h270q24 0 42 18t18 42v270h-60Zm-194.5-75.5Q570-601 570-624t15.5-38.5Q601-678 624-678t38.5 15.5Q678-647 678-624t-15.5 38.5Q647-570 624-570t-38.5-15.5Z"/></g></g><g id="ln_col"><g transform="scale(.078) translate(0 960)"><path fill="#fff" d="M480-80q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-85 32-158t87.5-127q55.5-54 130-84.5T489-880q79 0 150 26.5T763.5-780q53.5 47 85 111.5T880-527q0 108-63 170.5T650-294h-75q-18 0-31 14t-13 31q0 27 14.5 46t14.5 44q0 38-21 58.5T480-80Zm0-400Zm-198 11q15-15 15-35t-15-35q-15-15-35-15t-35 15q-15 15-15 35t15 35q15 15 35 15t35-15Zm126-170q15-15 15-35t-15-35q-15-15-35-15t-35 15q-15 15-15 35t15 35q15 15 35 15t35-15Zm214 0q15-15 15-35t-15-35q-15-15-35-15t-35 15q-15 15-15 35t15 35q15 15 35 15t35-15Zm131 170q15-15 15-35t-15-35q-15-15-35-15t-35 15q-15 15-15 35t15 35q15 15 35 15t35-15ZM480-140q11 0 15.5-4.5T500-159q0-14-14.5-26T471-238q0-46 30-81t76-35h73q76 0 123-44.5T820-527q0-132-100-212.5T489-820q-146 0-247.5 98.5T140-480q0 141 99.5 240.5T480-140Z"/></g></g><g id="ln_sol"><g transform="scale(.078) translate(0 960)"><path fill="#fff" d="m255-917 43-43 347.69 347.69Q669-589 669-555.37q0 33.62-23 56.37L468-321q-23 23-54 23t-54-23L182-499q-23-22.77-23-56.44 0-33.66 23-56.44L371-801 255-917Zm159 159L215-559h398L414-758Zm287 455.85Q680-323.3 680-353q0-17.35 8-37.17Q696-410 710-431q8-13 19.5-28t22.5-28q11 13 22.5 28t19.5 28q14 21 22 40.83 8 19.82 8 37.17 0 29.7-21.21 50.85-21.21 21.15-51 21.15T701-302.15ZM80 1v-121h800V1H80Z"/></g></g><g id="ln_img"><g transform="scale(.078) translate(0 960)"><path fill="#fff" d="M480-480ZM180-120q-24 0-42-18t-18-42v-600q0-24 18-42t42-18h365v60H180v600h600v-365h60v365q0 24-18 42t-42 18H180Zm60-162h480L576-474 449-307l-94-124-115 149Zm453-323v-87h-88v-60h88v-88h60v88h87v60h-87v87h-60Z"/></g></g><g id="ln_night"><g transform="scale(.078) translate(0 960)"><path fill="#fff" d="M484-80q-84 0-157.5-32t-128-86.5Q144-253 112-326.5T80-484q0-146 93-257.5T410-880q-18 98 11 192.63 29 94.64 100 165.74 71 71.1 165.5 100.14Q781-392.45 880-410.47q-26 144.2-138 237.34Q630-80 484-80Zm0-60q100 0 182-57t132-145q-90-8-173-41.5T478.5-480Q415-543 382-625.5T341-797q-88 48-144.5 130.5T140-484q0 143.33 100.33 243.67Q340.67-140 484-140Zm-6-340Z"/></g></g>`);
 sheet.insertAdjacentHTML('beforeend',`<g id="am_open"><g transform="scale(.17)"><path stroke="#fff" stroke-width="22" stroke-linejoin="round" stroke-linecap="round" fill="none" d="M120 60L380 220L120 380Z"/></g></g><g id="am_info"><g transform="scale(.17)"><circle cx="220" cy="220" r="185" stroke="#fff" stroke-width="22" fill="none"/><path stroke="#fff" stroke-width="30" stroke-linecap="round" d="M220 200V320M220 130V135"/></g></g><g id="am_del"><g transform="scale(.17)"><path stroke="#fff" stroke-width="22" stroke-linejoin="round" stroke-linecap="round" fill="none" d="M60 100H380M160 100V50H280V100M95 100L120 400H320L345 100M185 170V340M255 170V340"/></g></g><g id="am_store"><g transform="scale(.17)"><path stroke="#fff" stroke-width="22" stroke-linejoin="round" stroke-linecap="round" fill="none" d="M70 140H370L395 400H45ZM150 140V110C150 65 185 40 220 40C255 40 290 65 290 110V140"/></g></g><g id="pw_home"><g transform="scale(.17)"><path stroke="#fff" stroke-width="22" stroke-linejoin="round" stroke-linecap="round" fill="none" d="M30 215L220 45L410 215M85 190V395H175V270H265V395H355V190"/></g></g><g id="pw_power"><g transform="scale(.17)"><path stroke="#fff" stroke-width="16" stroke-linejoin="round" fill-rule="evenodd" d="M193.5 419.3C173.3 416.9 163.3 414.7 143.0 407.9C86.3 389.1 38.9 342.9 17.6 285.7C-12.1 206.0 10.4 114.6 73.2 59.3C84.8 49.0 106.0 33.6 107.0 34.7C107.4 35.1 109.9 38.6 112.5 42.5C115.2 46.4 119.3 52.3 121.7 55.7L126.0 61.8L115.7 69.1C64.9 105.2 38.6 154.7 38.7 214.5C38.8 291.6 91.1 359.5 166.0 379.9C194.3 387.6 229.2 387.6 256.5 379.9C354.0 352.4 407.4 250.2 373.9 155.3C361.5 120.1 339.0 91.5 305.7 68.5C301.0 65.2 297.1 62.1 297.0 61.7C297.0 61.2 301.1 54.9 306.2 47.7C311.2 40.4 315.5 34.3 315.6 34.1C316.0 33.6 332.0 45.2 342.5 53.5C394.4 94.9 423.8 165.9 416.9 233.1C406.8 331.7 330.6 408.2 231.8 418.9C222.8 419.9 200.4 420.2 193.5 419.3ZM194.0 122.0L194.0 4.0L211.0 4.0L228.0 4.0L228.0 122.0L228.0 240.0L211.0 240.0L194.0 240.0L194.0 122.0Z"/></g></g><g id="pw_restart"><g transform="scale(.17)"><path stroke="#fff" stroke-width="16" stroke-linejoin="round" fill-rule="evenodd" d="M191.0 446.5C190.2 446.3 185.4 445.6 180.5 445.0C123.2 437.5 68.2 401.7 36.3 351.1C-12.5 273.9 -5.0 173.6 54.5 105.5C64.4 94.2 63.3 95.2 75.9 84.2C88.3 73.3 104.6 62.5 120.0 55.1C131.9 49.3 152.9 41.0 155.5 41.0C156.5 41.0 168.6 71.9 167.8 72.5C167.6 72.6 162.3 74.6 155.9 76.8C93.0 99.3 51.4 148.8 39.8 215.0C37.6 227.8 38.1 258.3 40.8 271.9C54.9 342.5 106.6 395.0 177.0 410.1C192.4 413.5 230.8 413.5 245.0 410.2C323.3 392.1 375.8 332.9 383.0 254.6C389.1 187.6 352.5 120.3 292.8 88.5L284.2 83.9L286.0 89.7C287.5 94.6 291.6 107.4 299.6 131.9C300.4 134.4 300.9 136.4 300.7 136.5C300.6 136.5 299.4 137.1 298.0 137.8C296.6 138.5 291.9 140.1 287.5 141.4C283.1 142.8 277.2 144.7 274.3 145.8L269.2 147.8L267.5 141.6C266.5 138.3 265.2 134.4 264.5 133.0C263.8 131.6 263.0 129.1 262.7 127.5C262.5 125.8 261.3 122.2 260.2 119.5C255.6 108.3 233.9 40.7 234.7 40.0C235.5 39.3 338.6 5.1 340.4 5.0C341.2 4.9 344.9 15.2 350.5 32.7L351.8 36.9L326.4 45.2C312.4 49.8 301.0 53.7 301.0 54.0C301.0 54.3 303.1 55.6 305.8 56.9C349.9 78.3 390.3 125.1 406.5 173.5C416.6 203.7 420.3 240.9 415.9 267.8C414.8 274.0 414.0 280.2 414.0 281.6C414.0 282.9 413.1 286.6 412.1 289.7C411.0 292.9 409.0 299.3 407.6 303.9C406.1 308.6 404.3 313.7 403.6 315.4C402.9 317.1 401.0 321.4 399.5 325.0C383.4 363.4 346.5 403.1 309.1 422.4C306.1 423.9 302.9 425.6 302.1 426.1C301.2 426.5 297.8 428.1 294.5 429.5C291.2 431.0 287.6 432.6 286.5 433.1C276.6 437.5 256.6 442.7 240.6 445.1C229.0 446.8 197.1 447.7 191.0 446.5Z"/></g></g><g id="pw_sleep"><g transform="scale(.17)"><path stroke="#fff" stroke-width="16" stroke-linejoin="round" fill-rule="evenodd" d="M183.0 426.5C122.3 417.7 69.9 385.5 36.4 336.5C33.0 331.5 4.0 282.2 4.0 281.4C4.0 281.2 6.0 281.9 33.5 292.7C59.4 302.8 69.6 305.8 86.3 308.0C152.6 316.7 218.3 281.1 247.6 220.3C258.4 197.9 262.5 179.3 262.5 152.5C262.5 123.6 258.5 105.7 246.5 81.5C236.3 60.9 227.0 49.8 191.3 15.8L179.2 4.2L183.3 4.5C185.6 4.7 196.7 5.6 208.0 6.4C253.7 9.9 274.1 14.8 302.5 28.9C430.9 92.6 460.6 259.5 362.0 363.3C331.3 395.6 293.1 416.1 246.5 425.1C233.1 427.7 196.7 428.5 183.0 426.5ZM233.5 392.6C330.6 380.4 399.6 288.3 384.6 191.0C375.1 129.7 335.1 79.0 277.1 54.6C273.6 53.1 270.6 52.1 270.4 52.3C270.2 52.5 273.1 58.8 276.9 66.3C284.5 81.4 289.7 96.3 293.7 115.0C297.7 133.7 297.7 170.3 293.7 188.9C273.4 282.0 194.7 345.0 101.2 342.9C92.9 342.7 86.0 342.6 86.0 342.8C86.0 343.0 88.3 345.2 91.1 347.8C129.7 383.0 181.2 399.2 233.5 392.6Z"/></g></g>`);
 
 /* ---------- ANDROID HOST (WebView bridge) ---------- */
 const HOST=!!window.Android;if(/[?&]kill=[^&]*css/.test(location.search)){const st=document.createElement('style');st.textContent='*{box-shadow:none!important;text-shadow:none!important;filter:none!important;backdrop-filter:none!important;will-change:auto!important;mix-blend-mode:normal!important}';document.head.appendChild(st)}if(/[?&]kill=[^&]*mask/.test(location.search)){const st=document.createElement('style');st.textContent='.lgo,.lg{-webkit-mask:none!important;mask:none!important}';document.head.appendChild(st)}{const xm=/[?&]x=([a-z]+)/.exec(location.search);if(xm){const M={i:'#info',c:'#bar',m:'#items',h:'#hint',b:'#bgv'};const st=document.createElement('style');st.textContent=xm[1].split('').map(k=>M[k]?M[k]+'{display:none!important}':'').join('');document.head.appendChild(st)}}if(HOST&&!/[?&]glass=1/.test(location.search))document.documentElement.classList.add('lite');
-const PKG={'Netflix':'com.netflix.ninja','YouTube':'com.google.android.youtube.tv','Prime Video':'com.amazon.amazonvideo.livingroom','Apple TV':'com.apple.atve.androidtv.appletv','Hotstar':'in.startv.hotstar','ZEE5':'com.graymatrix.did','SonyLIV':'com.sonyliv','Spotify':'com.spotify.tv.android','Plex':'com.plexapp.android','Kodi':'org.xbmc.kodi','VLC':'org.videolan.vlc','Discord':'com.discord','Chrome':'com.android.chrome','Play Store':'com.android.vending','Live TV':'com.oneplus.tv.android.livetv','Apple Music':'com.apple.android.music'};
+const PKG={'Netflix':'com.netflix.ninja','YouTube':'com.google.android.youtube.tv','Prime Video':'com.amazon.amazonvideo.livingroom','JioHotstar':'in.startv.hotstar','Spotify':'com.spotify.tv.android','PS Remote Play':'com.playstation.remoteplay.tv','TV Bro':'com.phlox.tvwebbrowser','Play Store':'com.android.vending','Live TV':'com.tcl.tv'};
 const TVS='c:com.android.tv.settings/',NETL=[TVS+'.connectivity.NetworkActivity','a:android.settings.WIRELESS_SETTINGS'],SNDL=[TVS+'.device.sound.SoundModeActivity','a:android.settings.SOUND_SETTINGS'],PICL=[TVS+'.partnercustomizer.picture.PictureActivity','a:android.settings.DISPLAY_SETTINGS'],PERL=[TVS+'.personalise.PersonaliseActivity'],SECL=[TVS+'.system.SecurityActivity','a:android.settings.SECURITY_SETTINGS'];
 const SETACT={'Network and internet':NETL,'Sound':SNDL,'Picture settings':PICL,'Remotes and accessories':[TVS+'.accessories.AddAccessoryActivity','a:android.settings.BLUETOOTH_SETTINGS'],'Wi-Fi':['a:android.settings.WIFI_SETTINGS'],'Ethernet':NETL,'Proxy settings':NETL,'IP settings':NETL,
 'Sound Mode':SNDL,'Surround':SNDL,'Audio Out':SNDL,'Speaker':SNDL,'Dolby Atmos':SNDL,'Key-Tone':SNDL,'Audio Delay':SNDL,'SPDIF Delay':SNDL,'Bluetooth Delay':SNDL,'Restore Default Audio Settings':SNDL,
@@ -290,7 +331,7 @@ if(HOST){try{INST=JSON.parse(Android.apps())}catch(e){INST=[]}
  const music=CATS.find(c=>c.name==='Music').root,apps=CATS.find(c=>c.name==='Apps').root;
  const musicX=INST.filter(a=>a.p==='com.google.android.youtube.tvmusic');
  musicX.forEach(a=>music.items.push(I('YouTube Music','',lg('ytmusic'))));PKG['YouTube Music']='com.google.android.youtube.tvmusic';
- const PLG={'com.netflix.ninja':'netflix','com.google.android.youtube.tv':'youtube','com.amazon.amazonvideo.livingroom':'primevideo','com.apple.atve.androidtv.appletv':'appletv','in.startv.hotstar':'hotstar','com.graymatrix.did':'zee5','com.sonyliv':'sonyliv','com.spotify.tv.android':'spotify','com.plexapp.android':'plex','org.xbmc.kodi':'kodi','org.videolan.vlc':'vlcmediaplayer','com.discord':'discord','com.android.chrome':'googlechrome','com.android.vending':'googleplay','com.apple.android.music':'applemusic','com.google.android.youtube.tvmusic':'ytmusic','com.heytap.tv.camera':'camera','com.heytap.tv.filebrowser':'files','com.tcl.browser':'browse','com.oneplus.tv.btspeaker':'bt','com.oneplus.tv.android.livetv':'livetv'};
+ const PLG={'com.netflix.ninja':'netflix','com.google.android.youtube.tv':'youtube','com.amazon.amazonvideo.livingroom':'primevideo','in.startv.hotstar':'hotstar','com.spotify.tv.android':'spotify','com.android.vending':'googleplay','com.google.android.youtube.tvmusic':'ytmusic','com.tcl.browser':'browse','com.phlox.tvwebbrowser':'browse','com.tcl.tv':'livetv'};
  const all=INST.slice().sort((a,b)=>a.l.localeCompare(b.l)).map(a=>{const k=PLG[a.p],o=I(a.l,'',k&&LG[k]?lg(k):`<img class="aic" data-pkg="${a.p}" alt="">`);o.pkg=a.p;return o});
  setTimeout(function fill(){const im=document.querySelector('img.aic[data-pkg]:not([src])');if(!im)return;try{im.src=Android.icon(im.dataset.pkg)||''}catch(e){}im.dataset.d=1;if(!im.src)im.removeAttribute('data-pkg');setTimeout(fill,40)},4000);
  {const st=CATS.find(c=>c.name==='Settings').root.items.find(x=>x.t==='Apps');const ro=st&&st.children.items.find(x=>x.t==='Recently opened apps');if(ro){ro.children=L_(all.slice(0,12).map(o=>{const q=I(o.t,'',o.ic);q.pkg=o.pkg;return q}))}}
@@ -300,14 +341,17 @@ if(HOST){try{INST=JSON.parse(Android.apps())}catch(e){INST=[]}
 
  {const CS=CATS.find(c=>c.name==='Settings'),C_=()=>CATS.indexOf(CS),L=sys('Launcher','Background, colour, night','ln_main');
   const sub=(it,t)=>{it.s=t;if(it.el){const e=it.el.querySelector('.s');if(e)e.textContent=t}};
-  const apply=()=>{PF.save();vKey=null;vDk=null;try{Android.bgvStatic(STATIC)}catch(e){}setTimeout(()=>{try{vidTick()}catch(e){}},60)};
+  const apply=()=>{PF.save();vKey=null;vDk=null;document.documentElement.classList.toggle('photobg',STATIC&&(PF.col==='slide'||PF.col==='custom'));
+   if(STATIC&&PF.col==='slide'){if(!wpShown){wpShown=true;slideShow(SL_I,0)}}
+   else if(wpShown){wpShown=false;document.getElementById('wpA').classList.remove('show');document.getElementById('wpB').classList.remove('show')}
+   try{Android.bgvStatic(STATIC)}catch(e){}setTimeout(()=>{try{vidTick()}catch(e){}},60)};
   const bgI=sys('Background','','ln_bg'),colI=sys('Color','','ln_col'),cusI=sys('Choose custom image','Static only','ln_img'),solI=sys('Solid colour','Static only','ln_sol'),musI=sys('Ambient music','','ln_mus'),agI=sys('Agent control','','ln_ag'),artI=sys('Trending content artwork','','ln_bg'),txtI=sys('Launch text','','ln_info'),abI=sys('About','Sanan Goyal · sanangoyal.com','ln_info'),MV=[['0','Off'],['15','Soft'],['30','Medium'],['50','Loud']];
-  const CN={auto:'Auto',rand:'Random',gold:'Gold',blue:'Blue',black:'Dark (black)',custom:'Custom image'},SOL=[['black','Black'],['red','Ruby'],['orange','Amber'],['green','Emerald'],['teal','Teal'],['indigo','Indigo'],['purple','Violet']];SOL.forEach(a=>CN['sc_'+a[0]]=a[1]+' (solid)');
+  const CN={auto:'Auto',rand:'Random',gold:'Gold',blue:'Blue',black:'Dark (black)',custom:'Custom image',slide:'Slideshow (GTA VI)'},SOL=[['black','Black'],['red','Ruby'],['orange','Amber'],['green','Emerald'],['teal','Teal'],['indigo','Indigo'],['purple','Violet']];SOL.forEach(a=>CN['sc_'+a[0]]=a[1]+' (solid)');
   const agInfo=()=>{try{return JSON.parse(Android.agentInfo())}catch(e){return{}}};const refresh=()=>{sub(txtI,logoName());sub(artI,artOn()?'On':tmdbKey()?'Off':'Needs a TMDB key');sub(bgI,STATIC?'Static':'Dynamic');sub(colI,CN[PF.col]);sub(musI,(MV.find(a=>a[0]===PF.mus)||MV[1])[1]);{const i=agInfo();sub(agI,i.on?'On · '+i.ip:'Off')}};const musApply=pv=>{PF.save();try{Android.ambCfg(+PF.mus,!!pv)}catch(e){}};musApply();
   const om=(title,rows,cur,desc)=>openMenu({title,desc,panel:1,rows:rows.map(r=>({t:r.t,rad:r.v===cur,fn:()=>{r.fn();if(r.say!==0)say(title+': '+r.t)}}))});
   bgI.fn=()=>om('Background',[{v:'static',t:'Static',fn:()=>{PF.bg='static';STATIC=true;apply();refresh()}},{v:'dynamic',t:'Dynamic',fn:()=>{PF.bg='dynamic';STATIC=false;if(PF.col==='custom'||PF.col.indexOf('sc_')===0)PF.col='auto';apply();refresh()}}],PF.bg,'Static draws one image (smoothest). Dynamic plays the looping video.');
   const hasCus=()=>{try{return Android.hasCustom()}catch(e){return false}};
-  colI.fn=()=>om('Color',[{v:'auto',t:'Auto',fn:()=>{PF.col='auto';apply();refresh()}},{v:'rand',t:'Random',fn:()=>{PF.col='rand';RK=rpick();apply();refresh()}},{v:'gold',t:'Gold',fn:()=>{PF.col='gold';apply();refresh()}},{v:'blue',t:'Blue',fn:()=>{PF.col='blue';apply();refresh()}},{v:'black',t:'Dark (black)',fn:()=>{PF.col='black';apply();refresh()}},{v:'custom',t:STATIC?'Custom image':'Custom (static)',fn:()=>{if(!STATIC)say('Switch Background to Static first');else if(!hasCus())say('Pick one with Choose custom image');else{PF.col='custom';apply();refresh()}},say:0}],PF.col,'Auto follows the time of year. Applies to both Static and Dynamic.');
+  colI.fn=()=>om('Color',[{v:'auto',t:'Auto',fn:()=>{PF.col='auto';apply();refresh()}},{v:'rand',t:'Random',fn:()=>{PF.col='rand';RK=rpick();apply();refresh()}},{v:'gold',t:'Gold',fn:()=>{PF.col='gold';apply();refresh()}},{v:'blue',t:'Blue',fn:()=>{PF.col='blue';apply();refresh()}},{v:'black',t:'Dark (black)',fn:()=>{PF.col='black';apply();refresh()}},{v:'custom',t:STATIC?'Custom image':'Custom (static)',fn:()=>{if(!STATIC)say('Switch Background to Static first');else if(!hasCus())say('Pick one with Choose custom image');else{PF.col='custom';apply();refresh()}},say:0},{v:'slide',t:STATIC?'Slideshow (GTA VI)':'Slideshow (static)',fn:()=>{if(!STATIC)say('Switch Background to Static first');else{PF.col='slide';apply();refresh()}},say:0}],PF.col,'Auto follows the time of year. Applies to both Static and Dynamic.');
   solI.fn=()=>{if(!STATIC){SND.bump();say('Switch Background to Static first');return}om('Solid colour',SOL.map(a=>({v:'sc_'+a[0],t:a[1],fn:()=>{PF.col='sc_'+a[0];apply();refresh()}})),PF.col,'A plain colour with a soft gradient. Static only.')};
   const pick=pth=>{const r=Android.setCustom(pth);if(r==='ok'){PF.col='custom';apply();refresh();say('Custom image set');SND.ok();CS.cur=L.children;layout()}else say('Could not load image')};
   const dirList=pth=>{let a=[];try{a=JSON.parse(Android.ls(pth))}catch(e){}const its=a.map(o=>{if(o.d){const f=sys(o.n,o.s||'','Layer_41');f.am=1;f.mk=()=>dirList(o.p);f.fn=()=>{amOpen(CATS[C_()],f);layout()};return f}const f=sys(o.n,o.s||'','Layer_5');f.fn=()=>pick(o.p);return f});if(!its.length){const f=sys('No folders or images','','Layer_9');f.fn=()=>SND.bump();its.push(f)}return L_(its)};
@@ -371,14 +415,14 @@ function layout(){document.documentElement.classList.toggle('sub',bnav>=0||!!CAT
  const C=CATS[cat],depth=depthOf(C.cur),shift=depth?SHIFT:0;
  CATS.forEach((c,i)=>{const d=i-cat,act=d===0;
   const cx=X0+shift+d*GAP+(d?Math.sign(d)*10:0);
-  setT(c.nd,{x:cx,y:act?CATY:CATY+6,s:act?1:.7,o:act?1:(Math.abs(d)>6||depth?0:.7),lo:act&&!depth?1:0});
+  setT(c.nd,{x:cx,y:act?CATY:CATY+6,s:act?1:.85,o:act?1:(Math.abs(d)>6||depth?0:.7),lo:act&&!depth?1:0});
   const open=act;
   c.lists.forEach(l=>{const show=open&&l===c.cur,lx=open?X0:cx;
    l.items.forEach((it,j)=>{const dj=j-l.idx,sel=show&&dj===0;
     const o=!show?0:(sel?1:((dj>3||dj<-5)?0:.6));
     if(sel&&!it._sel){it._sel=1;it._t0=performance.now();clearTimeout(it._tm);it._tm=setTimeout(()=>{if(it._sel&&it.nd.t)it.nd.t.so=1},60)}
     if(!sel&&it._sel){it._sel=0;clearTimeout(it._tm)}
-    setT(it.nd,{x:lx,y:itemY(dj),s:sel?1:.52,o,so:sel&&it.nd.c&&it.nd.c.so>.5?1:0});
+    setT(it.nd,{x:lx,y:itemY(dj),s:sel?1:.72,o,so:sel&&it.nd.c&&it.nd.c.so>.5?1:0});
     it.el.classList.toggle('sel',sel);
     if(it.pnd)setT(it.pnd,{x:X0+SHIFT,y:SELY,s:1,o:open&&c.cur===it.children?1:0});});});
  });
@@ -389,7 +433,15 @@ if(/[?&]prof=1/.test(location.search)&&window.Android){let n=0,tl=performance.no
 let animBusy=false;function animTick(now){const _t=performance.now();animBusy=false;const dt=Math.min(.05,(now-tkT)/1000);tkT=now;
  const kp=1-Math.exp(-dt/.063),ki=1-Math.exp(-dt/.035),ko=1-Math.exp(-dt/.06);
  for(const n of ANIM){if(!n.t)continue;let ch=false;
-  for(const k in n.t){const d=n.t[k]-n.c[k];if(Math.abs(d)<.0005){if(d){n.c[k]=n.t[k];ch=true}continue}
+  for(const k in n.t){const d=n.t[k]-n.c[k];
+   // x/y move in page pixels (hundreds of units on a category/item slide), not the 0-1 range
+   // opacity/scale use: a flat 0.0005 snap threshold meant settling within a fraction of a pixel,
+   // which at this animation's time constants took up to 0.8s of invisible-but-still-running
+   // motion after every Left/Right, each frame still writing style + triggering layout for
+   // nothing the eye could see. 0.05px is still far below one screen pixel, so nothing looks
+   // different, but the loop (and the DOM writes) actually stop when the motion really has.
+   const snap=(k==='x'||k==='y')?.05:.0005;
+   if(Math.abs(d)<snap){if(d){n.c[k]=n.t[k];ch=true}continue}
    const a=(k==='o'||k==='lo'||k==='so')?(d<0?ki:ko):kp;n.c[k]+=d*a;ch=true}
   if(ch){animBusy=true}if(ch)n.fn(n.c,n.el)}
  if(!document.documentElement.classList.contains('lite'))for(const c of CATS)for(const l of c.lists){const it=l.items[l.idx];if(it&&it._sel){const s=(now-it._t0)/1000;it.el.style.setProperty('--g',(calm?.85:(s<.33?1-.75*Math.exp(-s/.09):.78+.22*Math.exp(-(s-.33)/.35))).toFixed(3))}}
@@ -422,8 +474,8 @@ function introFrame(now){
  logoO((sm(2.5,3.1,t)*(1-sm(5.4,6.2,t))).toFixed(3));
  if(t>6.3)revealUI();
  if(t>7.3)finishIntro();else requestAnimationFrame(introFrame)}
-function finishIntro(skip){if(window.Android)Android.log('finishIntro '+(performance.now()/1000).toFixed(1));phase='ready';IB=1;logoO(0);revealUI();if(skip&&bootSrc){try{bootSrc.g.gain.setTargetAtTime(0,AC.currentTime,.12);bootSrc.s.stop(AC.currentTime+.5)}catch(e){}}}
-function startIntro(){bootEl.classList.add('off');IB=0;ac();
+function finishIntro(skip){if(window.Android)Android.log('finishIntro '+(performance.now()/1000).toFixed(1));phase='ready';document.documentElement.classList.remove('intro');IB=1;logoO(0);revealUI();if(skip&&bootSrc){try{bootSrc.g.gain.setTargetAtTime(0,AC.currentTime,.12);bootSrc.s.stop(AC.currentTime+.5)}catch(e){}}}
+function startIntro(){bootEl.classList.add('off');IB=0;ac();document.documentElement.classList.add('intro');
  const go=()=>{if(!playBoot()){setTimeout(go,50);return}tI=performance.now();phase='intro';requestAnimationFrame(introFrame)};go()}
 function skipIntroNow(){if(phase==='intro')finishIntro(true)}
 let COLD=true;if(HOST){try{COLD=Android.coldStart()}catch(e){}bootEl.style.display='none'}
@@ -477,7 +529,10 @@ setInterval(()=>{const C=CATS[cat],l=C.cur,it=l.items[l.idx],ok0=phase==='ready'
 
 function hostEnter(it,C){
  if(C.name==='Settings'){if(SETCONF[it.t]){openMenu({title:SETCONF[it.t],rows:[{t:'Open',fn:()=>{SND.ok();openSet(it.t)}},{t:'Cancel'}]});return true}SND.ok();openSet(it.t);return true}
- if(C.name==='Sources'){const m=/HDMI (\d)/.exec(it.t);let inp=[];try{inp=JSON.parse(Android.inputs())}catch(e){}
+ if(C.name==='PS5'){let inp=[];try{inp=JSON.parse(Android.inputs())}catch(e){}
+  const tgt=inp.find(x=>/playstation|ps5/i.test(x.label));
+  SND.ok();if(!tgt||!Android.input(tgt.id))say('PS5 not found');return true}
+ if(C.name==='Other Sources'){const m=/HDMI (\d)/.exec(it.t);let inp=[];try{inp=JSON.parse(Android.inputs())}catch(e){}
   if(m||it.t==='AV'){const hd=inp.filter(x=>x.type===1007),co=inp.filter(x=>x.type!==1007);let tgt=null;
    if(m){tgt=hd.find(x=>new RegExp('HDMI\\s*'+m[1]).test(x.label))||hd[(+m[1])-1]}else tgt=co[0];
    SND.ok();if(!tgt||!Android.input(tgt.id))say('Input unavailable');return true}
@@ -501,8 +556,13 @@ function pwWake(){if(HOST)Android.dim(false);const m=pwOff;pwOff=0;pwEl.classLis
 let calm=matchMedia('(prefers-reduced-motion: reduce)').matches;document.documentElement.classList.toggle('calm',calm);
 const hintEl=document.getElementById('hint');let hintT;function hintWake(){hintEl.classList.remove('idle');clearTimeout(hintT);hintT=setTimeout(()=>hintEl.classList.add('idle'),6000)}
 let lpT=0,lpDone=0,lpGo=0;function amOpen(C,it){if(it.am){if(!it.children){it.children=it.mk();build(it.children,C,C.cur,it);const ic=it.tile?`<div class="tile" style="background:${it.tile}">${it.ic}</div>`:it.ic,p=document.createElement('div');p.className='pitem';p.innerHTML=`<div class="ic">${ic}</div><div class="arr"></div>`;itemsEl.appendChild(p);it.pnd=node(p,(s,el)=>{el.style.transform=`translate(${s.x}px,${s.y}px)`;el.style.opacity=s.o})}SND.enter();C.cur=it.children}else openOpts()}
-addEventListener('keyup',e=>{if(e.key!=='Enter')return;if(lpT){clearTimeout(lpT);lpT=0;if(!lpDone){lpGo=1;try{window.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}))}finally{lpGo=0}}}lpDone=0});
+addEventListener('keyup',e=>{if(e.key==='ArrowUp'){upFresh=true;return}if(e.key!=='Enter')return;if(lpT){clearTimeout(lpT);lpT=0;if(!lpDone){lpGo=1;try{window.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}))}finally{lpGo=0}}}lpDone=0});
 let lastKeyT=0;
+// Whether this is the first ArrowUp keydown since the key was last released. Does not rely on the
+// browser's own KeyboardEvent.repeat (unreliable coming through this WebView's remote-key path):
+// a real keyup between presses is the only thing that sets it true again, so a held Up key can
+// only reach the top bar once, not fly past the top item on every auto-repeat tick.
+let upFresh=true;
 addEventListener('keydown',e=>{
  lastKeyT=performance.now();if(document.getElementById('tkb').classList.contains('on')){if(e.key==='Escape'&&tkClose)tkClose();return}
  hintWake();
@@ -528,7 +588,7 @@ addEventListener('keydown',e=>{
   case'ArrowRight':e.preventDefault();if(cat<n-1&&!l.parent){cat++;SND.cat()}else SND.bump();break;
   case'ArrowLeft':e.preventDefault();if(l.parent){SND.back();C.cur=l.parent}else if(cat>0){cat--;SND.cat()}else SND.bump();break;
   case'ArrowDown':e.preventDefault();if(l.idx<items.length-1){l.idx++;SND.move()}else SND.bump();break;
-  case'ArrowUp':e.preventDefault();if(l.idx>0){l.idx--;SND.move()}else if(HOST&&!l.parent){bnav=0;SND.move();setBar()}else SND.bump();break;
+  case'ArrowUp':{e.preventDefault();const freshUp=upFresh;upFresh=false;if(l.idx>0){l.idx--;SND.move()}else if(HOST&&!l.parent&&freshUp){bnav=0;SND.move();setBar()}else SND.bump();break}
   case'Enter':{const it=items[l.idx];
    if(it.fn){e.preventDefault();it.fn();return}
    if(HOST&&!lpGo&&(it.am||!it.children&&(it.pkg||PKG[it.t]))){if(!lpT)lpT=setTimeout(()=>{lpT=0;lpDone=1;amOpen(C,it);layout()},550);else if(e.repeat){clearTimeout(lpT);lpT=0;lpDone=1;amOpen(C,it);layout()}e.preventDefault();return}
@@ -690,7 +750,7 @@ function frame(now){
 requestAnimationFrame(frame)}
 if(!USEVID)startGL();
 /* ---------- VIDEO BG (Android): 3 pre-rendered 1080p loops; hardware decoded ---------- */
-function vidKey(){if(phase==='intro'&&(performance.now()-tI)/1000<4.3)return'gold';if((PF.col==='custom'||PF.col.indexOf('sc_')===0)&&STATIC)return PF.col;if(PF.col==='gold'||PF.col==='blue'||PF.col==='black')return PF.col;if(PF.col==='rand')return RK;if(scrCol)return'blue';if(colorMode===13)return'black';if(colorMode<1)return tod();const h=MP[colorMode-1].h;return(h<=75||h>=330)?'gold':'blue'}
+function vidKey(){if(phase==='intro'&&(performance.now()-tI)/1000<4.3)return'gold';if(PF.col==='slide'&&STATIC)return'sc_black';if((PF.col==='custom'||PF.col.indexOf('sc_')===0)&&STATIC)return PF.col;if(PF.col==='gold'||PF.col==='blue'||PF.col==='black')return PF.col;if(PF.col==='rand')return RK;if(scrCol)return'blue';if(colorMode===13)return'black';if(colorMode<1)return tod();const h=MP[colorMode-1].h;return(h<=75||h>=330)?'gold':'blue'}
 let vKey=null,vIdx=0,vPend=null;const VEL=[document.getElementById('v0'),document.getElementById('v1')],BGV=document.getElementById('bgv');
 function vidShow(k){if(NV){if(k===vKey)return;vKey=k;Android.bgv(k);return}if(k===vKey||k===vPend)return;vPend=k;if(window.Android)Android.log('vidShow '+k);const n=VEL[1-vIdx],o=VEL[vIdx];
  const go=()=>{n.removeEventListener('canplay',go);if(window.Android)Android.log('vid canplay '+k);if(vPend!==k)return;vKey=k;vPend=null;n.currentTime=0;const pr=n.play();n.classList.add('on');o.classList.remove('on');vIdx=1-vIdx;setTimeout(()=>{if(VEL[vIdx]!==o)try{o.pause()}catch(e){}},2000)};
