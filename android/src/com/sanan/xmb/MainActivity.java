@@ -69,7 +69,6 @@ public class MainActivity extends Activity {
     bgRelease(); final int gen = ++bgGen; // any video start still waiting is now stale
     if (bgStatic) {
       try {
-        android.graphics.Bitmap bm = null;
         if (key.startsWith("sc_")) {
           String n = key.substring(3); int c1 = 0xFF3A404A, c2 = 0xFF0A0C10;
           if (n.equals("black")) { c1 = 0xFF34363B; c2 = 0xFF040405; } else if (n.equals("red")) { c1 = 0xFF7A1C24; c2 = 0xFF14060A; } else if (n.equals("orange")) { c1 = 0xFF8A4A12; c2 = 0xFF150C05; }
@@ -86,7 +85,28 @@ public class MainActivity extends Activity {
             sh2.unlockCanvasAndPost(c); }
           return;
         }
-        if (key.equals("custom")) bm = android.graphics.BitmapFactory.decodeFile(new java.io.File(getFilesDir(), "custom_bg.jpg").getPath());
+        if (key.equals("custom")) {
+          // Decoding a full-screen JPEG (~8 MB as ARGB_8888) on the UI thread stalls every other
+          // frame in flight; this board's GPU is already the bottleneck (MediaTek tcl9618), so do
+          // the decode on a worker thread and only touch the Surface once a bitmap is ready.
+          final String k = key;
+          new Thread(new Runnable() { public void run() {
+            android.graphics.Bitmap b = null;
+            try {
+              b = android.graphics.BitmapFactory.decodeFile(new java.io.File(getFilesDir(), "custom_bg.jpg").getPath());
+            } catch (Throwable t) { Log.e(TAG, "bg decode " + k, t); }
+            final android.graphics.Bitmap fb = b;
+            runOnUiThread(new Runnable() { public void run() {
+              if (gen != bgGen || surf == null) { if (fb != null) fb.recycle(); return; }
+              try {
+                android.view.SurfaceHolder sh = sv.getHolder(); android.graphics.Canvas c = sh.lockCanvas();
+                if (c != null) { if (fb != null) paintStill(c, fb, null); else c.drawColor(android.graphics.Color.BLACK); sh.unlockCanvasAndPost(c); }
+              } catch (Throwable t) { Log.e(TAG, "bg draw " + k, t); }
+              if (fb != null) fb.recycle();
+            } });
+          } }).start();
+          return;
+        }
         else {
           java.io.InputStream is = getAssets().open("bg_" + key + "_g.png"); android.graphics.Bitmap gb = android.graphics.BitmapFactory.decodeStream(is); is.close();
           java.io.InputStream is2 = getAssets().open("bg_" + key + "_r.png"); android.graphics.Bitmap rb = android.graphics.BitmapFactory.decodeStream(is2); is2.close();
@@ -94,10 +114,6 @@ public class MainActivity extends Activity {
           if (c3 != null) { paintStill(c3, gb, rb); sh3.unlockCanvasAndPost(c3); }
           gb.recycle(); rb.recycle(); return;
         }
-        android.view.SurfaceHolder sh = sv.getHolder();
-        android.graphics.Canvas c = sh.lockCanvas();
-        if (c != null) { if (bm != null) paintStill(c, bm, null); else c.drawColor(android.graphics.Color.BLACK); sh.unlockCanvasAndPost(c); }
-        if (bm != null) bm.recycle();
       } catch (Throwable e) { Log.e(TAG, "bgStatic", e); }
       return;
     }
